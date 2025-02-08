@@ -2,19 +2,16 @@
 import { useEffect, useState } from "react";
 
 const useVh = () => {
-  const [vh, setVh] = useState<number>(typeof window !== "undefined" ? window.innerHeight : 0);
+  const [vh, setVh] = useState<number>(0); // Start with 0 to match SSR output
 
   useEffect(() => {
-    if (typeof window === "undefined") return; // ✅ Prevent errors on the server
-
     const updateVh = () => {
       const newVh = window.innerHeight;
       setVh(newVh);
       document.documentElement.style.setProperty("--vh", `${newVh * 0.01}px`);
     };
 
-    updateVh(); // Initialize on mount
-
+    updateVh(); // ✅ Only runs after mounting (fixes hydration mismatch)
     window.addEventListener("resize", updateVh);
     return () => window.removeEventListener("resize", updateVh);
   }, []);
