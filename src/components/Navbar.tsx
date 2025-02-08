@@ -1,26 +1,39 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { Menu, X, ChevronDown, User, Home, Layers, Users, Mail, Box, Lightbulb, Building2 } from "lucide-react";
+import {
+  Menu,
+  X,
+  ChevronDown,
+  User,
+  Home,
+  Layers,
+  Users,
+  Mail,
+  Box,
+  Lightbulb,
+  Building2,
+} from "lucide-react";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
 
+  // Handle scroll event to detect when user scrolls down
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
     };
+
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const menuItems = [
-    { id: "home", label: "Home", href: "#", icon: Home },
-    { id: "services", label: "Services", href: "#", icon: Layers },
-    { id: "about", label: "About", href: "#", icon: Users },
-    { id: "contact", label: "Contact", href: "#", icon: Mail },
+    { id: "home", label: "Home", href: "/", icon: Home },
+    { id: "services", label: "Services", href: "/services", icon: Layers },
+    { id: "about", label: "About", href: "/about", icon: Users },
+    { id: "contact", label: "Contact", href: "/contact", icon: Mail },
   ];
 
   const dropdownItems = [
@@ -32,7 +45,7 @@ const Navbar = () => {
   return (
     <nav
       id="main-nav"
-      className={`fixed w-full  h-20 transition-all duration-500 ease-in-out ${
+      className={`fixed w-full h-20 transition-all duration-500 ease-in-out ${
         scrolled ? "bg-black/90 backdrop-blur-lg shadow-2xl" : "bg-transparent"
       } z-50`}
     >
@@ -44,7 +57,7 @@ const Navbar = () => {
             className="flex-shrink-0 group cursor-pointer"
           >
             <h1 className="text-white text-3xl font-bold tracking-wider transform transition-all duration-300 group-hover:scale-110 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r from-white to-gray-400">
-              cookmypapers
+              CookMyPapers
             </h1>
           </div>
 
@@ -57,22 +70,12 @@ const Navbar = () => {
                   key={item.id}
                   href={item.href}
                   className="relative group"
-                  onMouseEnter={() => setHoveredItem(item.id)}
-                  onMouseLeave={() => setHoveredItem(null)}
                 >
                   <div className="flex items-center space-x-2 text-gray-300 hover:text-white px-4 py-2 text-sm font-medium transform transition-all duration-300 hover:translate-y-[-4px]">
-                    <Icon
-                      className={`h-4 w-4 transform transition-all duration-300 ${
-                        hoveredItem === item.id ? "rotate-12 scale-125" : ""
-                      }`}
-                    />
+                    <Icon className="h-4 w-4 transform transition-all duration-300" />
                     <span>{item.label}</span>
                   </div>
-                  <div
-                    className={`absolute bottom-0 left-0 w-full h-0.5 bg-white transform origin-left transition-all duration-300 ${
-                      hoveredItem === item.id ? "scale-x-100" : "scale-x-0"
-                    }`}
-                  />
+                  <div className="absolute bottom-0 left-0 w-full h-0.5 bg-white transform origin-left transition-all duration-300 scale-x-0 group-hover:scale-x-100" />
                 </a>
               );
             })}
