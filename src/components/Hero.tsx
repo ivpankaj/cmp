@@ -27,10 +27,7 @@ const HeroSection = () => {
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-black">
-      {/* Animated background patterns */}
  <BackgroundEffect/>
-
-      {/* 3D Transform Container */}
       <div 
         className="relative min-h-screen flex items-center justify-center px-4"
         style={{
