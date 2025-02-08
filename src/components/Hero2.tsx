@@ -1,5 +1,6 @@
 "use client"
 import React, { useState, useEffect } from 'react';
+import BackgroundEffect from './Background';
 
 const CarouselSection = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -46,10 +47,7 @@ const CarouselSection = () => {
   return (
     <div className="min-h-screen bg-black text-white py-20 relative overflow-hidden">
       {/* Background elements */}
-      <div className="absolute inset-0 opacity-20">
-        <div className="absolute w-96 h-96 top-1/4 -left-48 bg-white rounded-full mix-blend-multiply filter blur-xl animate-blob" />
-        <div className="absolute w-96 h-96 bottom-1/4 -right-48 bg-gray-200 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-2000" />
-      </div>
+   <BackgroundEffect/>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 items-center">

@@ -1,6 +1,8 @@
 "use client";
+import BackgroundEffect from "@/components/Background";
 import React from "react";
 import { FaArrowRight } from "react-icons/fa";
+ // Import the BackgroundEffect component
 
 const ToolPage = () => {
   const tools = [
@@ -53,18 +55,14 @@ const ToolPage = () => {
 
   return (
     <div className="min-h-screen bg-black text-white py-20 relative overflow-hidden">
-      {/* Background Elements */}
-      <div className="absolute inset-0 opacity-20">
-        <div className="absolute w-96 h-96 top-1/4 -left-48 bg-white rounded-full mix-blend-multiply filter blur-xl animate-blob" />
-        <div className="absolute w-96 h-96 bottom-1/4 -right-48 bg-gray-200 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-2000" />
-      </div>
+      <BackgroundEffect />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section 1: Hero Section */}
         <section className="mb-20 text-center">
           <h1 className="text-5xl font-bold mb-6">Tech Tools</h1>
           <p className="text-gray-400 max-w-3xl mx-auto">
-            Explore our collection of free tools designed to simplify your workflow. From document management to coding utilities, we&lsquo;ve got you covered.
+            Explore our collection of free tools designed to simplify your workflow. From document management to coding utilities, we&apos;ve got you covered.
           </p>
         </section>
 
@@ -94,7 +92,7 @@ const ToolPage = () => {
         <section className="text-center">
           <h2 className="text-4xl font-bold mb-6">Need More Tools?</h2>
           <p className="text-gray-400 max-w-2xl mx-auto mb-8">
-            We&lsquo;re constantly adding new tools to help you work smarter. Stay tuned for updates!
+            We&apos;re constantly adding new tools to help you work smarter. Stay tuned for updates!
           </p>
           <button className="px-8 py-4 bg-white text-black font-medium rounded-full hover:bg-gray-200 transform hover:scale-105 transition-all duration-300">
             Explore More <FaArrowRight className="inline ml-2" />

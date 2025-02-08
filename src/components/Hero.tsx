@@ -1,5 +1,6 @@
 "use client"
 import React, { useState, useEffect } from 'react';
+import BackgroundEffect from './Background';
 
 const HeroSection = () => {
   const [scrollY, setScrollY] = useState(0);
@@ -27,10 +28,7 @@ const HeroSection = () => {
   return (
     <div className="relative min-h-screen overflow-hidden bg-black">
       {/* Animated background patterns */}
-      <div className="absolute inset-0 opacity-20">
-        <div className="absolute w-96 h-96 -top-48 -left-48 bg-white rounded-full mix-blend-multiply filter blur-xl animate-blob" />
-        <div className="absolute w-96 h-96 -bottom-48 -right-48 bg-gray-200 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-2000" />
-      </div>
+ <BackgroundEffect/>
 
       {/* 3D Transform Container */}
       <div 

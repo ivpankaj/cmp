@@ -1,6 +1,7 @@
 "use client"
 import React, { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer } from 'recharts';
+import BackgroundEffect from './Background';
 
 const DataStatisticsSection = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -78,10 +79,7 @@ const DataStatisticsSection = () => {
   return (
     <div className="min-h-screen bg-black text-white py-20 relative overflow-hidden">
       {/* Background elements */}
-      <div className="absolute inset-0 opacity-20">
-        <div className="absolute w-96 h-96 top-1/4 -left-48 bg-white rounded-full mix-blend-multiply filter blur-xl animate-blob" />
-        <div className="absolute w-96 h-96 bottom-1/4 -right-48 bg-gray-200 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-2000" />
-      </div>
+ <BackgroundEffect/>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Stats Section */}

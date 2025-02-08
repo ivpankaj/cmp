@@ -1,15 +1,13 @@
 "use client";
 import React from "react";
 import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaGithub } from "react-icons/fa";
+import BackgroundEffect from "./Background";
 
 const Footer = () => {
   return (
     <footer className="bg-black text-white py-16 relative overflow-hidden">
       {/* Background Elements */}
-      <div className="absolute inset-0 opacity-20">
-        <div className="absolute w-96 h-96 top-1/4 -left-48 bg-white rounded-full mix-blend-multiply filter blur-xl animate-blob" />
-        <div className="absolute w-96 h-96 bottom-1/4 -right-48 bg-gray-200 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-2000" />
-      </div>
+ <BackgroundEffect/>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { FaArrowRight, FaCheckCircle } from "react-icons/fa";
+import BackgroundEffect from "@/components/Background";
 
 const ServicePage = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -65,10 +66,7 @@ const ServicePage = () => {
   return (
     <div className="min-h-screen bg-black text-white py-20 relative overflow-hidden">
       {/* Background Elements */}
-      <div className="absolute inset-0 opacity-20">
-        <div className="absolute w-96 h-96 top-1/4 -left-48 bg-white rounded-full mix-blend-multiply filter blur-xl animate-blob" />
-        <div className="absolute w-96 h-96 bottom-1/4 -right-48 bg-gray-200 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-2000" />
-      </div>
+     <BackgroundEffect/>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Hero Section with Carousel */}
