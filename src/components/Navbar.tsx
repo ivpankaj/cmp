@@ -15,7 +15,6 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-
   const memoizedMenuItems = useMemo(() => menuItems, []);
   const memoizedDropdownItems = useMemo(() => dropdownItems, []);
 
@@ -36,14 +35,12 @@ const Navbar = () => {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          {/* Logo */}
           <div className="flex-shrink-0 group cursor-pointer">
             <h1 className="text-white text-3xl font-bold tracking-wider transform transition-all duration-300 group-hover:scale-110 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r from-white to-gray-400">
               CookMyPapers
             </h1>
           </div>
 
-          {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
             {memoizedMenuItems.map((item) => {
               const Icon = item.icon;
@@ -102,7 +99,6 @@ const Navbar = () => {
             </button>
           </div>
 
-          {/* Mobile Menu Button */}
           <div className="md:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
@@ -117,7 +113,6 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* Mobile Menu */}
         <div
           className={`md:hidden transform transition-all duration-300 origin-top ${
             isOpen

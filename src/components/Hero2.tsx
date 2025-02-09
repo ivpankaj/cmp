@@ -7,9 +7,6 @@ import { slides } from "@/data/slides";
 const CarouselSection = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
-
-
-
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
@@ -23,10 +20,7 @@ const CarouselSection = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <div
-            className="relative h-[600px] perspective-1000"
-       
-          >
+          <div className="relative h-[600px] perspective-1000">
             <div className="relative w-full h-full">
               {slides.map((slide, index) => (
                 <div
@@ -75,10 +69,7 @@ const CarouselSection = () => {
               ))}
             </div>
           </div>
-          <div
-            className="relative p-8 rounded-xl backdrop-blur-sm bg-white/10 border border-white/20 transform hover:scale-105 transition-all duration-300"
-    
-          >
+          <div className="relative p-8 rounded-xl backdrop-blur-sm bg-white/10 border border-white/20 transform hover:scale-105 transition-all duration-300">
             <div className="absolute -top-4 -left-4 w-24 h-24 bg-white/5 rounded-full filter blur-xl animate-pulse" />
             <h2 className="text-4xl font-bold mb-6">Transform Your Vision</h2>
             <p className="text-gray-300 mb-8">
