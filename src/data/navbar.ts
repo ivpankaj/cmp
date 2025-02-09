@@ -9,6 +9,6 @@ export const menuItems = [
 
  export const dropdownItems = [
     { id: "products", label: "Products", href: "/product", icon: Box },
-    { id: "solutions", label: "Solutions", href: "#", icon: Lightbulb },
+    { id: "solutions", label: "Solutions", href: "/tool", icon: Lightbulb },
     { id: "enterprise", label: "Enterprise", href: "#", icon: Building2 },
   ];
