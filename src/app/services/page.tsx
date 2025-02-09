@@ -6,6 +6,7 @@ import { FaArrowRight, FaCheckCircle } from "react-icons/fa";
 import BackgroundEffect from "@/components/Background";
 import { carouselItems, stats, workCards } from "@/data/service_data";
 import HeroSection from "@/mini component/HeroSection";
+import Image from "next/image";
 
 const ServicePage = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -34,7 +35,7 @@ const ServicePage = () => {
             >
               {carouselItems.map((item) => (
                 <div key={item.id} className="relative">
-                  <img
+                  <Image
                     src={item.image}
                     alt={item.title}
                     className="w-full h-96 object-cover rounded-xl"
@@ -70,7 +71,7 @@ const ServicePage = () => {
                   key={card.id}
                   className="relative rounded-xl overflow-hidden bg-white/10 border border-white/20 transform hover:scale-105 transition-all duration-300"
                 >
-                  <img
+                  <Image
                     src={card.image}
                     alt={card.title}
                     className="w-full h-48 object-cover"

@@ -1,6 +1,7 @@
 "use client";
 import BackgroundEffect from "@/components/Background";
 import HeroSection from "@/mini component/HeroSection";
+import Image from "next/image";
 import React from "react";
 import { FaCheckCircle, FaArrowRight } from "react-icons/fa";
 
@@ -80,7 +81,7 @@ const AboutUsPage = () => {
                 </p>
               </div>
               <div>
-                <img
+                <Image
                   src="/images/about-us-story.jpg" // Replace with actual image path
                   alt="Our Story"
                   className="w-full h-96 object-cover rounded-xl"
@@ -118,7 +119,7 @@ const AboutUsPage = () => {
                   key={member.id}
                   className="relative rounded-xl overflow-hidden bg-white/10 border border-white/20 transform hover:scale-105 transition-all duration-300"
                 >
-                  <img
+                  <Image
                     src={member.image}
                     alt={member.name}
                     className="w-full h-48 object-cover"

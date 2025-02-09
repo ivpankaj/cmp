@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import BackgroundEffect from "./Background";
 import Button from "@/mini component/Button";
 import { slides } from "@/data/slides";
+import Image from "next/image";
 
 const CarouselSection = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -42,7 +43,7 @@ const CarouselSection = () => {
                               })`,
                   }}
                 >
-                  <img
+                  <Image
                     src={slide.image}
                     alt={slide.title}
                     className="w-full h-2/3 object-cover"

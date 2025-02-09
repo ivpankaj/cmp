@@ -3,6 +3,7 @@ import BackgroundEffect from "@/components/Background";
 import { products } from "@/data/product";
 import HeroSection from "@/mini component/HeroSection";
 import { Glasses, HammerIcon, StampIcon } from "lucide-react";
+import Image from "next/image";
 import React from "react";
 import {
   FaCheckCircle,
@@ -63,7 +64,7 @@ const ProductPage = () => {
                   key={product.id}
                   className="relative rounded-xl overflow-hidden bg-white/10 border border-white/20 transform hover:scale-105 transition-all duration-300"
                 >
-                  <img
+                  <Image
                     src={product.image}
                     alt={product.name}
                     className="w-full h-48 object-cover"
@@ -157,7 +158,7 @@ const ProductPage = () => {
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div>
-                <img
+                <Image
                   src="/images/3d-product.jpg" // Replace with actual image path
                   alt="3D Product"
                   className="w-full h-96 object-cover rounded-xl shadow-2xl transform hover:rotate-3 hover:scale-105 transition-all duration-300"
