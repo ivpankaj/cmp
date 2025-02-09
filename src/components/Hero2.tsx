@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import BackgroundEffect from "./Background";
 import Button from "@/mini component/Button";
 import { slides } from "@/data/slides";
@@ -7,13 +8,67 @@ import Image from "next/image";
 
 const CarouselSection = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startPos, setStartPos] = useState(0);
+  const [currentTranslate, setCurrentTranslate] = useState(0);
+  const [prevTranslate, setPrevTranslate] = useState(0);
+  const dragRef = useRef<HTMLDivElement>(null);
+  const animationRef = useRef(null);
 
+  // Auto-play functionality
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, []);
+    if (!isDragging) {
+      const interval = setInterval(() => {
+        setCurrentSlide((prev) => (prev + 1) % slides.length);
+      }, 5000);
+      return () => clearInterval(interval);
+    }
+  }, [isDragging]);
+
+  const handleDragStart = (e:any) => {
+    setIsDragging(true);
+    setStartPos(e.type.includes('mouse') ? e.pageX : e.touches[0].clientX);
+    if (animationRef.current !== null) {
+      cancelAnimationFrame(animationRef.current);
+    }
+  };
+
+  const handleDragMove = (e:any) => {
+    if (!isDragging) return;
+    
+    const currentPosition = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
+    const currentDistance = currentPosition - startPos;
+    const translate = prevTranslate + currentDistance;
+    
+    setCurrentTranslate(translate);
+    
+    // Apply the translation through transform
+    if (dragRef.current) {
+      dragRef.current.style.transform = `translateX(${translate}px)`;
+    }
+  };
+
+  const handleDragEnd = () => {
+    setIsDragging(false);
+    const movedBy = currentTranslate - prevTranslate;
+
+    // If moved enough negative (left), move to next slide
+    if (movedBy < -100 && currentSlide < slides.length - 1) {
+      setCurrentSlide(currentSlide + 1);
+    }
+    // If moved enough positive (right), move to previous slide
+    else if (movedBy > 100 && currentSlide > 0) {
+      setCurrentSlide(currentSlide - 1);
+    }
+
+    // Reset translations
+    setCurrentTranslate(0);
+    setPrevTranslate(0);
+    
+    if (dragRef.current) {
+      dragRef.current.style.transform = 'translateX(0)';
+    }
+  };
 
   return (
     <div className="min-h-screen bg-black text-white py-20 relative overflow-hidden">
@@ -22,7 +77,17 @@ const CarouselSection = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="relative h-[600px] perspective-1000">
-            <div className="relative w-full h-full">
+            <div 
+              ref={dragRef}
+              className="relative w-full h-full cursor-grab active:cursor-grabbing"
+              onMouseDown={handleDragStart}
+              onMouseMove={handleDragMove}
+              onMouseUp={handleDragEnd}
+              onMouseLeave={handleDragEnd}
+              onTouchStart={handleDragStart}
+              onTouchMove={handleDragMove}
+              onTouchEnd={handleDragEnd}
+            >
               {slides.map((slide, index) => (
                 <div
                   key={index}
@@ -41,14 +106,16 @@ const CarouselSection = () => {
                               rotateY(${
                                 index === currentSlide ? "0deg" : "45deg"
                               })`,
+                    pointerEvents: isDragging ? 'none' : 'auto'
                   }}
                 >
                   <Image
-                  height={100}
-                  width={100}
+                    height={100}
+                    width={100}
                     src={slide.image}
                     alt={slide.title}
                     className="w-full h-2/3 object-cover"
+                    draggable="false"
                   />
                   <div className="p-6">
                     <h3 className="text-2xl font-bold mb-2">{slide.title}</h3>
@@ -72,6 +139,7 @@ const CarouselSection = () => {
               ))}
             </div>
           </div>
+
           <div className="relative p-8 rounded-xl backdrop-blur-sm bg-white/10 border border-white/20 transform hover:scale-105 transition-all duration-300">
             <div className="absolute -top-4 -left-4 w-24 h-24 bg-white/5 rounded-full filter blur-xl animate-pulse" />
             <h2 className="text-4xl font-bold mb-6">Transform Your Vision</h2>
