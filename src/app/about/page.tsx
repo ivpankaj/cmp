@@ -82,6 +82,8 @@ const AboutUsPage = () => {
               </div>
               <div>
                 <Image
+                 height={100}
+                 width={100}
                   src="/images/about-us-story.jpg" // Replace with actual image path
                   alt="Our Story"
                   className="w-full h-96 object-cover rounded-xl"
@@ -120,6 +122,8 @@ const AboutUsPage = () => {
                   className="relative rounded-xl overflow-hidden bg-white/10 border border-white/20 transform hover:scale-105 transition-all duration-300"
                 >
                   <Image
+                   height={100}
+                   width={100}
                     src={member.image}
                     alt={member.name}
                     className="w-full h-48 object-cover"

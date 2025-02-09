@@ -44,6 +44,8 @@ const CarouselSection = () => {
                   }}
                 >
                   <Image
+                  height={100}
+                  width={100}
                     src={slide.image}
                     alt={slide.title}
                     className="w-full h-2/3 object-cover"

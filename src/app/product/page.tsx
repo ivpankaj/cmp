@@ -65,6 +65,8 @@ const ProductPage = () => {
                   className="relative rounded-xl overflow-hidden bg-white/10 border border-white/20 transform hover:scale-105 transition-all duration-300"
                 >
                   <Image
+                   height={100}
+                   width={100}
                     src={product.image}
                     alt={product.name}
                     className="w-full h-48 object-cover"
@@ -159,6 +161,8 @@ const ProductPage = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div>
                 <Image
+                 height={100}
+                 width={100}
                   src="/images/3d-product.jpg" // Replace with actual image path
                   alt="3D Product"
                   className="w-full h-96 object-cover rounded-xl shadow-2xl transform hover:rotate-3 hover:scale-105 transition-all duration-300"
