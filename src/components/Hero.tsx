@@ -3,6 +3,7 @@ import React from "react";
 import BackgroundEffect from "./Background";
 import Button from "@/mini component/Button";
 import BlackButton from "@/mini component/BlackButton";
+import MouseScroll from "@/mini component/MouseScroll";
 
 const HeroSection = () => {
   return (
@@ -27,16 +28,14 @@ const HeroSection = () => {
             </p>
 
             <div className="flex justify-center space-x-4 animate-fade-in-up animation-delay-800">
-              <Button text="Get Started"/>
-            <BlackButton text="Learn More"/>
+              <Button text="Get Started" />
+              <BlackButton text="Learn More" />
             </div>
           </div>
         </div>
       </div>
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-        <div className="w-8 h-12 rounded-full border-2 border-white flex items-start justify-center p-2">
-          <div className="w-1 h-3 bg-white rounded-full animate-scroll" />
-        </div>
+        <MouseScroll />
       </div>
     </div>
   );

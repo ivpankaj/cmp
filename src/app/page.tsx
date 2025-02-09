@@ -1,34 +1,52 @@
-"use client"; 
+"use client";
 
-import Footer from "@/components/Footer";
-import HeroSection from "@/components/Hero";
-import CarouselSection from "@/components/Hero2";
-import DataStatisticsSection from "@/components/Hero3";
-import useVh from "@/hooks/useVh";
-import useVw from "@/hooks/useVw";
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
+import dynamic from "next/dynamic";
+
+
+// Lazy-loaded components
+const HeroSection = dynamic(() => import("@/components/Hero"), { ssr: false });
+const CarouselSection = dynamic(() => import("@/components/Hero2"), { ssr: false });
+const DataStatisticsSection = dynamic(() => import("@/components/Hero3"), { ssr: false });
+const Footer = dynamic(() => import("@/components/Footer"), { ssr: false });
 
 const Page = () => {
-  const vh = useVh();
-  const vw = useVw();
-  const [isClient, setIsClient] = useState(false);
+  const [dimensions, setDimensions] = useState({ width: "100%", height: "100vh" });
 
   useEffect(() => {
-    setIsClient(true);
-  }, []);
+    // Update dimensions after the component mounts
+    const updateDimensions = () => {
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      setDimensions({
+        width: `${vw}px`,
+        height: `${vh}px`,
+      });
+    };
+
+    updateDimensions(); // Set initial dimensions on mount
+    window.addEventListener("resize", updateDimensions);
+
+    return () => window.removeEventListener("resize", updateDimensions); // Clean up on unmount
+  }, []); // Empty dependency array ensures this effect runs only once
 
   return (
-    <div
-      style={{
-        width: isClient ? `${vw}px` : "100%", 
-        height: isClient ? `${vh}px` : "100vh",
-      }}
+    <div style={dimensions}>
+      <Suspense fallback={<div className="text-center text-white">Loading...</div>}>
+        <HeroSection />
+      </Suspense>
 
-    >
-      <HeroSection />
-      <CarouselSection />
-      <DataStatisticsSection />
-      <Footer />
+      <Suspense fallback={<div className="text-center text-white">Loading...</div>}>
+        <CarouselSection />
+      </Suspense>
+
+      <Suspense fallback={<div className="text-center text-white">Loading...</div>}>
+        <DataStatisticsSection />
+      </Suspense>
+
+      <Suspense fallback={<div className="text-center text-white">Loading Footer...</div>}>
+        <Footer />
+      </Suspense>
     </div>
   );
 };
