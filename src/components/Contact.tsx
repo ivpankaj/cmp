@@ -1,27 +1,19 @@
-"use client"
-import React, { useState, useEffect } from 'react';
-import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaGithub } from 'react-icons/fa';
-import BackgroundEffect from './Background';
+"use client";
+import React from "react";
+import {
+  FaFacebook,
+  FaTwitter,
+  FaInstagram,
+  FaLinkedin,
+  FaGithub,
+} from "react-icons/fa";
+import BackgroundEffect from "./Background";
 
 const ContactPage = () => {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-
-  useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const handleMouseMove = (e:any) => {
-      setMousePosition({
-        x: (e.clientX / window.innerWidth - 0.5) * 20,
-        y: (e.clientY / window.innerHeight - 0.5) * 20,
-      });
-    };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
-
   return (
     <div className="min-h-screen bg-black text-white py-20 relative overflow-hidden">
       {/* Background elements */}
-   <BackgroundEffect/>
+      <BackgroundEffect />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Contact Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -82,7 +74,10 @@ const ContactPage = () => {
             <h3 className="text-2xl font-bold mb-6">Send Us a Message</h3>
             <form className="space-y-4">
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-400">
+                <label
+                  htmlFor="name"
+                  className="block text-sm font-medium text-gray-400"
+                >
                   Name
                 </label>
                 <input
@@ -94,7 +89,10 @@ const ContactPage = () => {
                 />
               </div>
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-400">
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-gray-400"
+                >
                   Email
                 </label>
                 <input
@@ -106,7 +104,10 @@ const ContactPage = () => {
                 />
               </div>
               <div>
-                <label htmlFor="message" className="block text-sm font-medium text-gray-400">
+                <label
+                  htmlFor="message"
+                  className="block text-sm font-medium text-gray-400"
+                >
                   Message
                 </label>
                 <textarea
@@ -116,7 +117,6 @@ const ContactPage = () => {
                   placeholder="Your Message"
                   className="mt-1 block w-full px-4 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:border-white"
                 ></textarea>
-
               </div>
               <button
                 type="submit"
@@ -129,15 +129,11 @@ const ContactPage = () => {
         </div>
 
         {/* Additional Info Box */}
-        <div
-          className="p-8 rounded-xl backdrop-blur-sm bg-white/10 border border-white/20 text-center mt-10"
-          style={{
-            transform: `perspective(1000px) rotateX(${mousePosition.y * 0.01}deg) rotateY(${mousePosition.x * 0.01}deg)`,
-          }}
-        >
+        <div className="p-8 rounded-xl backdrop-blur-sm bg-white/10 border border-white/20 text-center mt-10">
           <h2 className="text-3xl font-bold mb-4">Let&apos;s Work Together!</h2>
           <p className="text-gray-300 mb-8 max-w-2xl mx-auto">
-            We are always open to new ideas and collaborations. Reach out to us, and let&apos;s build something amazing together.
+            We are always open to new ideas and collaborations. Reach out to us,
+            and let&apos;s build something amazing together.
           </p>
         </div>
       </div>
