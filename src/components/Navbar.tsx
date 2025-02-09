@@ -37,7 +37,7 @@ const Navbar = () => {
   ];
 
   const dropdownItems = [
-    { id: "products", label: "Products", href: "/product", icon: Box },
+    { id: "products", label: "Products", href: "/productlay", icon: Box },
     { id: "solutions", label: "Solutions", href: "#", icon: Lightbulb },
     { id: "enterprise", label: "Enterprise", href: "#", icon: Building2 },
   ];

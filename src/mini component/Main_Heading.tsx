@@ -1,26 +1,29 @@
-import React from 'react'
+import React from "react";
 
-
-interface Heading {
-    text: string
-    minitext?: string
-    subtext?: string
+interface HeadingProps {
+  mainText: string;
+  secondaryText?: string;
+  tertiaryText?: string;
 }
-const Main_Heading: React.FC<Heading> = ({ text, minitext, subtext }) => {
 
-
-    return (
+const MainHeading: React.FC<HeadingProps> = ({ mainText, secondaryText, tertiaryText }) => {
+  return (
+    <h1 className="text-6xl md:text-8xl font-black text-white tracking-tight text-center">
+      <span className="inline-block">{mainText}</span>
+      {secondaryText && (
         <>
-            <div >
-                <h1 className="text-6xl md:text-8xl font-black text-white tracking-tight text-center">
-                    <span className="inline-block animate-fade-in-up">{text}</span>{' '}
-                    <span className="inline-block animate-fade-in-up animation-delay-200">{minitext}</span>{' '}
-                    <span className="inline-block animate-fade-in-up animation-delay-400">{subtext}</span>
-                </h1>
-
-            </div>
+          {" "}
+          <span className="inline-block">{secondaryText}</span>
         </>
-    )
-}
+      )}
+      {tertiaryText && (
+        <>
+          {" "}
+          <span className="inline-block">{tertiaryText}</span>
+        </>
+      )}
+    </h1>
+  );
+};
 
-export default Main_Heading
+export default MainHeading;

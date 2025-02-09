@@ -20,7 +20,7 @@ const ServicePage = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         <section className="mb-20">
-          <Main_Heading text="Services" />
+          <Main_Heading mainText="Services" />
           <Carousel
             showArrows={true}
             showThumbs={false}

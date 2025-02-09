@@ -48,7 +48,7 @@ const ProductPage = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section 1: Hero Section */}
         <section className="mb-20 text-center">
-      <Main_Heading text="Our Product"/>
+      <Main_Heading mainText="Our Product"/>
           <p className="text-gray-400 max-w-3xl mx-auto">
             Discover our innovative suite of products designed to elevate your business. From design tools to analytics dashboards, we have everything you need to succeed.
           </p>
