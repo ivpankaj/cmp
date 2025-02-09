@@ -1,5 +1,6 @@
 "use client";
 import BackgroundEffect from "@/components/Background";
+import Main_Heading from "@/mini component/Main_Heading";
 import { Glasses, HammerIcon, StampIcon } from "lucide-react";
 import React from "react";
 import { FaCheckCircle, FaArrowRight, FaStar, FaShoppingCart } from "react-icons/fa";
@@ -47,7 +48,7 @@ const ProductPage = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section 1: Hero Section */}
         <section className="mb-20 text-center">
-          <h1 className="text-5xl font-bold mb-6">Our Products</h1>
+      <Main_Heading text="Our Product"/>
           <p className="text-gray-400 max-w-3xl mx-auto">
             Discover our innovative suite of products designed to elevate your business. From design tools to analytics dashboards, we have everything you need to succeed.
           </p>

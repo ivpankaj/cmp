@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 import BackgroundEffect from './Background';
+import Button from '@/mini component/Button';
+import { chartData, gridData } from '@/data/grid_chart';
 
 const DataStatisticsSection = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -19,21 +21,7 @@ const DataStatisticsSection = () => {
     revenue: 15
   };
 
-  const gridData = [
-    { title: "Design Systems", value: "85%" },
-    { title: "Web Development", value: "92%" },
-    { title: "User Experience", value: "88%" },
-    { title: "Mobile Apps", value: "90%" },
-    { title: "Branding", value: "87%" },
-    { title: "Consulting", value: "93%" }
-  ];
 
-  const chartData = [
-    { name: 'Q1', value: 45 },
-    { name: 'Q2', value: 65 },
-    { name: 'Q3', value: 85 },
-    { name: 'Q4', value: 95 }
-  ];
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -78,11 +66,8 @@ const DataStatisticsSection = () => {
 
   return (
     <div className="min-h-screen bg-black text-white py-20 relative overflow-hidden">
-      {/* Background elements */}
  <BackgroundEffect/>
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Stats Section */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-20">
           {[
             { label: 'Projects Completed', value: animatedStats.projects, suffix: '+' },
@@ -104,10 +89,7 @@ const DataStatisticsSection = () => {
             </div>
           ))}
         </div>
-
-        {/* Grid Pattern Box */}
         <div className="grid md:grid-cols-2 gap-8 mb-20">
-          {/* Chart */}
           <div className="p-8 rounded-xl backdrop-blur-sm bg-white/10 border border-white/20">
             <h3 className="text-2xl font-bold mb-6">Performance Growth</h3>
             <div className="h-64">
@@ -137,8 +119,6 @@ const DataStatisticsSection = () => {
             </div>
           </div>
         </div>
-
-        {/* Additional Info Box */}
         <div 
           className="p-8 rounded-xl backdrop-blur-sm bg-white/10 border border-white/20 text-center"
           style={{
@@ -150,9 +130,7 @@ const DataStatisticsSection = () => {
             Our data-driven approach combined with premium design solutions helps businesses 
             achieve their digital transformation goals with measurable results.
           </p>
-          <button className="px-8 py-4 bg-white text-black font-bold rounded-full hover:bg-gray-200 transform hover:scale-105 transition-all duration-200">
-            Start Your Journey
-          </button>
+       <Button text='Start your journey'/>
         </div>
       </div>
     </div>

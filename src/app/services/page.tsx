@@ -4,74 +4,23 @@ import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { FaArrowRight, FaCheckCircle } from "react-icons/fa";
 import BackgroundEffect from "@/components/Background";
+import Main_Heading from "@/mini component/Main_Heading";
+import { carouselItems, stats, workCards } from "@/data/service_data";
 
 const ServicePage = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  const carouselItems = [
-    {
-      id: 1,
-      title: "Web Development",
-      description:
-        "Build modern, scalable, and responsive websites tailored to your business needs.",
-      image: "/images/web-development.jpg", // Replace with actual image path
-    },
-    {
-      id: 2,
-      title: "Mobile App Development",
-      description:
-        "Create intuitive and feature-rich mobile applications for iOS and Android.",
-      image: "/images/mobile-app.jpg", // Replace with actual image path
-    },
-    {
-      id: 3,
-      title: "Cloud Solutions",
-      description:
-        "Leverage cloud technologies to enhance scalability, security, and efficiency.",
-      image: "/images/cloud-solutions.jpg", // Replace with actual image path
-    },
-  ];
 
-  const stats = [
-    { label: "Projects Completed", value: "250+" },
-    { label: "Happy Clients", value: "120+" },
-    { label: "Years of Experience", value: "8+" },
-    { label: "Team Members", value: "50+" },
-  ];
-
-  const workCards = [
-    {
-      id: 1,
-      title: "E-Commerce Platform",
-      description:
-        "Developed a robust e-commerce platform with advanced payment integration.",
-      image: "/images/ecommerce.jpg", // Replace with actual image path
-    },
-    {
-      id: 2,
-      title: "AI Chatbot",
-      description:
-        "Built an AI-powered chatbot to enhance customer support and engagement.",
-      image: "/images/chatbot.jpg", // Replace with actual image path
-    },
-    {
-      id: 3,
-      title: "Custom CRM",
-      description:
-        "Designed a custom CRM system to streamline business operations.",
-      image: "/images/crm.jpg", // Replace with actual image path
-    },
-  ];
 
   return (
     <div className="min-h-screen bg-black text-white py-20 relative overflow-hidden">
-      {/* Background Elements */}
-     <BackgroundEffect/>
+
+      <BackgroundEffect />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Hero Section with Carousel */}
+
         <section className="mb-20">
-          <h2 className="text-4xl font-bold text-center mb-8">Our Services</h2>
+          <Main_Heading text="Services" />
           <Carousel
             showArrows={true}
             showThumbs={false}
@@ -80,6 +29,7 @@ const ServicePage = () => {
             interval={5000}
             onChange={(index) => setCurrentSlide(index)}
             selectedItem={currentSlide}
+
           >
             {carouselItems.map((item) => (
               <div key={item.id} className="relative">
@@ -93,7 +43,7 @@ const ServicePage = () => {
           </Carousel>
         </section>
 
-        {/* Statistics Section */}
+
         <section className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-20">
           {stats.map((stat, index) => (
             <div
@@ -106,7 +56,7 @@ const ServicePage = () => {
           ))}
         </section>
 
-        {/* Work Showcase Section */}
+
         <section className="mb-20">
           <h2 className="text-4xl font-bold text-center mb-8">Our Work</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -124,8 +74,6 @@ const ServicePage = () => {
             ))}
           </div>
         </section>
-
-        {/* Why Choose Us Section */}
         <section className="mb-20">
           <h2 className="text-4xl font-bold text-center mb-8">Why Choose Us?</h2>
           <div className="space-y-4">
@@ -148,7 +96,6 @@ const ServicePage = () => {
           </div>
         </section>
 
-        {/* Call to Action Section */}
         <section className="text-center">
           <h2 className="text-4xl font-bold mb-6">Ready to Transform Your Business?</h2>
           <p className="text-gray-400 max-w-2xl mx-auto mb-8">

@@ -1,6 +1,5 @@
-"use client"; // Make sure this page is a Client Component
+"use client"; 
 
-import ContactPage from "@/components/Contact";
 import Footer from "@/components/Footer";
 import HeroSection from "@/components/Hero";
 import CarouselSection from "@/components/Hero2";
@@ -21,16 +20,15 @@ const Page = () => {
   return (
     <div
       style={{
-        width: isClient ? `${vw}px` : "100%", // ✅ Prevent mismatch by setting a default value
+        width: isClient ? `${vw}px` : "100%", 
         height: isClient ? `${vh}px` : "100vh",
       }}
-    
+
     >
       <HeroSection />
       <CarouselSection />
       <DataStatisticsSection />
-      <ContactPage />
-      <Footer/>
+      <Footer />
     </div>
   );
 };

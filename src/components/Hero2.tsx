@@ -1,28 +1,14 @@
 "use client"
 import React, { useState, useEffect } from 'react';
 import BackgroundEffect from './Background';
+import Button from '@/mini component/Button';
+import { slides } from '@/data/slides';
 
 const CarouselSection = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
-  const slides = [
-    {
-      title: "Premium Design",
-      description: "Crafted with attention to every detail",
-      image: "/api/placeholder/600/400"
-    },
-    {
-      title: "Modern Solutions",
-      description: "Innovative approaches to digital challenges",
-      image: "/api/placeholder/600/400"
-    },
-    {
-      title: "Creative Excellence",
-      description: "Pushing boundaries in digital experiences",
-      image: "/api/placeholder/600/400"
-    }
-  ];
+
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -46,12 +32,12 @@ const CarouselSection = () => {
 
   return (
     <div className="min-h-screen bg-black text-white py-20 relative overflow-hidden">
-      {/* Background elements */}
+     
    <BackgroundEffect/>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* 3D Carousel */}
+      
           <div 
             className="relative h-[600px] perspective-1000"
             style={{
@@ -82,8 +68,6 @@ const CarouselSection = () => {
                 </div>
               ))}
             </div>
-
-            {/* Carousel Controls */}
             <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
               {slides.map((_, index) => (
                 <button
@@ -95,8 +79,6 @@ const CarouselSection = () => {
               ))}
             </div>
           </div>
-
-          {/* Static Box */}
           <div 
             className="relative p-8 rounded-xl backdrop-blur-sm bg-white/10 border border-white/20 transform hover:scale-105 transition-all duration-300"
             style={{
@@ -117,9 +99,9 @@ const CarouselSection = () => {
                 </li>
               ))}
             </ul>
-            <button className="mt-8 px-8 py-4 bg-white text-black font-bold rounded-full hover:bg-gray-200 transform hover:scale-105 transition-all duration-200">
-              Learn More
-            </button>
+            <div className="mt-8">
+           <Button text='Learn More'/>
+            </div>
           </div>
         </div>
       </div>
