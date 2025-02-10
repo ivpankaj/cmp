@@ -1,11 +1,17 @@
-// app/auth/signin/page.tsx
 'use client';
-
 import { signIn } from 'next-auth/react';
 import { useSearchParams } from 'next/navigation';
-
+import { Suspense } from 'react';
 
 export default function SignIn() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <SignInContent />
+    </Suspense>
+  );
+}
+
+function SignInContent() {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get('callbackUrl') || '/';
   const error = searchParams.get('error');
