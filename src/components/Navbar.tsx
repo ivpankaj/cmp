@@ -119,11 +119,12 @@ const Navbar: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 lg:h-20">
             {/* Logo */}
-            <div className="flex-shrink-0 group cursor-pointer">
-              <h1 className="text-white text-2xl lg:text-3xl font-bold tracking-wider transform transition-all duration-300 group-hover:scale-110 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r from-white to-gray-400">
-                CookMyPapers
-              </h1>
-            </div>
+            <div className="flex-shrink-0 group cursor-pointer ml-0 md:-ml-10">
+  <h1 className="text-white text-2xl lg:text-3xl font-bold tracking-wide transition-transform duration-300 group-hover:scale-110 group-hover:text-gray-300">
+    CookMyPapers
+  </h1>
+</div>
+
 
             {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center space-x-8">
