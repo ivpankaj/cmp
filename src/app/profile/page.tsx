@@ -1,19 +1,46 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import BackgroundEffect from "@/components/Background";
 import { useProfileData } from "@/hooks/useProfileData";
 import ProfileHeader from "@/components/profile comp/ProfileHeader";
 import BioSection from "@/components/profile comp/BioSection";
 import SocialLinksSection from "@/components/profile comp/SocialLinksSection";
 import Button from "@/mini component/Button";
-import { Loader } from "@/components/Loader";
-
 
 const ProfilePage = () => {
+  const router = useRouter();
+  const { data: session } = useSession();
   const { profileData, setProfileData, saveProfileData, loading } =
     useProfileData();
   const [isEditing, setIsEditing] = useState(false);
   const [verificationStatus, setVerificationStatus] = useState("");
+
+  // Redirect to login if no session data
+  useEffect(() => {
+    if (!session) {
+      router.push("/"); // Redirect to login page
+    }
+  }, [session, router]);
+
+  // Show loader while data is being fetched
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-black text-white">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-500"></div>
+      </div>
+    );
+  }
+
+  // If session exists but profileData is still null, show an error
+  if (!profileData) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-black text-white">
+        <p>Failed to load profile data. Please try again later.</p>
+      </div>
+    );
+  }
 
   const handleSave = async () => {
     try {
@@ -44,11 +71,6 @@ const ProfilePage = () => {
       setVerificationStatus("error");
     }
   };
-
-  // Show loader while data is being fetched
-  if (loading) {
-    return <Loader />;
-  }
 
   return (
     <div className="min-h-screen z-10 bg-black text-white py-8 sm:py-16 md:py-20 relative overflow-hidden">
