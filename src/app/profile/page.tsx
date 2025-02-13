@@ -1,46 +1,54 @@
-"use client"
-import React, { useState } from 'react';
-import BackgroundEffect from '@/components/Background';
-import { useProfileData } from '@/hooks/useProfileData';
-import ProfileHeader from '@/components/profile comp/ProfileHeader';
-import BioSection from '@/components/profile comp/BioSection';
-import SocialLinksSection from '@/components/profile comp/SocialLinksSection';
-import Button from '@/mini component/Button';
+"use client";
+import React, { useState } from "react";
+import BackgroundEffect from "@/components/Background";
+import { useProfileData } from "@/hooks/useProfileData";
+import ProfileHeader from "@/components/profile comp/ProfileHeader";
+import BioSection from "@/components/profile comp/BioSection";
+import SocialLinksSection from "@/components/profile comp/SocialLinksSection";
+import Button from "@/mini component/Button";
+import { Loader } from "@/components/Loader";
 
 
 const ProfilePage = () => {
-  const { profileData, setProfileData,saveProfileData } = useProfileData();
+  const { profileData, setProfileData, saveProfileData, loading } =
+    useProfileData();
   const [isEditing, setIsEditing] = useState(false);
-  const [verificationStatus, setVerificationStatus] = useState('');
+  const [verificationStatus, setVerificationStatus] = useState("");
+
   const handleSave = async () => {
     try {
       if (profileData) {
         await saveProfileData(profileData);
       } else {
-        console.error('Profile data is null');
+        console.error("Profile data is null");
       }
-
       setIsEditing(false);
     } catch (error) {
-      console.error('Error saving profile:', error);
+      console.error("Error saving profile:", error);
     }
   };
+
   const handleVerifyEmail = async () => {
     try {
-      setVerificationStatus('sending');
-      const response = await fetch('/api/auth/verify-email', {
-        method: 'POST',
+      setVerificationStatus("sending");
+      const response = await fetch("/api/auth/verify-email", {
+        method: "POST",
       });
       if (response.ok) {
-        setVerificationStatus('sent');
+        setVerificationStatus("sent");
       } else {
-        setVerificationStatus('error');
+        setVerificationStatus("error");
       }
     } catch (error) {
-      console.error('Error sending verification email:', error);
-      setVerificationStatus('error');
+      console.error("Error sending verification email:", error);
+      setVerificationStatus("error");
     }
   };
+
+  // Show loader while data is being fetched
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <div className="min-h-screen z-10 bg-black text-white py-8 sm:py-16 md:py-20 relative overflow-hidden">
@@ -49,7 +57,7 @@ const ProfilePage = () => {
         <ProfileHeader
           profileData={profileData}
           isEditing={isEditing}
-          setProfileData={setProfileData} 
+          setProfileData={setProfileData}
           setIsEditing={setIsEditing}
           verificationStatus={verificationStatus}
           handleVerifyEmail={handleVerifyEmail}
@@ -60,17 +68,17 @@ const ProfilePage = () => {
             isEditing={isEditing}
             setProfileData={setProfileData}
           />
-      
+
           <SocialLinksSection
             profileData={profileData}
             isEditing={isEditing}
             setProfileData={setProfileData}
           />
-             {isEditing && (
-          <div className="flex justify-end mt-4">
-            <Button text="Save" onClick={handleSave} />
-          </div>
-        )}
+          {isEditing && (
+            <div className="flex justify-end mt-4">
+              <Button text="Save" onClick={handleSave} />
+            </div>
+          )}
         </div>
       </div>
     </div>

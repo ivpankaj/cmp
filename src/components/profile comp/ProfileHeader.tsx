@@ -3,7 +3,7 @@ import { ShieldCheck, Mail, CheckCircle } from "lucide-react";
 import Button from "@/mini component/Button";
 import { useSession } from "next-auth/react";
 import { ProfileHeaderProps } from "@/types/profile";
-
+import { UserCircle } from "lucide-react";
 const ProfileHeader: React.FC<ProfileHeaderProps> = ({
   profileData,
   isEditing,
@@ -18,11 +18,18 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
     <div className="flex flex-col sm:flex-row items-center justify-between mb-6 sm:mb-8 z-10">
       <div className="flex items-center space-x-4">
         <div className="relative w-24 h-24 sm:w-20 sm:h-20 rounded-full overflow-hidden border-2 border-white/20">
-          <img
-            src={session?.user?.image || "/api/placeholder/96/96"}
-            alt="Profile"
-            className="w-full h-full object-cover"
-          />
+
+
+{session?.user?.image ? (
+  <img
+    src={session.user.image}
+    alt="Profile"
+    className="w-full h-full object-cover"
+  />
+) : (
+  <UserCircle className="w-full h-full text-gray-500" />
+)}
+
       
         </div>
         <div>
