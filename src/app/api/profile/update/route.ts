@@ -31,7 +31,16 @@ export async function POST(request: Request) {
       { upsert: true }
     );
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({
+        success: true,
+        updatedSession: {
+          ...session.user,
+          name: data.name, // Update the name in the session
+          bio: data.bio,
+          skills: data.skills,
+          social: data.social,
+        },
+      });
   } catch (error) {
     console.error('Error updating profile:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });

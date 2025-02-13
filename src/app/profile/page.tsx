@@ -15,7 +15,11 @@ const ProfilePage = () => {
   const handleSave = async () => {
     try {
       // Save the profile data using the custom hook
-      await saveProfileData(profileData);
+      if (profileData) {
+        await saveProfileData(profileData);
+      } else {
+        console.error('Profile data is null');
+      }
 
       // Exit editing mode after saving
       setIsEditing(false);

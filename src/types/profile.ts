@@ -16,3 +16,13 @@ export interface ProfileData {
   };
   emailVerified: boolean;
 }
+
+export interface ProfileHeaderProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  profileData: any;
+  isEditing: boolean;
+  setIsEditing: (value: boolean) => void;
+  setProfileData: (data: any) => void; // Add this prop
+  verificationStatus: string;
+  handleVerifyEmail: () => void;
+}
