@@ -14,14 +14,12 @@ const ProfilePage = () => {
   const [verificationStatus, setVerificationStatus] = useState('');
   const handleSave = async () => {
     try {
-      // Save the profile data using the custom hook
       if (profileData) {
         await saveProfileData(profileData);
       } else {
         console.error('Profile data is null');
       }
 
-      // Exit editing mode after saving
       setIsEditing(false);
     } catch (error) {
       console.error('Error saving profile:', error);
