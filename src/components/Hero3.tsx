@@ -61,7 +61,7 @@ const DataStatisticsSection = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-black text-white py-20 relative overflow-hidden">
+    <div className="min-h-screen z-10 bg-black text-white py-20 relative overflow-hidden">
       <BackgroundEffect />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-20">

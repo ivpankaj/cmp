@@ -7,7 +7,7 @@ import MouseScroll from "@/mini component/MouseScroll";
 
 const HeroSection = () => {
   return (
-    <div className="relative min-h-screen overflow-hidden bg-black">
+    <div className="relative min-h-screen  z-10 overflow-hidden bg-black">
       <BackgroundEffect />
       <div className="relative min-h-screen flex items-center justify-center px-4">
         <div className="max-w-6xl mx-auto text-center">

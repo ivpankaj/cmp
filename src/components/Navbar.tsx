@@ -5,8 +5,9 @@ import { useSession, signIn, signOut } from "next-auth/react";
 import type { Session } from "next-auth";
 import { Menu, X, ChevronDown, User } from "lucide-react";
 import { usePathname } from "next/navigation";
-
+import logo from "../app/favicon.ico";
 import { dropdownItems, menuItems } from "@/data/navbar";
+import Image from "next/image";
 
 type MenuItem = {
   id: string;
@@ -31,13 +32,13 @@ const UserProfile: React.FC<{ session: Session }> = ({ session }) => (
   </div>
 );
 
-const NavLink: React.FC<{ item: MenuItem; mobile?: boolean; onClick?: () => void }> = ({ 
-  item, 
-  mobile = false,
-  onClick 
-}) => {
+const NavLink: React.FC<{
+  item: MenuItem;
+  mobile?: boolean;
+  onClick?: () => void;
+}> = ({ item, mobile = false, onClick }) => {
   const Icon = item.icon;
-  
+
   if (mobile) {
     return (
       <Link
@@ -62,7 +63,10 @@ const NavLink: React.FC<{ item: MenuItem; mobile?: boolean; onClick?: () => void
   );
 };
 
-const AuthButton: React.FC<{ onClick: () => void; session: Session | null }> = ({ onClick, session }) => (
+const AuthButton: React.FC<{
+  onClick: () => void;
+  session: Session | null;
+}> = ({ onClick, session }) => (
   <button
     onClick={onClick}
     className="relative group overflow-hidden bg-white/10 backdrop-blur-sm text-white px-6 py-2.5 rounded-xl font-medium transform transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-white/20"
@@ -99,6 +103,7 @@ const Navbar: React.FC = () => {
 
   const handleAuth = () => {
     if (session) {
+      
       signOut();
     } else {
       signIn("google");
@@ -113,18 +118,27 @@ const Navbar: React.FC = () => {
     <>
       <nav
         className={`fixed w-full transition-all duration-500 ease-in-out z-50 ${
-          scrolled ? "bg-black/90 backdrop-blur-lg shadow-2xl" : "bg-transparent"
+          scrolled
+            ? "bg-black/90 backdrop-blur-lg shadow-2xl"
+            : "bg-transparent"
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 lg:h-20">
             {/* Logo */}
             <div className="flex-shrink-0 group cursor-pointer ml-0 md:-ml-10">
-  <h1 className="text-white text-2xl lg:text-3xl font-bold tracking-wide transition-transform duration-300 group-hover:scale-110 group-hover:text-gray-300">
-    CookMyPapers
-  </h1>
-</div>
-
+              <Link
+                href="https://cookmypapers.vercel.app"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Image
+                  src={logo}
+                  alt="cookmypapers"
+                  className="w-16 object-contain transition-all duration-300 group-hover:scale-110"
+                />
+              </Link>
+            </div>
 
             {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center space-x-8">
@@ -154,7 +168,8 @@ const Navbar: React.FC = () => {
                         className="flex items-center space-x-2 px-4 py-3 text-sm text-gray-200 hover:text-white hover:bg-white/10 transition-all duration-300 first:rounded-t-xl last:rounded-b-xl group"
                       >
                         {React.createElement(item.icon, {
-                          className: "h-4 w-4 transform transition-all duration-300 group-hover:rotate-12 group-hover:scale-125"
+                          className:
+                            "h-4 w-4 transform transition-all duration-300 group-hover:rotate-12 group-hover:scale-125",
                         })}
                         <span>{item.label}</span>
                       </Link>
@@ -189,10 +204,20 @@ const Navbar: React.FC = () => {
               <div className="px-2 pt-2 pb-3 space-y-1">
                 {session && <UserProfile session={session} />}
                 {menuItems.map((item) => (
-                  <NavLink key={item.id} item={item} mobile onClick={handleMobileMenuClose} />
+                  <NavLink
+                    key={item.id}
+                    item={item}
+                    mobile
+                    onClick={handleMobileMenuClose}
+                  />
                 ))}
                 {dropdownItems.map((item) => (
-                  <NavLink key={item.id} item={item} mobile onClick={handleMobileMenuClose} />
+                  <NavLink
+                    key={item.id}
+                    item={item}
+                    mobile
+                    onClick={handleMobileMenuClose}
+                  />
                 ))}
                 <div className="px-4 py-2">
                   <AuthButton onClick={handleAuth} session={session} />
