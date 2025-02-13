@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import BackgroundEffect from "@/components/Background";
@@ -17,15 +17,13 @@ const ProfilePage = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [verificationStatus, setVerificationStatus] = useState("");
 
-  // Redirect to login if no session data
-  useEffect(() => {
-    if (!session) {
-      router.push("/"); // Redirect to login page
-    }
-  }, [session, router]);
+
 
   // Show loader while data is being fetched
   if (loading) {
+    if (!session) {
+      router.push("/"); // Redirect to login page
+    }
     return (
       <div className="flex items-center justify-center min-h-screen bg-black text-white">
         <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-500"></div>
