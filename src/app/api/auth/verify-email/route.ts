@@ -4,12 +4,12 @@ import { getServerSession } from 'next-auth/next';
 import clientPromise from '@/app/lib/mongodb';
 import crypto from 'crypto';
 import { sendVerificationEmail } from '@/app/lib/email';
-
+import { authOptions } from '../../auth/authOptions';
 
 // Generate verification token
 export async function POST() {
   try {
-    const session = await getServerSession();
+    const session = await getServerSession(authOptions);
     if (!session?.user?.email) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
