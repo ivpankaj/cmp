@@ -4,11 +4,13 @@ import { useEffect } from "react";
 import { SessionProvider, useSession } from "next-auth/react";
 import React, { ReactNode } from "react";
 
+
 interface Props {
   children: ReactNode;
 }
 
 export default function Provider({ children }: Props) {
+
   return (
     <SessionProvider>
       <AuthListener />
@@ -27,6 +29,9 @@ function AuthListener() {
     } else if (status === "unauthenticated") {
       // Clear localStorage if the user is not authenticated
       localStorage.removeItem("user");
+      
+      localStorage.removeItem("profileData")
+ 
     }
   }, [session, status]);
 

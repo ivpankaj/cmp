@@ -104,7 +104,7 @@ const Navbar: React.FC = () => {
   const handleAuth = () => {
     if (session) {
       
-      signOut();
+      signOut({ callbackUrl: "/" });
     } else {
       signIn("google");
     }

@@ -1,7 +1,6 @@
 "use client";
 import React, {  useState } from "react";
-import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
+
 import BackgroundEffect from "@/components/Background";
 import { useProfileData } from "@/hooks/useProfileData";
 import ProfileHeader from "@/components/profile comp/ProfileHeader";
@@ -10,8 +9,8 @@ import SocialLinksSection from "@/components/profile comp/SocialLinksSection";
 import Button from "@/mini component/Button";
 
 const ProfilePage = () => {
-  const router = useRouter();
-  const { data: session } = useSession();
+
+
   const { profileData, setProfileData, saveProfileData, loading } =
     useProfileData();
   const [isEditing, setIsEditing] = useState(false);
@@ -21,9 +20,7 @@ const ProfilePage = () => {
 
   // Show loader while data is being fetched
   if (loading) {
-    if (!session) {
-      router.push("/"); // Redirect to login page
-    }
+
     return (
       <div className="flex items-center justify-center min-h-screen bg-black text-white">
         <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-500"></div>
