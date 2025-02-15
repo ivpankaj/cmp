@@ -27,6 +27,7 @@ export async function GET() {
           balance: 1,
           emailVerified: 1,
           updatedAt: 1,
+          referralCode:1
         },
       }
     );

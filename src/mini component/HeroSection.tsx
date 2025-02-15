@@ -15,7 +15,7 @@ interface HeroSectionProps {
 
 const HeroSection: React.FC<HeroSectionProps> = ({ title, subtitle, buttonText1, buttonText2 }) => {
   return (
-    <div className="relative min-h-screen overflow-hidden bg-black">
+    <div className="relative min-h-screen overflow-hidden bg-black z-10">
       <BackgroundEffect />
       <div className="relative min-h-screen flex items-center justify-center px-4">
         <div className="max-w-6xl mx-auto text-center">
