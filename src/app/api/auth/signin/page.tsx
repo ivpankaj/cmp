@@ -42,10 +42,10 @@ function SignInContent() {
   const handleSignIn = async () => {
     setLoading(true);
     try {
-      const urlWithRefCode = `${callbackUrl}?ref=${refCode || ""}`;
       await signIn("google", {
-        callbackUrl: urlWithRefCode, // Append the referral code to the callback URL
-        redirect: false,
+        callbackUrl,
+        redirect: true,
+        state: refCode ? JSON.stringify({ refCode }) : undefined, // Pass refCode in state
       });
     } catch (err) {
       console.error("Sign-in error:", err);
