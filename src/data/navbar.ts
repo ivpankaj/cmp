@@ -1,4 +1,4 @@
-import { Box, Building2, Home, Layers, Lightbulb, Mail, User, Users, Wallet2 } from "lucide-react";
+import { Box, Building2, Home, IdCardIcon, Layers, Lightbulb, Mail, User, Users, Wallet2 } from "lucide-react";
 
 export const menuItems = [
     { id: "home", label: "Home", href: "/", icon: Home },
@@ -13,6 +13,7 @@ export const menuItems = [
     { id: "solutions", label: "Solutions", href: "/tool", icon: Lightbulb },
     { id: "enterprise", label: "Enterprise", href: "/developer", icon: Building2 },
     { id: "wallet", label: "Wallet", href: "/wallet", icon: Wallet2 },
+    { id: "invite", label: "Invite", href: "/invite", icon: IdCardIcon },
 
 
   ];
