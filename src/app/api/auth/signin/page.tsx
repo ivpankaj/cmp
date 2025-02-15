@@ -21,7 +21,9 @@ function SignInContent() {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/";
   const error = searchParams.get("error");
-  const refCode = searchParams.get("ref"); // Capture referral code from URL
+  const refCode = searchParams.get("ref");
+   // Capture referral code from URL
+   console.log(refCode,"asd")
   const [loading, setLoading] = useState(false);
 
   const getErrorMessage = (error: string) => {
@@ -38,13 +40,13 @@ function SignInContent() {
   };
 
   const handleSignIn = async () => {
+    console.log(refCode,"asdas")
     setLoading(true);
     try {
-      // Pass the referral code as part of the sign-in process
       await signIn("google", {
         callbackUrl,
         redirect: false,
-        refCode, // Include referral code in the sign-in payload
+        refCode, 
       });
     } catch (err) {
       console.error("Sign-in error:", err);
