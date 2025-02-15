@@ -43,6 +43,7 @@ export const authOptions: NextAuthOptions = {
             name: user.name,
             image: user.image,
             createdAt: new Date(),
+            balance: 100,
           });
         }
         
