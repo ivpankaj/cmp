@@ -8,7 +8,6 @@ const InvitePage = () => {
   const [referralCode, setReferralCode] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Fetch the user's profile (including referral code) from the API
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -17,23 +16,22 @@ const InvitePage = () => {
           throw new Error("Failed to fetch profile");
         }
         const data = await response.json();
-        setReferralCode(data.referralCode || null); // Set referral code from API response
+        setReferralCode(data.referralCode || null);
       } catch (error) {
         console.error("Error fetching profile:", error);
       } finally {
-        setLoading(false); // Stop loading after fetch completes
+        setLoading(false);
       }
     };
     fetchProfile();
   }, []);
 
-  // Generate the invite link with the referral code
   const getInviteLink = () => {
-    const baseUrl = "https://cookmypapers.vercel.app/api/auth/signin"; // Sign-in page URL
-    const callbackUrl = encodeURIComponent("https://cookmypapers.vercel.app/profile"); // Redirect after sign-in
+    const baseUrl = "https://cookmypapers.vercel.app/api/auth/signin";
+   
     return referralCode
-      ? `${baseUrl}?callbackUrl=${callbackUrl}&ref=${encodeURIComponent(referralCode)}`
-      : `${baseUrl}?callbackUrl=${callbackUrl}`;
+      ? `${baseUrl}?&ref=${encodeURIComponent(referralCode)}`
+      : `${baseUrl}?`;
   };
 
   const handleCopyLink = () => {
@@ -54,11 +52,9 @@ const InvitePage = () => {
 
   return (
     <div className="min-h-screen text-white py-20 relative overflow-hidden">
-      {/* Background Effect */}
       <BackgroundEffect />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* Invite Section */}
           <div className="p-8 rounded-xl backdrop-blur-sm bg-white/10 border border-white/20 transform hover:scale-[1.02] transition-all duration-300 shadow-lg">
             <h3 className="text-2xl font-bold mb-6 flex items-center">
               <FaLink className="mr-2 text-blue-400" /> Invite Your Friends
@@ -68,7 +64,6 @@ const InvitePage = () => {
               can join using the link below.
             </p>
             <div className="flex flex-col space-y-4">
-              {/* Display Referral Code */}
               {loading ? (
                 <p className="text-center text-gray-400">Loading...</p>
               ) : referralCode ? (
@@ -83,14 +78,12 @@ const InvitePage = () => {
                   Referral code not available.
                 </p>
               )}
-              {/* WhatsApp Button */}
               <button
                 onClick={handleWhatsAppInvite}
                 className="w-full flex items-center justify-center bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-3xl transition-all duration-300 hover:shadow-lg"
               >
                 <FaWhatsapp className="mr-2 text-xl" /> Invite via WhatsApp
               </button>
-              {/* Copy Link Button */}
               <button
                 onClick={handleCopyLink}
                 className="w-full flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-3xl transition-all duration-300 hover:shadow-lg"
@@ -107,7 +100,6 @@ const InvitePage = () => {
               </button>
             </div>
           </div>
-          {/* How It Works Section */}
           <div className="p-8 rounded-xl backdrop-blur-sm bg-white/10 border border-white/20 transform hover:scale-[1.02] transition-all duration-300 shadow-lg">
             <h3 className="text-2xl font-bold mb-6 flex items-center">
               <FaCheck className="mr-2 text-green-400" /> How It Works
@@ -128,7 +120,6 @@ const InvitePage = () => {
             </ul>
           </div>
         </div>
-        {/* Spread the Word Section */}
         <div className="p-8 rounded-xl backdrop-blur-sm bg-white/10 border border-white/20 text-center mt-10 transform hover:scale-[1.02] transition-all duration-300 shadow-lg">
           <h2 className="text-3xl font-bold mb-4 flex items-center justify-center">
             <FaCheck className="mr-2 text-green-400" /> Spread the Word!

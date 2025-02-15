@@ -42,8 +42,6 @@ export const authOptions: NextAuthOptions = {
         const mongoClient = await clientPromise;
         const db = mongoClient.db(process.env.MONGODB_DB_NAME);
         const usersCollection = db.collection("users");
-
-        // Check if user already exists
         const existingUser = await usersCollection.findOne({ email: user.email });
 
         if (!existingUser) {
