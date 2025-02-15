@@ -18,6 +18,13 @@ export const authOptions: NextAuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      authorization: {
+        params: {
+          prompt: "consent", // Force the consent screen to appear
+          access_type: "offline", // Request refresh token
+          scope: "openid email profile", // Required scopes
+        },
+      },
     }),
   ],
   adapter: MongoDBAdapter(clientPromise),
