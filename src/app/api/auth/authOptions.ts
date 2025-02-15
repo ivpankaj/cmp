@@ -47,8 +47,11 @@ export const authOptions: NextAuthOptions = {
         const existingUser = await usersCollection.findOne({ email: user.email });
   
         if (!existingUser) {
-          // New user, check for referral code
-          const referralCode = account?.providerAccountId; // Assuming referral code is passed here
+          // Extract referral code from the callback URL
+          const callbackUrl = account?.callbackUrl as string; // Get the callback URL
+          const urlParams = new URL(callbackUrl).searchParams;
+          const referralCode = urlParams.get("ref"); // Extract the 'ref' parameter
+  
           let bonusCredits = 0;
   
           if (referralCode) {

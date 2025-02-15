@@ -13,8 +13,8 @@ const SocialLinksSection: React.FC<SocialLinksSectionProps> = ({
   isEditing,
   setProfileData,
 }) => {
-  console.log("Social Links", isEditing);
-  console.log("Social Links Data:", profileData.social);
+  // console.log("Social Links", isEditing);
+  // console.log("Social Links Data:", profileData.social);
 
   return (
     <div>
