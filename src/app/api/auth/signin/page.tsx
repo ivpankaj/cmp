@@ -2,15 +2,16 @@
 import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import BackgroundEffect from "@/components/Background";
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 
 export default function SignIn() {
   return (
     <div className="min-h-screen bg-black text-white relative overflow-hidden">
-      {/* Background elements */}
       <BackgroundEffect />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <SignInContent />
+        <Suspense fallback={<div>Loading...</div>}>
+          <SignInContent />
+        </Suspense>
       </div>
     </div>
   );
