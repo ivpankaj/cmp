@@ -1,13 +1,11 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextRequest, NextResponse } from 'next/server';
 import clientPromise from "@/app/lib/mongodb";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ message: 'Method not allowed' });
-  }
-
+export async function POST(request: NextRequest) {
   try {
-    const { referralCode } = req.body;
+    const body = await request.json();
+    const { referralCode } = body;
+
     const mongoClient = await clientPromise;
     const db = mongoClient.db(process.env.MONGODB_DB_NAME);
     const usersCollection = db.collection("users");
@@ -20,12 +18,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         { referralCode },
         { $inc: { balance: 100 } }
       );
-      return res.status(200).json({ valid: true });
+      return NextResponse.json({ valid: true }, { status: 200 });
     }
 
-    return res.status(200).json({ valid: false });
+    return NextResponse.json({ valid: false }, { status: 200 });
   } catch (error) {
     console.error('Error verifying referral:', error);
-    return res.status(500).json({ message: 'Internal server error' });
+    return NextResponse.json(
+      { message: 'Internal server error' }, 
+      { status: 500 }
+    );
   }
 }
