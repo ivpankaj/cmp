@@ -20,7 +20,8 @@ const QuickLinks: React.FC = () => {
           <li key={item} className="flex items-center space-x-2">
             <FaChevronRight className="text-gray-400" />
             <a
-              href={`/${item.toLowerCase().replace(/ /g, "")}`}
+           href={`/${item.toLowerCase().replace(/ /g, "") === "home" ? "" : item.toLowerCase().replace(/ /g, "")}`}
+
               className="text-gray-300 hover:text-white transition-colors duration-300"
             >
               {item}
