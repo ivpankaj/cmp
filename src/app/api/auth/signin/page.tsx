@@ -22,8 +22,6 @@ function SignInContent() {
   const callbackUrl = searchParams.get("callbackUrl") || "/";
   const error = searchParams.get("error");
   const refCode = searchParams.get("ref");
-   // Capture referral code from URL
-   console.log(refCode,"asd")
   const [loading, setLoading] = useState(false);
 
   const getErrorMessage = (error: string) => {
@@ -42,10 +40,14 @@ function SignInContent() {
   const handleSignIn = async () => {
     setLoading(true);
     try {
+      // Store refCode in sessionStorage before initiating sign in
+      if (refCode) {
+        sessionStorage.setItem('referralCode', refCode);
+      }
+      
       await signIn("google", {
         callbackUrl,
-        redirect: true,
-        state: refCode ? JSON.stringify({ refCode }) : undefined, // Pass refCode in state
+        redirect: true
       });
     } catch (err) {
       console.error("Sign-in error:", err);
@@ -53,7 +55,7 @@ function SignInContent() {
       setLoading(false);
     }
   };
-
+  
   return (
     <div className="flex items-center justify-center min-h-screen z-10">
       <div className="max-w-md w-full space-y-8 p-8 rounded-xl backdrop-blur-sm bg-white/10 border border-white/20 transform hover:scale-105 transition-all duration-300">

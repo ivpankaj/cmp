@@ -37,36 +37,42 @@ export const authOptions: NextAuthOptions = {
       }
       return token;
     },
-    async signIn({ user, account }) {
+    async signIn({ user }) {
       try {
         const mongoClient = await clientPromise;
         const db = mongoClient.db(process.env.MONGODB_DB_NAME);
         const usersCollection = db.collection("users");
 
+        // Check if user already exists
         const existingUser = await usersCollection.findOne({ email: user.email });
 
         if (!existingUser) {
-          // Parse the state to get refCode
-          let refCode;
-          if (account?.state) {
-            try {
-              const state = typeof account.state === 'string' ? JSON.parse(account.state) : {};
-              refCode = state.refCode;
-            } catch (e) {
-              console.error("Error parsing state:", e);
-            }
-          }
-
           let bonusCredits = 0;
-          if (refCode) {
-            const referrer = await usersCollection.findOne({ referralCode: refCode });
+          
+          // Create an API route to handle referral code verification
+          const verifyReferralCode = async (code: string) => {
+            const referrer = await usersCollection.findOne({ referralCode: code });
             if (referrer) {
-              bonusCredits = 200;
               // Update referrer's balance
               await usersCollection.updateOne(
-                { referralCode: refCode },
-                { $inc: { balance: 100 } } // Give referrer 100 credits
+                { referralCode: code },
+                { $inc: { balance: 100 } }
               );
+              return true;
+            }
+            return false;
+          };
+
+          // Try to get referral code from session storage
+          if (typeof window !== 'undefined') {
+            const refCode = sessionStorage.getItem('referralCode');
+            if (refCode) {
+              const isValidReferral = await verifyReferralCode(refCode);
+              if (isValidReferral) {
+                bonusCredits = 200;
+              }
+              // Clear the referral code from session storage
+              sessionStorage.removeItem('referralCode');
             }
           }
 
@@ -76,9 +82,12 @@ export const authOptions: NextAuthOptions = {
             name: user.name,
             image: user.image,
             createdAt: new Date(),
-            balance: 100 + bonusCredits,
+            balance: 100 + bonusCredits, // Base 100 + potential 200 bonus
             referralCode: generateReferralCode(user.name || "User"),
           });
+
+          // Log the creation for debugging
+          console.log(`Created new user with balance: ${100 + bonusCredits}`);
         }
 
         return true;
