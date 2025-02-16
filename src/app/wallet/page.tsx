@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import BackgroundEffect from "@/components/Background";
 import Button from "@/mini component/Button";
 import { toast } from "sonner"; // Assuming you're using Sonner for notifications
-import BalanceDisplay from "@/components/Balance";
+
 
 interface Transaction {
   type: string;
@@ -130,7 +130,7 @@ const WalletPage = () => {
               />
             </div>
           </div>
-<BalanceDisplay/>
+
           {/* Transaction History Card */}
           <div className="p-8 rounded-xl backdrop-blur-sm bg-white/10 border border-white/20 transform hover:scale-105 transition-all duration-300">
             <h3 className="text-2xl font-bold mb-6">Transaction History</h3>

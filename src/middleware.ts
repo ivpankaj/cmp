@@ -14,5 +14,5 @@ export default withAuth(
 );
 
 export const config = {
-  matcher: ["/profile", "/wallet","/protected/:path*"]
+  matcher: ["/profile", "/wallet","/invite"]
 };

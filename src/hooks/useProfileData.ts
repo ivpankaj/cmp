@@ -6,7 +6,6 @@ interface Skill {
   name: string;
   level: number;
 }
-
 interface ProfileData {
   name: string;
   bio: string;
@@ -17,29 +16,43 @@ interface ProfileData {
 }
 
 export const useProfileData = () => {
-  const [profileData, setProfileData] = useState<ProfileData | null>(null); // Nullable to handle no session case
+  const [profileData, setProfileData] = useState<ProfileData | null>(null);
   const [loading, setLoading] = useState(true);
-  const { data: session, status } = useSession(); // Use `status` to track session loading
+  const { data: session, status } = useSession();
+
+  // Check if the page was refreshed
+  const isPageRefreshed = typeof window !== "undefined" && performance.navigation.type === 1;
 
   useEffect(() => {
     const loadProfileData = async () => {
       try {
         setLoading(true);
 
-        // Check if the session is loading or the user is not logged in
+        // Check if session is still loading
         if (status === "loading") {
           console.log("Session is still loading...");
           return;
         }
 
+        // If user is not logged in, clear profile data
         if (!session?.user?.email) {
           console.error("User not logged in.");
-          setProfileData(null); // Clear profile data if user is not logged in
+          setProfileData(null);
           setLoading(false);
           return;
         }
 
-        // Fetch data from the backend on every page refresh
+        // Try to get profile data from localStorage
+        const cachedProfileData = localStorage.getItem("profileData");
+        if (cachedProfileData && !isPageRefreshed) {
+          console.log("Loading profile data from localStorage...");
+          setProfileData(JSON.parse(cachedProfileData));
+          setLoading(false);
+          return;
+        }
+
+        // Fetch profile data from the backend
+        console.log("Fetching profile data from the backend...");
         const response = await fetch("/api/profile/get", {
           method: "GET",
           headers: { "Content-Type": "application/json" },
@@ -47,22 +60,24 @@ export const useProfileData = () => {
 
         if (response.ok) {
           const data = await response.json();
-          setProfileData(data); // Update state with fetched data
+          setProfileData(data);
+
+          // Store the fetched data in localStorage
+          localStorage.setItem("profileData", JSON.stringify(data));
         } else {
           console.error("Failed to fetch profile data from the database.");
-          setProfileData(null); // Clear profile data on fetch failure
+          setProfileData(null);
         }
       } catch (error) {
         console.error("Error loading profile data:", error);
-        setProfileData(null); // Clear profile data on error
+        setProfileData(null);
       } finally {
         setLoading(false);
       }
     };
 
-    // Call the loadProfileData function on component mount
     loadProfileData();
-  }, [session, status]); // Add `status` as a dependency to handle session changes
+  }, [session, status, isPageRefreshed]);
 
   const saveProfileData = async (data: ProfileData) => {
     try {
@@ -73,7 +88,10 @@ export const useProfileData = () => {
       });
 
       if (response.ok) {
-        setProfileData(data); // Update state with the latest data
+        setProfileData(data);
+
+        // Update the profile data in localStorage
+        localStorage.setItem("profileData", JSON.stringify(data));
       } else {
         throw new Error("Failed to save profile data");
       }

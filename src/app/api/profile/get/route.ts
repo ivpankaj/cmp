@@ -23,8 +23,10 @@ export async function GET() {
         projection: {
           _id: 0,
           email: 1,
+          bio:1,
           name: 1,
           balance: 1,
+          social:1,
           emailVerified: 1,
           updatedAt: 1,
           referralCode:1
