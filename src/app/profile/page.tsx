@@ -1,5 +1,5 @@
 "use client";
-import React, {  useState } from "react";
+import React, { useState } from "react";
 
 import BackgroundEffect from "@/components/Background";
 import { useProfileData } from "@/hooks/useProfileData";
@@ -9,16 +9,10 @@ import SocialLinksSection from "@/components/profile comp/SocialLinksSection";
 import Button from "@/mini component/Button";
 
 const ProfilePage = () => {
-
-
   const { profileData, setProfileData, saveProfileData, loading } =
     useProfileData();
   const [isEditing, setIsEditing] = useState(false);
   const [verificationStatus, setVerificationStatus] = useState("");
-
-
-
-  // Show loader while data is being fetched
   if (loading) {
 
     return (
@@ -27,13 +21,11 @@ const ProfilePage = () => {
       </div>
     );
   }
-
-  // If session exists but profileData is still null, show an error
   if (!profileData) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-black text-white">
-        <p>Failed to load profile data. Please try again later.</p>
-      </div>
+      <div className="flex items-center justify-center min-h-screen bg-black text-white">
+      <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-500"></div>
+    </div>
     );
   }
 
@@ -85,7 +77,6 @@ const ProfilePage = () => {
             isEditing={isEditing}
             setProfileData={setProfileData}
           />
-
           <SocialLinksSection
             profileData={profileData}
             isEditing={isEditing}

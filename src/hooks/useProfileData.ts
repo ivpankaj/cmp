@@ -16,96 +16,53 @@ interface ProfileData {
   emailVerified: boolean;
 }
 
-const CACHE_EXPIRATION_TIME = 60 * 60 * 1000; // 1 hour
-
 export const useProfileData = () => {
-  const [profileData, setProfileData] = useState<ProfileData>({
-    name: "",
-    bio: "",
-    skills: [],
-    projects: [],
-    social: { linkedin: "", github: "", twitter: "" },
-    emailVerified: false,
-  });
+  const [profileData, setProfileData] = useState<ProfileData | null>(null); // Nullable to handle no session case
   const [loading, setLoading] = useState(true);
-  const { data: session } = useSession();
+  const { data: session, status } = useSession(); // Use `status` to track session loading
 
   useEffect(() => {
     const loadProfileData = async () => {
       try {
-        // Check if the app has just been refreshed
-        const isPageRefresh = sessionStorage.getItem("isPageRefresh");
-        if (!isPageRefresh) {
-          // If no flag exists, it's a page refresh
-          sessionStorage.setItem("isPageRefresh", "true");
+        setLoading(true);
 
-          // Fetch data from the backend on page refresh
-          if (session?.user?.email) {
-            const response = await fetch("/api/profile/get", {
-              method: "GET",
-              headers: { "Content-Type": "application/json" },
-            });
+        // Check if the session is loading or the user is not logged in
+        if (status === "loading") {
+          console.log("Session is still loading...");
+          return;
+        }
 
-            if (response.ok) {
-              const data = await response.json();
+        if (!session?.user?.email) {
+          console.error("User not logged in.");
+          setProfileData(null); // Clear profile data if user is not logged in
+          setLoading(false);
+          return;
+        }
 
-              // Update localStorage with the latest data from the backend
-              const cachedData = {
-                data,
-                timestamp: new Date().getTime(),
-              };
-              localStorage.setItem("profileData", JSON.stringify(cachedData));
+        // Fetch data from the backend on every page refresh
+        const response = await fetch("/api/profile/get", {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        });
 
-              // Update the state with the latest data
-              setProfileData(data);
-            } else {
-              console.error("Failed to fetch profile data from the database.");
-            }
-          }
+        if (response.ok) {
+          const data = await response.json();
+          setProfileData(data); // Update state with fetched data
         } else {
-          // If the flag exists, it's navigation between pages
-          const cachedData = localStorage.getItem("profileData");
-          if (cachedData) {
-            const parsedData = JSON.parse(cachedData);
-            const currentTime = new Date().getTime();
-            if (currentTime - parsedData.timestamp < CACHE_EXPIRATION_TIME) {
-              setProfileData(parsedData.data);
-              setLoading(false);
-              return;
-            }
-          }
-
-          // If cache is expired or missing, fetch from the backend
-          if (session?.user?.email) {
-            const response = await fetch("/api/profile/get", {
-              method: "GET",
-              headers: { "Content-Type": "application/json" },
-            });
-
-            if (response.ok) {
-              const data = await response.json();
-
-              // Update localStorage with the latest data from the backend
-              const cachedData = {
-                data,
-                timestamp: new Date().getTime(),
-              };
-              localStorage.setItem("profileData", JSON.stringify(cachedData));
-
-              // Update the state with the latest data
-              setProfileData(data);
-            }
-          }
+          console.error("Failed to fetch profile data from the database.");
+          setProfileData(null); // Clear profile data on fetch failure
         }
       } catch (error) {
         console.error("Error loading profile data:", error);
+        setProfileData(null); // Clear profile data on error
       } finally {
         setLoading(false);
       }
     };
 
+    // Call the loadProfileData function on component mount
     loadProfileData();
-  }, [session]);
+  }, [session, status]); // Add `status` as a dependency to handle session changes
 
   const saveProfileData = async (data: ProfileData) => {
     try {
@@ -116,15 +73,7 @@ export const useProfileData = () => {
       });
 
       if (response.ok) {
-        // Update the state with the latest data
-        setProfileData(data);
-
-        // Update localStorage with the latest data after saving
-        const cachedData = {
-          data,
-          timestamp: new Date().getTime(),
-        };
-        localStorage.setItem("profileData", JSON.stringify(cachedData));
+        setProfileData(data); // Update state with the latest data
       } else {
         throw new Error("Failed to save profile data");
       }
