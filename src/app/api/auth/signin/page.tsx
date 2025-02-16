@@ -40,14 +40,13 @@ function SignInContent() {
   const handleSignIn = async () => {
     setLoading(true);
     try {
-      // Store refCode in sessionStorage before initiating sign in
-      if (refCode) {
-        sessionStorage.setItem('referralCode', refCode);
-      }
+      // Pass referral code through state parameter
+      const stateData = refCode ? { referralCode: refCode } : undefined;
       
       await signIn("google", {
         callbackUrl,
-        redirect: true
+        redirect: true,
+        state: stateData ? JSON.stringify(stateData) : undefined
       });
     } catch (err) {
       console.error("Sign-in error:", err);

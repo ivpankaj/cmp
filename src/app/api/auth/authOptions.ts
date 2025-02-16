@@ -25,6 +25,73 @@ export const authOptions: NextAuthOptions = {
     strategy: "jwt",
   },
   callbacks: {
+    async signIn({ user, account }) {
+      try {
+        const mongoClient = await clientPromise;
+        const db = mongoClient.db(process.env.MONGODB_DB_NAME);
+        const usersCollection = db.collection("users");
+
+        // Find existing user
+        const existingUser = await usersCollection.findOne({
+          email: { $regex: new RegExp(`^${user.email}$`, 'i') }
+        });
+
+        if (!existingUser) {
+          let initialBalance = 100; // Base balance
+          let referrerCode = null;
+
+          // Get referral code from URL params in the cookies
+          if (account?.state) {
+            try {
+              const stateData = JSON.parse(account.state as string);
+              referrerCode = stateData.referralCode;
+              console.log("Processing referral code:", referrerCode);
+            } catch (e) {
+              console.error("Error parsing state:", e);
+            }
+          }
+
+          if (referrerCode) {
+            // Find and update referrer
+            const referrerUpdate = await usersCollection.findOneAndUpdate(
+              { referralCode: referrerCode },
+              { $inc: { balance: 100 } },
+              { returnDocument: 'after' }
+            );
+
+            if (referrerUpdate.value) {
+              initialBalance += 200; // Add referral bonus
+              console.log(`Applied referral bonus. New balance: ${initialBalance}`);
+            }
+          }
+
+          // Create new user with transaction
+          const session = mongoClient.startSession();
+          try {
+            await session.withTransaction(async () => {
+              const newUser = {
+                email: user.email,
+                name: user.name,
+                image: user.image,
+                createdAt: new Date(),
+                balance: initialBalance,
+                referralCode: generateReferralCode(user.name || "User"),
+              };
+
+              await usersCollection.insertOne(newUser, { session });
+              console.log(`Created new user with balance: ${initialBalance}`);
+            });
+          } finally {
+            await session.endSession();
+          }
+        }
+
+        return true;
+      } catch (error) {
+        console.error("Error in signIn callback:", error);
+        return false;
+      }
+    },
     async session({ session, token }) {
       if (session?.user) {
         session.user.id = token.sub as string;
@@ -36,64 +103,7 @@ export const authOptions: NextAuthOptions = {
         token.id = user.id;
       }
       return token;
-    },
-    async signIn({ user }) {
-      try {
-        const mongoClient = await clientPromise;
-        const db = mongoClient.db(process.env.MONGODB_DB_NAME);
-        const usersCollection = db.collection("users");
-        const existingUser = await usersCollection.findOne({ email: user.email });
-
-        if (!existingUser) {
-          let bonusCredits = 0;
-          
-          // Create an API route to handle referral code verification
-          const verifyReferralCode = async (code: string) => {
-            const referrer = await usersCollection.findOne({ referralCode: code });
-            if (referrer) {
-              // Update referrer's balance
-              await usersCollection.updateOne(
-                { referralCode: code },
-                { $inc: { balance: 100 } }
-              );
-              return true;
-            }
-            return false;
-          };
-
-          // Try to get referral code from session storage
-          if (typeof window !== 'undefined') {
-            const refCode = sessionStorage.getItem('referralCode');
-            if (refCode) {
-              const isValidReferral = await verifyReferralCode(refCode);
-              if (isValidReferral) {
-                bonusCredits = 200;
-              }
-              // Clear the referral code from session storage
-              sessionStorage.removeItem('referralCode');
-            }
-          }
-
-          // Create new user with initial balance + bonus credits
-          await usersCollection.insertOne({
-            email: user.email,
-            name: user.name,
-            image: user.image,
-            createdAt: new Date(),
-            balance: 100 + bonusCredits, // Base 100 + potential 200 bonus
-            referralCode: generateReferralCode(user.name || "User"),
-          });
-
-          // Log the creation for debugging
-          console.log(`Created new user with balance: ${100 + bonusCredits}`);
-        }
-
-        return true;
-      } catch (error) {
-        console.error("Error in signIn callback:", error);
-        return false;
-      }
-    },
+    }
   },
   pages: {
     signIn: "/auth/signin",

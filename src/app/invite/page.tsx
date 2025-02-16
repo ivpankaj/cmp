@@ -3,12 +3,17 @@ import BackgroundEffect from "@/components/Background";
 import React, { useState, useEffect } from "react";
 import { FaWhatsapp, FaLink, FaCheck } from "react-icons/fa"; // Importing icons
 
+const main = process.env.NEXT_PUBLIC_URL
+
 const InvitePage = () => {
+
+  console.log(main,"sad")
   const [copied, setCopied] = useState(false);
   const [referralCode, setReferralCode] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+
     const fetchProfile = async () => {
       try {
         const response = await fetch("/api/profile/get");
@@ -27,7 +32,7 @@ const InvitePage = () => {
   }, []);
 
   const getInviteLink = () => {
-    const baseUrl = "https://cookmypapers.vercel.app/api/auth/signin";
+    const baseUrl = `${main}/api/auth/signin`;
    
     return referralCode
       ? `${baseUrl}?&ref=${encodeURIComponent(referralCode)}`
