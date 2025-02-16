@@ -3,7 +3,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { useSession, signIn, signOut } from "next-auth/react";
 import type { Session } from "next-auth";
-import { Menu, X, ChevronDown, User } from "lucide-react";
+import { Menu, X, ChevronDown, User, Loader2 } from "lucide-react";
 import { usePathname } from "next/navigation";
 import logo from "../app/favicon.ico";
 import { dropdownItems, menuItems } from "@/data/navbar";
@@ -66,27 +66,52 @@ const NavLink: React.FC<{
 const AuthButton: React.FC<{
   onClick: () => void;
   session: Session | null;
-}> = ({ onClick, session }) => (
-  <button
-    onClick={onClick}
-    className="relative group overflow-hidden bg-white/10 backdrop-blur-sm text-white px-6 py-2.5 rounded-xl font-medium transform transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-white/20"
-  >
-    <div className="absolute inset-0 w-full h-full transition-all duration-300 group-hover:bg-gradient-to-r from-white/20 to-transparent" />
-    <div className="relative flex items-center space-x-2">
-      <User className="h-4 w-4 transform transition-all duration-300 group-hover:rotate-12" />
-      <span>{session ? "Sign Out" : "Sign in with Google"}</span>
-    </div>
-  </button>
-);
+  isLoading: boolean;
+  status: "loading" | "authenticated" | "unauthenticated";
+}> = ({ onClick, session, isLoading, status }) => {
+  // Don't show button content until we know the session status
+  if (status === "loading") {
+    return (
+      <button
+        disabled
+        className="relative group overflow-hidden bg-white/10 backdrop-blur-sm text-white px-6 py-2.5 rounded-xl font-medium transform transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        <div className="relative flex items-center space-x-2">
+          <Loader2 className="h-4 w-4 animate-spin" />
+          <span>Loading...</span>
+        </div>
+      </button>
+    );
+  }
+
+  return (
+    <button
+      onClick={onClick}
+      disabled={isLoading}
+      className="relative group overflow-hidden bg-white/10 backdrop-blur-sm text-white px-6 py-2.5 rounded-xl font-medium transform transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-white/20 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:shadow-none"
+    >
+      <div className="absolute inset-0 w-full h-full transition-all duration-300 group-hover:bg-gradient-to-r from-white/20 to-transparent" />
+      <div className="relative flex items-center space-x-2">
+        {isLoading ? (
+          <Loader2 className="h-4 w-4 animate-spin" />
+        ) : (
+          <User className="h-4 w-4 transform transition-all duration-300 group-hover:rotate-12" />
+        )}
+        <span>{isLoading ? "Loading..." : session ? "Sign Out" : "Sign in with Google"}</span>
+      </div>
+    </button>
+  );
+};
+
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const { data: session } = useSession();
+  const [isAuthLoading, setIsAuthLoading] = useState(false);
+  const { data: session, status } = useSession();
   const pathname = usePathname();
 
-  // Close mobile menu when pathname changes
   useEffect(() => {
     setIsOpen(false);
     setIsDropdownOpen(false);
@@ -101,14 +126,24 @@ const Navbar: React.FC = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
 
-  const handleAuth = () => {
-    if (session) {
-      
-      signOut({ callbackUrl: "/" });
-    } else {
-      signIn("google");
+  const handleAuth = async () => {
+    setIsAuthLoading(true);
+    try {
+      if (session) {
+        await signOut({ callbackUrl: "/" });
+      } else {
+        await signIn("google");
+      }
+    } catch (error) {
+      console.error("Authentication error:", error);
     }
   };
+
+  useEffect(() => {
+    if (status !== "loading") {
+      setIsAuthLoading(false);
+    }
+  }, [status]);
 
   const handleMobileMenuClose = () => {
     setIsOpen(false);
@@ -181,7 +216,12 @@ const Navbar: React.FC = () => {
               {/* Desktop Auth Button */}
               <div className="flex items-center space-x-2">
                 {session && <UserProfile session={session} />}
-                <AuthButton onClick={handleAuth} session={session} />
+                <AuthButton 
+                  onClick={handleAuth} 
+                  session={session} 
+                  isLoading={isAuthLoading} 
+                  status={status}
+                />
               </div>
             </div>
 
@@ -220,14 +260,18 @@ const Navbar: React.FC = () => {
                   />
                 ))}
                 <div className="px-4 py-2">
-                  <AuthButton onClick={handleAuth} session={session} />
+                  <AuthButton 
+                    onClick={handleAuth} 
+                    session={session} 
+                    isLoading={isAuthLoading} 
+                    status={status}
+                  />
                 </div>
               </div>
             </div>
           )}
         </div>
       </nav>
-      {/* Spacer div to prevent content from being hidden under fixed navbar */}
       <div className="h-16 lg:h-20" />
     </>
   );
