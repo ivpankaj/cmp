@@ -1,6 +1,5 @@
 "use client";
 import React, { useState } from "react";
-
 import BackgroundEffect from "@/components/Background";
 import { useProfileData } from "@/hooks/useProfileData";
 import ProfileHeader from "@/components/profile comp/ProfileHeader";
@@ -13,24 +12,27 @@ const ProfilePage = () => {
     useProfileData();
   const [isEditing, setIsEditing] = useState(false);
   const [verificationStatus, setVerificationStatus] = useState("");
-  if (loading) {
+  const [isSaving, setIsSaving] = useState(false); // New state for tracking save operation
 
+  if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-black text-white">
         <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-500"></div>
       </div>
     );
   }
+
   if (!profileData) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-black text-white">
-      <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-500"></div>
-    </div>
+        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-500"></div>
+      </div>
     );
   }
 
   const handleSave = async () => {
     try {
+      setIsSaving(true); // Start saving process
       if (profileData) {
         await saveProfileData(profileData);
       } else {
@@ -39,6 +41,8 @@ const ProfilePage = () => {
       setIsEditing(false);
     } catch (error) {
       console.error("Error saving profile:", error);
+    } finally {
+      setIsSaving(false); // End saving process regardless of success or failure
     }
   };
 
@@ -84,7 +88,12 @@ const ProfilePage = () => {
           />
           {isEditing && (
             <div className="flex justify-end mt-4">
-              <Button text="Save" onClick={handleSave} />
+              <Button
+                text={isSaving ? "Saving..." : "Save"} // Change button text based on saving state
+                onClick={handleSave}
+                disabled={isSaving} // Disable button when saving
+                className={isSaving ? "opacity-50 cursor-not-allowed" : ""} // Optional: Add styles for disabled state
+              />
             </div>
           )}
         </div>
