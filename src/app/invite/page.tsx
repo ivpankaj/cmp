@@ -1,39 +1,32 @@
 "use client";
 import BackgroundEffect from "@/components/Background";
 import React, { useState, useEffect } from "react";
-import { FaWhatsapp, FaLink, FaCheck } from "react-icons/fa"; // Importing icons
+import { FaWhatsapp, FaLink, FaCheck } from "react-icons/fa";
 
-const main = process.env.NEXT_PUBLIC_URL
+const main = process.env.NEXT_PUBLIC_URL || 'http://localhost:3000';
 
 const InvitePage = () => {
-
-  console.log(main,"sad")
   const [copied, setCopied] = useState(false);
-  const [referralCode, setReferralCode] = useState<string | null>(null);
+  const [referralCode, setReferralCode] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isClient, setIsClient] = useState(false);
 
+  // Use useEffect to mark when component is mounted on client
   useEffect(() => {
-
-    const fetchProfile = async () => {
-      try {
-        const response = await fetch("/api/profile/get");
-        if (!response.ok) {
-          throw new Error("Failed to fetch profile");
-        }
-        const data = await response.json();
-        setReferralCode(data.referralCode || null);
-      } catch (error) {
-        console.error("Error fetching profile:", error);
-      } finally {
-        setLoading(false);
+    setIsClient(true);
+    try {
+      const cachedReferralCode = localStorage.getItem("referralCode");
+      if (cachedReferralCode) {
+        setReferralCode(JSON.parse(cachedReferralCode));
       }
-    };
-    fetchProfile();
+    } catch (error) {
+      console.error("Error fetching referral code:", error);
+    }
+    setLoading(false);
   }, []);
 
   const getInviteLink = () => {
     const baseUrl = `${main}/api/auth/signin`;
-   
     return referralCode
       ? `${baseUrl}?&ref=${encodeURIComponent(referralCode)}`
       : `${baseUrl}?`;
@@ -55,6 +48,24 @@ const InvitePage = () => {
     window.open(`https://wa.me/?text=${message}${inviteLink}`, "_blank");
   };
 
+  // Render loading state during SSR
+  if (!isClient) {
+    return (
+      <div className="min-h-screen text-white py-20 relative overflow-hidden">
+        <BackgroundEffect />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="p-8 rounded-xl backdrop-blur-sm bg-white/10 border border-white/20 transform hover:scale-[1.02] transition-all duration-300 shadow-lg">
+              <h3 className="text-2xl font-bold mb-6 flex items-center">
+                <FaLink className="mr-2 text-blue-400" /> Loading...
+              </h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen text-white py-20 relative overflow-hidden">
       <BackgroundEffect />
@@ -70,7 +81,9 @@ const InvitePage = () => {
             </p>
             <div className="flex flex-col space-y-4">
               {loading ? (
-                <p className="text-center text-gray-400">Loading...</p>
+                <div className="p-8 rounded-xl backdrop-blur-sm bg-white/10 border border-white/20 transform hover:scale-[1.02] transition-all duration-300 shadow-lg text-center">
+                  <p className="text-gray-400">Loading...</p>
+                </div>
               ) : referralCode ? (
                 <div className="p-8 rounded-xl backdrop-blur-sm bg-white/10 border border-white/20 transform hover:scale-[1.02] transition-all duration-300 shadow-lg text-center">
                   <p className="text-lg font-bold">
@@ -79,9 +92,11 @@ const InvitePage = () => {
                   </p>
                 </div>
               ) : (
-                <p className="text-center text-red-400">
-                  Referral code not available.
-                </p>
+                <div className="p-8 rounded-xl backdrop-blur-sm bg-white/10 border border-white/20 transform hover:scale-[1.02] transition-all duration-300 shadow-lg text-center">
+                  <p className="text-red-400">
+                    Referral code not available.
+                  </p>
+                </div>
               )}
               <button
                 onClick={handleWhatsAppInvite}
