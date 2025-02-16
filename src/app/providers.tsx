@@ -1,39 +1,29 @@
-"use client"; // Mark this as a Client Component
+// app/providers.tsx
+'use client';
 
-import { useEffect } from "react";
-import { SessionProvider, useSession } from "next-auth/react";
-import React, { ReactNode } from "react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { SessionProvider } from "next-auth/react";
+import { useState } from "react";
+import { UserProvider } from "./context/user-context";
 
-
-interface Props {
-  children: ReactNode;
-}
-
-export default function Provider({ children }: Props) {
+export function Providers({ children }: { children: React.ReactNode }) {
+  const [queryClient] = useState(() => new QueryClient({
+    defaultOptions: {
+      queries: {
+        refetchOnWindowFocus: false,
+        retry: 1,
+        staleTime: 1000 * 60 * 5, // 5 minutes
+      },
+    },
+  }));
 
   return (
-    <SessionProvider>
-      <AuthListener />
-      {children}
-    </SessionProvider>
+    <QueryClientProvider client={queryClient}>
+      <SessionProvider>
+        <UserProvider>
+          {children}
+        </UserProvider>
+      </SessionProvider>
+    </QueryClientProvider>
   );
-}
-
-function AuthListener() {
-  const { data: session, status } = useSession();
-
-  useEffect(() => {
-    if (status === "authenticated" && session?.user) {
-      // Store user data in localStorage
-      localStorage.setItem("user", JSON.stringify(session.user));
-    } else if (status === "unauthenticated") {
-      // Clear localStorage if the user is not authenticated
-      localStorage.removeItem("user");
-      
-      localStorage.removeItem("profileData")
- 
-    }
-  }, [session, status]);
-
-  return null;
 }

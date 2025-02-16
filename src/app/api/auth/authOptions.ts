@@ -1,7 +1,27 @@
 import GoogleProvider from "next-auth/providers/google";
 import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
 import clientPromise from "@/app/lib/mongodb";
-import { NextAuthOptions } from "next-auth";
+import { NextAuthOptions, User as NextAuthUser, DefaultSession } from "next-auth";
+
+declare module "next-auth" {
+  interface CustomUser extends NextAuthUser {
+    referralCode?: string;
+    createdAt?: Date;
+    balance?: number;
+  }
+
+  interface Session extends DefaultSession {
+    user: {
+      id: string;
+      email: string;
+      name: string;
+      image: string;
+      referralCode?: string;
+      createdAt?: Date;
+      balance?: number;
+    } & CustomUser;
+  }
+}
 
 function generateReferralCode(name: string): string {
   const randomNumber = Math.floor(1000 + Math.random() * 9000);
@@ -30,17 +50,14 @@ export const authOptions: NextAuthOptions = {
         const mongoClient = await clientPromise;
         const db = mongoClient.db(process.env.MONGODB_DB_NAME);
         const usersCollection = db.collection("users");
-
-        // Find existing user
         const existingUser = await usersCollection.findOne({
           email: { $regex: new RegExp(`^${user.email}$`, 'i') }
         });
 
         if (!existingUser) {
-          let initialBalance = 100; // Base balance
+          let initialBalance = 100; 
           let referrerCode = null;
 
-          // Get referral code from URL params in the cookies
           if (account?.state) {
             try {
               const stateData = JSON.parse(account.state as string);
@@ -52,7 +69,6 @@ export const authOptions: NextAuthOptions = {
           }
 
           if (referrerCode) {
-            // Find and update referrer
             const referrerUpdate = await usersCollection.findOneAndUpdate(
               { referralCode: referrerCode },
               { $inc: { balance: 100 } },
@@ -60,12 +76,11 @@ export const authOptions: NextAuthOptions = {
             );
 
             if (referrerUpdate.value) {
-              initialBalance += 200; // Add referral bonus
+              initialBalance += 200; 
               console.log(`Applied referral bonus. New balance: ${initialBalance}`);
             }
           }
 
-          // Create new user with transaction
           const session = mongoClient.startSession();
           try {
             await session.withTransaction(async () => {
@@ -77,7 +92,6 @@ export const authOptions: NextAuthOptions = {
                 balance: initialBalance,
                 referralCode: generateReferralCode(user.name || "User"),
               };
-
               await usersCollection.insertOne(newUser, { session });
               console.log(`Created new user with balance: ${initialBalance}`);
             });
@@ -93,15 +107,40 @@ export const authOptions: NextAuthOptions = {
       }
     },
     async session({ session, token }) {
+      // Add custom fields to the session
       if (session?.user) {
         session.user.id = token.sub as string;
+        session.user.email = token.email as string;
+        session.user.name = token.name as string;
+        session.user.image = token.picture as string;
+        
+        // Fix: Use optional chaining and provide default values
+        session.user.referralCode = token.referralCode as string || "";
+        session.user.createdAt = token.createdAt ? new Date(token.createdAt as string) : undefined;
+        session.user.balance = (token.balance as number) || 0;
       }
       return session;
     },
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger, session }) {
       if (user) {
-        token.id = user.id;
+        // Initial sign in
+        const mongoClient = await clientPromise;
+        const db = mongoClient.db(process.env.MONGODB_DB_NAME);
+        const usersCollection = db.collection("users");
+        const dbUser = await usersCollection.findOne({ email: user.email });
+
+        if (dbUser) {
+          token.referralCode = dbUser.referralCode;
+          token.balance = dbUser.balance;
+          token.createdAt = dbUser.createdAt?.toISOString();
+        }
+      } else if (trigger === "update" && session?.user) {
+        // Handle token updates
+        token.referralCode = session.user.referralCode;
+        token.balance = session.user.balance;
+        token.createdAt = session.user.createdAt?.toISOString();
       }
+
       return token;
     }
   },

@@ -6,6 +6,7 @@ interface Skill {
   name: string;
   level: number;
 }
+
 interface ProfileData {
   name: string;
   bio: string;
@@ -20,33 +21,21 @@ export const useProfileData = () => {
   const [loading, setLoading] = useState(true);
   const { data: session, status } = useSession();
 
-  // Check if the page was refreshed
-  const isPageRefreshed = typeof window !== "undefined" && performance.navigation.type === 1;
-
   useEffect(() => {
     const loadProfileData = async () => {
       try {
         setLoading(true);
 
-        // Check if session is still loading
+        // Check if the session is still loading
         if (status === "loading") {
           console.log("Session is still loading...");
           return;
         }
 
-        // If user is not logged in, clear profile data
+        // Check if the user is logged in
         if (!session?.user?.email) {
           console.error("User not logged in.");
           setProfileData(null);
-          setLoading(false);
-          return;
-        }
-
-        // Try to get profile data from localStorage
-        const cachedProfileData = localStorage.getItem("profileData");
-        if (cachedProfileData && !isPageRefreshed) {
-          console.log("Loading profile data from localStorage...");
-          setProfileData(JSON.parse(cachedProfileData));
           setLoading(false);
           return;
         }
@@ -62,7 +51,7 @@ export const useProfileData = () => {
           const data = await response.json();
           setProfileData(data);
 
-          // Store the fetched data in localStorage
+          // Update the profile data in localStorage
           localStorage.setItem("profileData", JSON.stringify(data));
         } else {
           console.error("Failed to fetch profile data from the database.");
@@ -77,7 +66,7 @@ export const useProfileData = () => {
     };
 
     loadProfileData();
-  }, [session, status, isPageRefreshed]);
+  }, [session, status]);
 
   const saveProfileData = async (data: ProfileData) => {
     try {
