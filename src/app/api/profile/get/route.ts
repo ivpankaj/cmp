@@ -27,6 +27,7 @@ export async function GET() {
           social: 1,
           emailVerified: 1,
           updatedAt: 1,
+          phone: 1,
           referralCode: 1,
         },
       }

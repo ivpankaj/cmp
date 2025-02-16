@@ -8,11 +8,20 @@ interface Skill {
 }
 
 interface ProfileData {
+  phone: {
+    countryCode: string;
+    number: string;
+    fullNumber: string;
+  };
   name: string;
   bio: string;
   skills: Skill[];
   projects: any[];
-  social: { linkedin: string; github: string; twitter: string };
+  social: {
+    linkedin: string;
+    github: string;
+    twitter: string;
+  };
   emailVerified: boolean;
 }
 

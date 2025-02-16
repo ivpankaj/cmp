@@ -4,7 +4,6 @@ import Button from "@/mini component/Button";
 import { useSession } from "next-auth/react";
 import { ProfileHeaderProps } from "@/types/profile";
 import { UserCircle } from "lucide-react";
-
 const ProfileHeader: React.FC<ProfileHeaderProps> = ({
   profileData,
   isEditing,
@@ -16,23 +15,27 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
   const { data: session } = useSession();
 
   return (
-    <div className="flex flex-col sm:flex-row items-center justify-between mb-6 sm:mb-8">
+    <div className="flex flex-col sm:flex-row items-center justify-between mb-6 sm:mb-8 z-10">
       <div className="flex items-center space-x-4">
-        <div className="relative w-20 h-20 rounded-full overflow-hidden border-2 border-opacity-20 border-white">
-          {session?.user?.image ? (
-            <img
-              src={session.user.image}
-              alt="Profile"
-              className="w-full h-full object-cover"
-            />
-          ) : (
-            <UserCircle className="w-full h-full text-gray-500" />
-          )}
+        <div className="relative w-24 h-24 sm:w-20 sm:h-20 rounded-full overflow-hidden border-2 border-white/20">
+
+
+{session?.user?.image ? (
+  <img
+    src={session.user.image}
+    alt="Profile"
+    className="w-full h-full object-cover"
+  />
+) : (
+  <UserCircle className="w-full h-full text-gray-500" />
+)}
+
+      
         </div>
         <div>
-          {profileData.emailVerified && (
-            <div className="w-fit p-2">
-              <div className="bg-yellow-300 p-2 rounded-3xl shadow-lg hover:scale-105 transition-all duration-500">
+        {profileData.emailVerified && (
+            <div className="">
+              <div className="bg-gradient-to-r from-amber-200 via-yellow-300 to-amber-200 p-2 rounded-3xl shadow-lg transform mb-4 transition-all duration-500 hover:scale-105 animate-shimmer">
                 <div className="flex items-center gap-2 p-1">
                   <div className="flex items-center justify-center bg-yellow-100 rounded-full p-1">
                     <ShieldCheck className="w-4 h-4 text-yellow-600" />
@@ -51,7 +54,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
             </div>
           )}
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-bold">
+            <h1 className="text-3xl sm:text-2xl font-bold">
               {isEditing ? (
                 <input
                   type="text"
@@ -59,7 +62,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
                   onChange={(e) =>
                     setProfileData({ ...profileData, name: e.target.value })
                   }
-                  className="bg-opacity-5 bg-white border border-opacity-10 border-white rounded px-2 py-1 w-full"
+                  className="bg-white/5 border border-white/10 rounded px-2 py-1 w-full"
                 />
               ) : (
                 profileData.name || session?.user?.name
@@ -82,7 +85,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
                 onClick={handleVerifyEmail}
               />
               {verificationStatus === "error" && (
-                <p className="text-sm text-red-400 mt-1">
+                <p className="text-red-400 text-sm mt-1">
                   Failed to send verification email
                 </p>
               )}
@@ -94,7 +97,9 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
         {!isEditing ? (
           <Button text="Edit Profile" onClick={() => setIsEditing(true)} />
         ) : (
-          <Button text="Cancel" onClick={() => setIsEditing(false)} />
+          <>
+            <Button text="Cancel" onClick={() => setIsEditing(false)} />
+          </>
         )}
       </div>
     </div>

@@ -8,6 +8,7 @@ export interface ProfileData {
   name: string;
   bio: string;
   skills: Skill[];
+  phone: string;
   projects: any[];
   social: { 
     linkedin: string; 

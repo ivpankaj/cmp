@@ -6,6 +6,7 @@ import ProfileHeader from "@/components/profile comp/ProfileHeader";
 import BioSection from "@/components/profile comp/BioSection";
 import SocialLinksSection from "@/components/profile comp/SocialLinksSection";
 import Button from "@/mini component/Button";
+import CustomPhoneInput from "@/components/CountryCode";
 
 const ProfilePage = () => {
   const { profileData, setProfileData, saveProfileData, loading } =
@@ -85,6 +86,24 @@ const ProfilePage = () => {
             profileData={profileData}
             isEditing={isEditing}
             setProfileData={setProfileData}
+          />
+          <CustomPhoneInput
+            value={{
+              countryCode: profileData.phone?.countryCode || "",
+              number: profileData.phone?.number || "",
+              fullNumber: profileData.phone?.fullNumber || ""
+            }}
+            isEditing={isEditing}
+            onChange={(phoneData: { countryCode: string; number: string; fullNumber: string }) => {
+              setProfileData({
+                ...profileData,
+                phone: {
+                  countryCode: phoneData.countryCode,
+                  number: phoneData.number,
+                  fullNumber: phoneData.fullNumber
+                }
+              });
+            }}
           />
           {isEditing && (
             <div className="flex justify-end mt-4">
