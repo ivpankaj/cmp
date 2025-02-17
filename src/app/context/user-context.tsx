@@ -8,6 +8,7 @@ interface UserProfile {
   email: string;
   bio?: string;
   name?: string;
+  phone:number,
   balance: number;
   social?: Record<string, string>;
   emailVerified?: Date;

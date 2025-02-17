@@ -6,7 +6,8 @@ import { toast } from "sonner"; // Assuming you're using Sonner for notification
 import { FaWallet, FaCoins, FaTimesCircle, FaArrowDown, FaArrowUp } from "react-icons/fa"; // Icons
 import { AiOutlineLoading3Quarters } from "react-icons/ai"; // Loading spinner icon
 import { Transaction, UserProfile } from "@/types/wallet";
-
+// import { useUser } from "../context/user-context";
+import { load } from "@cashfreepayments/cashfree-js";
 
 const WalletPage = () => {
   const [balance, setBalance] = useState<number>(0);
@@ -18,6 +19,7 @@ const WalletPage = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [successMessage, setSuccessMessage] = useState({ title: "", message: "", bonus: 0 });
+  // const { profileData } = useUser();
   useEffect(() => {
     fetchUserData();
   }, []);
@@ -75,50 +77,69 @@ const WalletPage = () => {
 
     fetchTransactionHistory();
   }, []);
+
+
   const handleAddMoney = async () => {
-    const parsedAmount = parseFloat(amount);
-
-    if (isNaN(parsedAmount) || parsedAmount <= 0) {
-      setErrorMessage("Please enter a valid amount.");
-      return;
-    }
-
-    try {
-      setIsProcessing(true);
-      setErrorMessage(null);
-      const response = await fetch("/api/user/add-money", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ amount: parsedAmount }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to add money");
+      const parsedAmount = parseFloat(amount);
+  
+      if (isNaN(parsedAmount) || parsedAmount <= 0) {
+          setErrorMessage("Please enter a valid amount.");
+          return;
       }
-
-      const data = await response.json();
-      setBalance(data.newBalance);
-      setSuccessMessage({
-        title: "Money Added Successfully!",
-        message: `₹${parsedAmount.toFixed(2)} has been added to your wallet`,
-        bonus: parsedAmount
-      });
-      setShowSuccessPopup(true); // Show success popup
-      setTransactions([
-        ...transactions,
-        { type: "credit", amount: parsedAmount, date: new Date(), source: "Add Money" },
-      ]);
-      setAmount("");
-      toast.success(`Successfully added ₹${parsedAmount.toFixed(2)}`);
-    } catch (error) {
-      setErrorMessage("Failed to add money to wallet.");
-      console.error("Error adding money:", error);
-    } finally {
-      setIsProcessing(false);
-    }
+  
+      try {
+          setIsProcessing(true);
+          setErrorMessage(null);
+  
+          // Step 1: Create order with your API (as you already did)
+          const response = await fetch("/api/cashfree/order", {
+              method: "POST",
+              headers: {
+                  "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                  orderId: `order_${Date.now()}`, // Unique Order ID
+                  orderAmount: parsedAmount,
+                  customerId: "user_0015",
+                  customerName: "Pankaj2",
+                  customerEmail: "pankaj@gmail.com",
+                  customerPhone: "919912064724",
+              }),
+          });
+  
+          if (!response.ok) {
+              throw new Error("Failed to create Cashfree order");
+          }
+  
+          const data = await response.json();
+          console.log("Cashfree Response:", data);
+  
+          if (data && data.payment_session_id) {
+              // Step 2: Load Cashfree SDK and initialize it
+              // eslint-disable-next-line prefer-const
+              let cashfree = await load({ mode: "production" });
+  
+              // Step 3: Checkout with the session ID
+              // eslint-disable-next-line prefer-const
+              let checkoutOptions = {
+                  paymentSessionId: data.payment_session_id, // Use the payment session ID received from your API
+                  redirectTarget: "_self", // Redirect in the current tab
+              };
+  
+              cashfree.checkout(checkoutOptions);
+          } else {
+              throw new Error("Payment session ID missing in response");
+          }
+      } catch (error) {
+          setErrorMessage("Failed to process payment.");
+          console.error("Error adding money:", error);
+      } finally {
+          setIsProcessing(false);
+      }
   };
+  
+
+
 
   const handleApplyReferralCode = async () => {
     if (!referralCode.trim()) {
@@ -138,7 +159,7 @@ const WalletPage = () => {
       });
       const data = await response.json();
       if (!response.ok) {
-        throw new Error( "Not a valid code");
+        throw new Error("Not a valid code");
       }
 
       setBalance(data.newBalance);
@@ -156,7 +177,7 @@ const WalletPage = () => {
         error instanceof Error ? error.message : "Failed to apply referral code"
       );
       toast.error(error instanceof Error ? error.message : "Failed to apply referral code");
-  
+
     } finally {
       setIsProcessing(false);
     }
@@ -254,27 +275,27 @@ const WalletPage = () => {
                 }
                 disabled={isProcessing || !referralCode.trim()}
               />
-           
+
             </div>
           </div>
         </div>
         {showSuccessPopup && (
-             <div className="fixed inset-0 flex items-center justify-center z-50">
-             <div className="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm"></div>
-             <div className="bg-black p-6 rounded-lg shadow-lg z-10 text-center relative">
-               <button
-                 className="absolute top-2 right-2 text-white"
-                 onClick={() => setShowSuccessPopup(false)}
-               >
-                 <FaTimesCircle size={20} />
-               </button>
-               <FaCoins size={50} className="text-green-500 mx-auto mb-4" />
-               <h2 className="text-xl font-bold text-green-600">{successMessage.title}</h2>
-               <p className="text-gray-700">{successMessage.message}</p>
-               <p className="text-gray-700">Bonus: ₹{successMessage.bonus.toFixed(2)}</p>
-             </div>
-           </div>
-              )}
+          <div className="fixed inset-0 flex items-center justify-center z-50">
+            <div className="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm"></div>
+            <div className="bg-black p-6 rounded-lg shadow-lg z-10 text-center relative">
+              <button
+                className="absolute top-2 right-2 text-white"
+                onClick={() => setShowSuccessPopup(false)}
+              >
+                <FaTimesCircle size={20} />
+              </button>
+              <FaCoins size={50} className="text-green-500 mx-auto mb-4" />
+              <h2 className="text-xl font-bold text-green-600">{successMessage.title}</h2>
+              <p className="text-gray-700">{successMessage.message}</p>
+              <p className="text-gray-700">Bonus: ₹{successMessage.bonus.toFixed(2)}</p>
+            </div>
+          </div>
+        )}
         {/* Transaction History */}
         <div className="mt-8 p-6 md:p-8 rounded-3xl backdrop-blur-xl bg-white/10 border border-white/20 shadow-lg shadow-black/30 transform transition-all duration-300">
           <h3 className="text-2xl font-bold mb-6 flex items-center gap-3 text-white">
@@ -287,8 +308,8 @@ const WalletPage = () => {
                 <div
                   key={index}
                   className={`flex justify-between items-center p-5 rounded-xl shadow-md transition-all duration-500 transform  ${transaction.type === "credit"
-                      ? "bg-green-400/20 border border-green-300/30"
-                      : "bg-red-500/20 border border-red-400/30"
+                    ? "bg-green-400/20 border border-green-300/30"
+                    : "bg-red-500/20 border border-red-400/30"
                     }`}
                 >
                   <div className="flex items-center gap-3">

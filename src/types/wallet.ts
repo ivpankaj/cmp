@@ -10,4 +10,5 @@ export interface UserProfile {
   balance: number;
   email: string;
   name: string;
+  phone:number
 }
