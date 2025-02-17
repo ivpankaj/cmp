@@ -60,8 +60,6 @@ export const useProfileData = () => {
           const data = await response.json();
           setProfileData(data);
 
-          // Update the profile data in localStorage
-          localStorage.setItem("profileData", JSON.stringify(data));
         } else {
           console.error("Failed to fetch profile data from the database.");
           setProfileData(null);
@@ -88,8 +86,7 @@ export const useProfileData = () => {
       if (response.ok) {
         setProfileData(data);
 
-        // Update the profile data in localStorage
-        localStorage.setItem("profileData", JSON.stringify(data));
+
       } else {
         throw new Error("Failed to save profile data");
       }
