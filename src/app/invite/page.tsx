@@ -10,7 +10,7 @@ import { Loader2 } from "lucide-react";
 const InvitePage = () => {
   const [copied, setCopied] = useState(false);
   const { profileData, loading } = useUser();
-  const main = process.env.NEXT_PUBLIC_URL;
+  const main = process.env.NEXT_PUBLIC_URL ? process.env.NEXT_PUBLIC_URL : "https://cookmypapers.vercel.app";
 
   const getInviteLink = useCallback(() => {
     const baseUrl = `${main}/api/auth/signin`;

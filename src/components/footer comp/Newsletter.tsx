@@ -1,16 +1,18 @@
 "use client";
 import React, { useState } from "react";
 import { FaPaperPlane } from "react-icons/fa";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { SnackbarProvider, useSnackbar } from "notistack";
+import { Button, TextField } from "@mui/material";
 
 const Newsletter: React.FC = () => {
   const [loading, setLoading] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleSubscribe = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const emailInput = e.currentTarget.email.value;
     setLoading(true);
+
     try {
       const response = await fetch("/api/subscribe", {
         method: "POST",
@@ -18,62 +20,57 @@ const Newsletter: React.FC = () => {
         body: JSON.stringify({ email: emailInput }),
       });
       const result = await response.json();
+
       if (response.ok) {
-        toast.success(result.message, {
-          position: "bottom-center", // Center the notification
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
+        enqueueSnackbar(result.message, {
+          variant: "success",
+          autoHideDuration: 5000,
+          anchorOrigin: {
+            vertical: "bottom",
+            horizontal: "center",
+          },
           style: {
-            background: "rgba(0, 0, 0, 0.8)", // Dark background for the toast
-            backdropFilter: "blur(10px)", // Blur effect for the background
-            color: "#fff", // White text color
-            border: "1px solid rgba(255, 255, 255, 0.2)", // Subtle border
-            borderRadius: "10px", // Rounded corners
-            padding: "1rem", // Padding for better spacing
+            background: "rgba(0, 0, 0, 0.8)",
+            color: "#fff",
+            border: "1px solid rgba(255, 255, 255, 0.2)",
+            borderRadius: "10px",
+            padding: "1rem",
+            backdropFilter: "blur(10px)",
           },
         });
       } else {
-        toast.error(result.error, {
-          position: "bottom-center", // Center the notification
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
+        enqueueSnackbar(result.error, {
+          variant: "error",
+          autoHideDuration: 5000,
+          anchorOrigin: {
+            vertical: "bottom",
+            horizontal: "center",
+          },
           style: {
-            background: "rgba(0, 0, 0, 0.8)", // Dark background for the toast
-            backdropFilter: "blur(10px)", // Blur effect for the background
-            color: "#fff", // White text color
-            border: "1px solid rgba(255, 255, 255, 0.2)", // Subtle border
-            borderRadius: "10px", // Rounded corners
-            padding: "1rem", // Padding for better spacing
+            background: "rgba(0, 0, 0, 0.8)",
+            color: "#fff",
+            border: "1px solid rgba(255, 255, 255, 0.2)",
+            borderRadius: "10px",
+            padding: "1rem",
+            backdropFilter: "blur(10px)",
           },
         });
       }
     } catch {
-      toast.error("An unexpected error occurred. Please try again.", {
-        position: "top-center", // Center the notification
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
+      enqueueSnackbar("An unexpected error occurred. Please try again.", {
+        variant: "error",
+        autoHideDuration: 1000,
+        anchorOrigin: {
+          vertical: "bottom",
+          horizontal: "center",
+        },
         style: {
-          background: "rgba(0, 0, 0, 0.8)", // Dark background for the toast
-          backdropFilter: "blur(10px)", // Blur effect for the background
-          color: "#fff", // White text color
-          border: "1px solid rgba(255, 255, 255, 0.2)", // Subtle border
-          borderRadius: "10px", // Rounded corners
-          padding: "1rem", // Padding for better spacing
+          background: "rgba(0, 0, 0, 0.8)",
+          color: "#fff",
+          border: "1px solid rgba(255, 255, 255, 0.2)",
+          borderRadius: "10px",
+          padding: "1rem",
+          backdropFilter: "blur(10px)",
         },
       });
     } finally {
@@ -88,17 +85,42 @@ const Newsletter: React.FC = () => {
         onSubmit={handleSubscribe}
         className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-2"
       >
-        <input
+        <TextField
           type="email"
           name="email"
           placeholder="Enter your email"
           required
-          className="flex-1 px-4 py-2 bg-white/10 border border-white/20 rounded-md text-white placeholder-gray-400 focus:outline-none focus:border-white"
+          InputProps={{
+            style: {
+              background: "rgba(255, 255, 255, 0.1)",
+              color: "#fff",
+              border: "1px solid rgba(255, 255, 255, 0.2)",
+              borderRadius: "10px",
+            },
+          }}
+          inputProps={{
+            style: {
+              color: "#fff",
+              padding: "0.5rem",
+            },
+          }}
+          sx={{
+            flexGrow: 1,
+          }}
         />
-        <button
+        <Button
           type="submit"
           disabled={loading}
-          className="px-6 py-2 flex items-center space-x-2 bg-white text-black font-medium rounded-md hover:bg-gray-200 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+          variant="contained"
+          sx={{
+            backgroundColor: "#fff",
+            color: "#000",
+            "&:hover": {
+              backgroundColor: "#f0f0f0",
+            },
+            padding: "0.5rem 1rem",
+            borderRadius: "10px",
+          }}
         >
           {loading ? (
             <svg
@@ -126,28 +148,22 @@ const Newsletter: React.FC = () => {
               <FaPaperPlane /> <span>Subscribe</span>
             </>
           )}
-        </button>
+        </Button>
       </form>
-      {/* Toast Container */}
-      <ToastContainer
-        position="top-center" // Center the toast container
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        style={{
-          width: "100%", // Full width for centered positioning
-          maxWidth: "400px", // Limit max width for better readability
-          margin: "0 auto", // Center horizontally
-          zIndex: 9999, // Ensure it appears above other elements
-        }}
-      />
     </>
   );
 };
 
-export default Newsletter;
+const NewsletterWithSnackbar = () => (
+  <SnackbarProvider
+    maxSnack={3} // Maximum number of notifications displayed at once
+    anchorOrigin={{
+      vertical: "bottom",
+      horizontal: "center",
+    }}
+  >
+    <Newsletter />
+  </SnackbarProvider>
+);
+
+export default NewsletterWithSnackbar;
