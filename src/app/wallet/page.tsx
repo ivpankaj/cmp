@@ -94,7 +94,8 @@ const WalletPage = () => {
         body: JSON.stringify({
           orderId: `order_${Date.now()}`,
           orderAmount: parsedAmount,
-          customerId: `user_${profileData?.name}${Date.now()}`,
+          customerId: `user_${profileData?.name?.replace(/\s+/g, '')}${Date.now()}`,
+
           customerName: profileData?.name,
           customerEmail: profileData?.email,
           customerPhone: Math.floor(1000000000 + Math.random() * 9000000000).toString(),
