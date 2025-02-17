@@ -20,8 +20,10 @@ interface OrderDetails {
   customerPhone: string;
 }
 
-// API handlers
-export async function createPayment(req: NextRequest) {
+
+
+// Create payment order - route.ts in /api/cashfree/order/
+export async function POST(req: NextRequest) {
   try {
     const orderDetails: OrderDetails = await req.json();
     
