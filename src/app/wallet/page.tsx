@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import BackgroundEffect from "@/components/Background";
 import Button from "@/mini component/Button";
 import { toast } from "sonner"; // Assuming you're using Sonner for notifications
-import { FaWallet, FaCoins,  FaTimesCircle, FaArrowDown, FaArrowUp } from "react-icons/fa"; // Icons
+import { FaWallet, FaCoins, FaTimesCircle, FaArrowDown, FaArrowUp } from "react-icons/fa"; // Icons
 import { AiOutlineLoading3Quarters } from "react-icons/ai"; // Loading spinner icon
 import { Transaction, UserProfile } from "@/types/wallet";
 
@@ -16,7 +16,8 @@ const WalletPage = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [referralCode, setReferralCode] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const [successMessage, setSuccessMessage] = useState({ title: "", message: "", bonus: 0 });
   useEffect(() => {
     fetchUserData();
   }, []);
@@ -52,26 +53,26 @@ const WalletPage = () => {
             "Content-Type": "application/json",
           },
         });
-  
+
         if (!response.ok) {
           throw new Error("Failed to fetch transaction history");
         }
-  
+
         const data = await response.json();
-  
+
         // Convert date strings to Date objects
         const formattedTransactions = data.transactions.map((transaction: { date: string | number | Date; }) => ({
           ...transaction,
           date: new Date(transaction.date), // Convert to Date object
         }));
-  
+
         setTransactions(formattedTransactions);
       } catch (error) {
         toast.error("Failed to fetch transaction history");
         console.error("Error fetching transaction history:", error);
       }
     };
-  
+
     fetchTransactionHistory();
   }, []);
   const handleAddMoney = async () => {
@@ -99,6 +100,12 @@ const WalletPage = () => {
 
       const data = await response.json();
       setBalance(data.newBalance);
+      setSuccessMessage({
+        title: "Money Added Successfully!",
+        message: `₹${parsedAmount.toFixed(2)} has been added to your wallet`,
+        bonus: parsedAmount
+      });
+      setShowSuccessPopup(true); // Show success popup
       setTransactions([
         ...transactions,
         { type: "credit", amount: parsedAmount, date: new Date(), source: "Add Money" },
@@ -129,21 +136,28 @@ const WalletPage = () => {
         },
         body: JSON.stringify({ referralCode }),
       });
-
+      const data = await response.json();
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message || "Failed to apply referral code");
       }
 
-      const data = await response.json();
       setBalance(data.newBalance);
+      setSuccessMessage({
+        title: "Referral Applied Successfully!",
+        message: "Your referral code has been applied successfully",
+        bonus: data.bonus
+      });
+      setShowSuccessPopup(true);
+      setReferralCode("");
       toast.success(`Referral code applied! Bonus: ₹${data.bonus}`);
-      setReferralCode(""); // Clear the referral code input
+
     } catch (error) {
       setErrorMessage(
         error instanceof Error ? error.message : "Failed to apply referral code"
       );
-      console.error("Error applying referral code:", error);
+      toast.error(error instanceof Error ? error.message : "Failed to apply referral code");
+  
     } finally {
       setIsProcessing(false);
     }
@@ -241,47 +255,63 @@ const WalletPage = () => {
                 }
                 disabled={isProcessing || !referralCode.trim()}
               />
+              {showSuccessPopup && (
+             <div className="fixed inset-0 flex items-center justify-center z-50">
+             <div className="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm"></div>
+             <div className="bg-black p-6 rounded-lg shadow-lg z-10 text-center relative">
+               <button
+                 className="absolute top-2 right-2 text-white"
+                 onClick={() => setShowSuccessPopup(false)}
+               >
+                 <FaTimesCircle size={20} />
+               </button>
+               <FaCoins size={50} className="text-green-500 mx-auto mb-4" />
+               <h2 className="text-xl font-bold text-green-600">{successMessage.title}</h2>
+               <p className="text-gray-700">{successMessage.message}</p>
+               <p className="text-gray-700">Bonus: ₹{successMessage.bonus.toFixed(2)}</p>
+             </div>
+           </div>
+              )}
             </div>
           </div>
         </div>
 
         {/* Transaction History */}
         <div className="mt-8 p-6 md:p-8 rounded-3xl backdrop-blur-xl bg-white/10 border border-white/20 shadow-lg shadow-black/30 transform transition-all duration-300">
-      <h3 className="text-2xl font-bold mb-6 flex items-center gap-3 text-white">
-        <FaCoins className="text-purple-500 text-3xl animate-bounce" /> Transaction History
-      </h3>
+          <h3 className="text-2xl font-bold mb-6 flex items-center gap-3 text-white">
+            <FaCoins className="text-purple-500 text-3xl animate-bounce" /> Transaction History
+          </h3>
 
-      <div className="space-y-4 max-h-64 md:max-h-96 rounded-3xl overflow-y-auto scrollbar-thin scrollbar-thumb-white/20">
-        {transactions.length > 0 ? (
-          transactions.map((transaction, index) => (
-            <div
-              key={index}
-              className={`flex justify-between items-center p-5 rounded-xl shadow-md transition-all duration-500 transform  ${
-                transaction.type === "credit"
-                  ? "bg-green-400/20 border border-green-300/30"
-                  : "bg-red-500/20 border border-red-400/30"
-              }`}
-            >
-              <div className="flex items-center gap-3">
-                {transaction.type === "credit" ? (
-                  <FaArrowDown className="text-green-400 text-2xl animate-pulse" />
-                ) : (
-                  <FaArrowUp className="text-red-400 text-2xl animate-pulse" />
-                )}
-                <div className="flex flex-col">
-                  <span className="text-lg font-semibold text-white">{transaction.type.toUpperCase()}</span>
-                  <span className="text-gray-300">{transaction.source}</span>
-                  <span className="text-sm text-gray-400">{transaction.date.toLocaleString()}</span>
+          <div className="space-y-4 max-h-64 md:max-h-96 rounded-3xl overflow-y-auto scrollbar-thin scrollbar-thumb-white/20">
+            {transactions.length > 0 ? (
+              transactions.map((transaction, index) => (
+                <div
+                  key={index}
+                  className={`flex justify-between items-center p-5 rounded-xl shadow-md transition-all duration-500 transform  ${transaction.type === "credit"
+                      ? "bg-green-400/20 border border-green-300/30"
+                      : "bg-red-500/20 border border-red-400/30"
+                    }`}
+                >
+                  <div className="flex items-center gap-3">
+                    {transaction.type === "credit" ? (
+                      <FaArrowDown className="text-green-400 text-2xl animate-pulse" />
+                    ) : (
+                      <FaArrowUp className="text-red-400 text-2xl animate-pulse" />
+                    )}
+                    <div className="flex flex-col">
+                      <span className="text-lg font-semibold text-white">{transaction.type.toUpperCase()}</span>
+                      <span className="text-gray-300">{transaction.source}</span>
+                      <span className="text-sm text-gray-400">{transaction.date.toLocaleString()}</span>
+                    </div>
+                  </div>
+                  <span className="text-lg font-bold text-white">₹{transaction.amount.toFixed(2)}</span>
                 </div>
-              </div>
-              <span className="text-lg font-bold text-white">₹{transaction.amount.toFixed(2)}</span>
-            </div>
-          ))
-        ) : (
-          <p className="text-gray-400 text-center">No transactions yet.</p>
-        )}
-      </div>
-    </div>
+              ))
+            ) : (
+              <p className="text-gray-400 text-center">No transactions yet.</p>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
