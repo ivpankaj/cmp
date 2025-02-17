@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
                 customer_phone: customerPhone,
             },
             order_meta: {
-                return_url: `${process.env.NEXTAUTH_URL2}/payment-status?order_id=${orderId}`
+                return_url: `${process.env.NEXTAUTH_URL}/payment-status?order_id=${orderId}`
             }
         });
 
@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
                 customer_phone: customerPhone,
             },
             order_meta: {
-                return_url: `${process.env.NEXTAUTH_URL2}/payment-status?order_id=${orderId}`
+                return_url: `${process.env.NEXTAUTH_URL}/payment-status?order_id=${orderId}`
             }
         }, {
             headers: {
