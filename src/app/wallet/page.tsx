@@ -6,7 +6,7 @@ import { toast } from "sonner"; // Assuming you're using Sonner for notification
 import { FaWallet, FaCoins, FaTimesCircle, FaArrowDown, FaArrowUp } from "react-icons/fa"; // Icons
 import { AiOutlineLoading3Quarters } from "react-icons/ai"; // Loading spinner icon
 import { Transaction, UserProfile } from "@/types/wallet";
-// import { useUser } from "../context/user-context";
+import { useUser } from "../context/user-context";
 import { load } from "@cashfreepayments/cashfree-js";
 
 const WalletPage = () => {
@@ -19,7 +19,7 @@ const WalletPage = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [successMessage, setSuccessMessage] = useState({ title: "", message: "", bonus: 0 });
-  // const { profileData } = useUser();
+  const { profileData } = useUser();
   useEffect(() => {
     fetchUserData();
   }, []);
@@ -77,76 +77,59 @@ const WalletPage = () => {
 
     fetchTransactionHistory();
   }, []);
-
-
   const handleAddMoney = async () => {
-      const parsedAmount = parseFloat(amount);
-  
-      if (isNaN(parsedAmount) || parsedAmount <= 0) {
-          setErrorMessage("Please enter a valid amount.");
-          return;
+    const parsedAmount = parseFloat(amount);
+    if (isNaN(parsedAmount) || parsedAmount <= 0) {
+      setErrorMessage("Please enter a valid amount.");
+      return;
+    }
+    try {
+      setIsProcessing(true);
+      setErrorMessage(null);
+      const response = await fetch("/api/cashfree/order", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          orderId: `order_${Date.now()}`,
+          orderAmount: parsedAmount,
+          customerId: `user_${profileData?.email}${Date.now()}`,
+          customerName: profileData?.name,
+          customerEmail: profileData?.email,
+          customerPhone: "null",
+        }),
+      });
+      if (!response.ok) {
+        throw new Error("Failed to create Cashfree order");
       }
-  
-      try {
-          setIsProcessing(true);
-          setErrorMessage(null);
-  
-          // Step 1: Create order with your API (as you already did)
-          const response = await fetch("/api/cashfree/order", {
-              method: "POST",
-              headers: {
-                  "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                  orderId: `order_${Date.now()}`, // Unique Order ID
-                  orderAmount: parsedAmount,
-                  customerId: "user_0015",
-                  customerName: "Pankaj2",
-                  customerEmail: "pankaj@gmail.com",
-                  customerPhone: "919912064724",
-              }),
-          });
-  
-          if (!response.ok) {
-              throw new Error("Failed to create Cashfree order");
-          }
-  
-          const data = await response.json();
-          console.log("Cashfree Response:", data);
-  
-          if (data && data.payment_session_id) {
-              // Step 2: Load Cashfree SDK and initialize it
-              // eslint-disable-next-line prefer-const
-              let cashfree = await load({ mode: "production" });
-  
-              // Step 3: Checkout with the session ID
-              // eslint-disable-next-line prefer-const
-              let checkoutOptions = {
-                  paymentSessionId: data.payment_session_id, // Use the payment session ID received from your API
-                  redirectTarget: "_self", // Redirect in the current tab
-              };
-  
-              cashfree.checkout(checkoutOptions);
-          } else {
-              throw new Error("Payment session ID missing in response");
-          }
-      } catch (error) {
-          setErrorMessage("Failed to process payment.");
-          console.error("Error adding money:", error);
-      } finally {
-          setIsProcessing(false);
+      const data = await response.json();
+      console.log("Cashfree Response:", data);
+      if (data && data.payment_session_id) {
+        // eslint-disable-next-line prefer-const
+        let cashfree = await load({ mode: "production" });
+        // eslint-disable-next-line prefer-const
+        let checkoutOptions = {
+          paymentSessionId: data.payment_session_id, // Use the payment session ID received from your API
+          redirectTarget: "_self", // Redirect in the current tab
+        };
+
+        cashfree.checkout(checkoutOptions);
+      } else {
+        throw new Error("Payment session ID missing in response");
       }
+    } catch (error) {
+      setErrorMessage("Failed to process payment.");
+      console.error("Error adding money:", error);
+    } finally {
+      setIsProcessing(false);
+    }
   };
-  
-
-
-
   const handleApplyReferralCode = async () => {
     if (!referralCode.trim()) {
       setErrorMessage("Please enter a valid referral code.");
       return;
     }
-
     try {
       setIsProcessing(true);
       setErrorMessage(null);
@@ -161,7 +144,6 @@ const WalletPage = () => {
       if (!response.ok) {
         throw new Error("Not a valid code");
       }
-
       setBalance(data.newBalance);
       setSuccessMessage({
         title: "Referral Applied Successfully!",
@@ -171,18 +153,15 @@ const WalletPage = () => {
       setShowSuccessPopup(true);
       setReferralCode("");
       toast.success(`Referral code applied! Bonus: ₹${data.bonus}`);
-
     } catch (error) {
       setErrorMessage(
         error instanceof Error ? error.message : "Failed to apply referral code"
       );
       toast.error(error instanceof Error ? error.message : "Failed to apply referral code");
-
     } finally {
       setIsProcessing(false);
     }
   };
-
   if (isLoading) {
     return (
       <div className="min-h-screen bg-black text-white flex items-center justify-center">
@@ -192,7 +171,6 @@ const WalletPage = () => {
       </div>
     );
   }
-
   return (
     <div className="min-h-screen bg-black text-white py-20 relative overflow-hidden z-10">
       <BackgroundEffect />
@@ -336,7 +314,6 @@ const WalletPage = () => {
     </div>
   );
 };
-
 export default WalletPage;
 
 
