@@ -1,4 +1,3 @@
-// lib/email.ts
 import nodemailer from 'nodemailer';
 
 const transporter = nodemailer.createTransport({
@@ -16,23 +15,48 @@ export async function sendVerificationEmail(
   verificationUrl: string
 ) {
   const emailTemplate = `
-    <div style="max-width: 600px; margin: 0 auto; padding: 20px; font-family: Arial, sans-serif; color: #333;">
-      <h1 style="color: #1a1a1a; text-align: center;">Mai hu be , Pankaj</h1>
-      <p>Thank you for signing up! Please click the button below to verify your email address:</p>
-      <div style="text-align: center; margin: 30px 0;">
-        <a href="${verificationUrl}" 
-           style="background-color: #3498db; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; display: inline-block;">
-          Kar na verify
-        </a>
+    <div style="max-width: 600px; margin: 0 auto; padding: 30px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f9f9f9; border-radius: 12px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+      <!-- Header Section -->
+      <div style="text-align: center; margin-bottom: 30px;">
+        <h1 style="color: #1a1a1a; font-size: 28px; font-weight: bold; margin: 0;">cookmypapers welcomes you!! ☺️</h1>
+        <p style="color: #666; font-size: 16px; margin-top: 10px;">Please verify your email address to get started.</p>
       </div>
-      <p style="color: #666; font-size: 14px;">This link will expire in 24 hours. If you didn't request this verification, please ignore this email.</p>
+
+      <!-- Main Content -->
+      <div style="background-color: #ffffff; padding: 30px; border-radius: 8px; text-align: center;">
+        <p style="font-size: 18px; color: #333; line-height: 1.6;">
+          Thank you for signing up! To complete your registration, please click the button below to verify your email address.
+        </p>
+
+        <!-- Call-to-Action Button -->
+        <div style="margin: 30px 0;">
+          <a href="${verificationUrl}" 
+             style="background-color: #3498db; color: white; font-size: 18px; font-weight: bold; text-decoration: none; padding: 14px 30px; border-radius: 8px; transition: background-color 0.3s ease;">
+            Verify Your Email
+          </a>
+        </div>
+
+        <!-- Additional Info -->
+        <p style="font-size: 14px; color: #888; line-height: 1.6;">
+          This link will expire in <strong>24 hours</strong>. If you didn't request this verification, please ignore this email or contact our support team.
+        </p>
+      </div>
+
+      <!-- Footer Section -->
+      <div style="text-align: center; margin-top: 30px; font-size: 14px; color: #aaa;">
+        <p>&copy; 2025 cookmypapers All rights reserved.</p>
+        <p>
+          If you have any questions, feel free to reach out to us at 
+          <a href="mailto:cookmypapers@gmail.com" style="color: #3498db; text-decoration: none;">cookmypapers@gmail.com</a>.
+        </p>
+      </div>
     </div>
   `;
 
   await transporter.sendMail({
     from: process.env.EMAIL_FROM,
     to,
-    subject: 'Verify Your Email Address',
+    subject: 'Verification@cookmypapers',
     html: emailTemplate,
   });
 }
