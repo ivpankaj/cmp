@@ -80,7 +80,7 @@ const ProfilePage = () => {
   };
 
   return (
-    <div className="min-h-screen z-10 bg-black text-white sm:py-16 md:py-20 relative overflow-hidden">
+    <div className="min-h-screen z-10 bg-black text-white py-16 sm:py-16 md:py-20 relative overflow-hidden">
       <BackgroundEffect />
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <ProfileHeader
