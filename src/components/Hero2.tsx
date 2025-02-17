@@ -26,7 +26,7 @@ const CarouselSection = () => {
     }
   }, [isDragging]);
 
-  const handleDragStart = (e:any) => {
+  const handleDragStart = (e: any) => {
     setIsDragging(true);
     setStartPos(e.type.includes('mouse') ? e.pageX : e.touches[0].clientX);
     if (animationRef.current !== null) {
@@ -34,15 +34,15 @@ const CarouselSection = () => {
     }
   };
 
-  const handleDragMove = (e:any) => {
+  const handleDragMove = (e: any) => {
     if (!isDragging) return;
-    
+
     const currentPosition = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
     const currentDistance = currentPosition - startPos;
     const translate = prevTranslate + currentDistance;
-    
+
     setCurrentTranslate(translate);
-    
+
     // Apply the translation through transform
     if (dragRef.current) {
       dragRef.current.style.transform = `translateX(${translate}px)`;
@@ -65,7 +65,7 @@ const CarouselSection = () => {
     // Reset translations
     setCurrentTranslate(0);
     setPrevTranslate(0);
-    
+
     if (dragRef.current) {
       dragRef.current.style.transform = 'translateX(0)';
     }
@@ -78,7 +78,7 @@ const CarouselSection = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="relative h-[600px] perspective-1000">
-            <div 
+            <div
               ref={dragRef}
               className="relative w-full h-full cursor-grab active:cursor-grabbing"
               onMouseDown={handleDragStart}
@@ -93,31 +93,29 @@ const CarouselSection = () => {
                 <div
                   key={index}
                   className={`absolute inset-0 transition-all duration-500 ease-out rounded-xl overflow-hidden backdrop-blur-sm bg-white/10 border border-white/20
-                    ${
-                      index === currentSlide
-                        ? "opacity-100 transform-none"
-                        : index < currentSlide
+                    ${index === currentSlide
+                      ? "opacity-100 transform-none"
+                      : index < currentSlide
                         ? "opacity-0 -translate-x-full"
                         : "opacity-0 translate-x-full"
                     }`}
                   style={{
-                    transform: `translateZ(${
-                      index === currentSlide ? "50px" : "0px"
-                    }) 
-                              rotateY(${
-                                index === currentSlide ? "0deg" : "45deg"
-                              })`,
+                    transform: `translateZ(${index === currentSlide ? "50px" : "0px"
+                      }) 
+                              rotateY(${index === currentSlide ? "0deg" : "45deg"
+                      })`,
                     pointerEvents: isDragging ? 'none' : 'auto'
                   }}
                 >
                   <Image
-                    height={100}
-                    width={100}
                     src={slide.image}
-                    alt={slide.title}
-                    className="w-full h-2/3 object-cover"
-                    draggable="false"
+                    alt="Optimized Image"
+                    width={500}
+                    height={300}
+                    className="object-cover w-full"
+                    priority // Ensures it loads quickly
                   />
+
                   <div className="p-6">
                     <h3 className="text-2xl font-bold mb-2">{slide.title}</h3>
                     <p className="text-gray-300">{slide.description}</p>
@@ -130,10 +128,9 @@ const CarouselSection = () => {
                 <button
                   key={index}
                   className={`w-3 h-3 rounded-full transition-all duration-300 
-                    ${
-                      index === currentSlide
-                        ? "bg-white scale-125"
-                        : "bg-white/50"
+                    ${index === currentSlide
+                      ? "bg-white scale-125"
+                      : "bg-white/50"
                     }`}
                   onClick={() => setCurrentSlide(index)}
                 />
@@ -160,8 +157,8 @@ const CarouselSection = () => {
               )}
             </ul>
             <div className="mt-8">
-           <Link href="/product">
-           <Button text="See Our products" /></Link>
+              <Link href="/product">
+                <Button text="See Our products" /></Link>
             </div>
           </div>
         </div>

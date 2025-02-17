@@ -33,23 +33,23 @@ const ServicePage = () => {
               onChange={(index) => setCurrentSlide(index)}
               selectedItem={currentSlide}
             >
-              {carouselItems.map((item) => (
-                <div key={item.id} className="relative">
-                  <Image
-                   height={100}
-                   width={100}
-                    src={item.image}
-                    alt={item.title}
-                    className="w-full h-96 object-cover rounded-xl"
-                  />
-                  <div className="absolute bottom-0 left-0 right-0 p-8 bg-black/70 backdrop-blur-lg rounded-b-xl">
-                    <h3 className="text-2xl font-bold text-white">
-                      {item.title}
-                    </h3>
-                    <p className="text-gray-300 mt-2">{item.description}</p>
-                  </div>
-                </div>
-              ))}
+        {carouselItems.map((item) => (
+  <div key={item.id} className="relative w-full h-80"> {/* Adjust height as needed */}
+    <Image
+      src={item.image}
+      alt={item.title}
+      fill
+      className="object-cover" // Ensures the image covers the area properly
+      quality={100} // Maximum quality
+      priority // Improves loading performance
+    />
+    <div className="absolute bottom-0 left-0 right-0 p-8 bg-black/70 backdrop-blur-lg rounded-b-xl">
+      <h3 className="text-2xl font-bold text-white">{item.title}</h3>
+      <p className="text-gray-300 mt-2">{item.description}</p>
+    </div>
+  </div>
+))}
+
             </Carousel>
           </section>
 
@@ -73,13 +73,16 @@ const ServicePage = () => {
                   key={card.id}
                   className="relative rounded-xl overflow-hidden bg-white/10 border border-white/20 transform hover:scale-105 transition-all duration-300"
                 >
-                  <Image
-                   height={100}
-                   width={100}
-                    src={card.image}
-                    alt={card.title}
-                    className="w-full h-48 object-cover"
-                  />
+<Image
+  src={card.image}
+  alt={card.title}
+  width={500}
+  height={300}
+  quality={100} // Set quality to max (default is 75)
+/>
+
+
+
                   <div className="p-6">
                     <h3 className="text-xl font-bold mb-2">{card.title}</h3>
                     <p className="text-gray-400">{card.description}</p>
