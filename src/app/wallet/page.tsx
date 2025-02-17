@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import BackgroundEffect from "@/components/Background";
 import Button from "@/mini component/Button";
 import { toast } from "sonner"; // Assuming you're using Sonner for notifications
-import { FaWallet, FaCoins,  FaTimesCircle } from "react-icons/fa"; // Icons
+import { FaWallet, FaCoins,  FaTimesCircle, FaArrowDown, FaArrowUp } from "react-icons/fa"; // Icons
 import { AiOutlineLoading3Quarters } from "react-icons/ai"; // Loading spinner icon
 import { Transaction, UserProfile } from "@/types/wallet";
 
@@ -160,7 +160,7 @@ const WalletPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white py-20 relative overflow-hidden">
+    <div className="min-h-screen bg-black text-white py-20 relative overflow-hidden z-10">
       <BackgroundEffect />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Error Message */}
@@ -246,40 +246,42 @@ const WalletPage = () => {
         </div>
 
         {/* Transaction History */}
-        <div className="mt-8 p-8 rounded-xl backdrop-blur-sm bg-white/10 border border-white/20 transform hover:scale-105 transition-all duration-300">
-          <h3 className="text-2xl font-bold mb-6 flex items-center gap-2">
-            <FaCoins className="text-purple-500" /> Transaction History
-          </h3>
-          <div className="space-y-4 max-h-64 overflow-y-auto scrollbar-thin scrollbar-thumb-white/20">
-            {transactions.length > 0 ? (
-              transactions.map((transaction, index) => (
-                <div
-                  key={index}
-                  className={`flex justify-between items-center p-4 rounded-md ${
-                    transaction.type === "credit"
-                      ? "bg-green-500/20"
-                      : "bg-red-500/20"
-                  }`}
-                >
-                  <div className="flex flex-col">
-                    <span className="text-lg">
-                      {transaction.type}
-                    </span>
-                    {transaction.source}
-                    <span className="text-sm text-gray-400">
-                      {transaction.date.toLocaleDateString()}
-                    </span>
-                  </div>
-                  <span className="text-lg font-bold">
-                    ₹{transaction.amount.toFixed(2)}
-                  </span>
+        <div className="mt-8 p-6 md:p-8 rounded-3xl backdrop-blur-xl bg-white/10 border border-white/20 shadow-lg shadow-black/30 transform transition-all duration-300">
+      <h3 className="text-2xl font-bold mb-6 flex items-center gap-3 text-white">
+        <FaCoins className="text-purple-500 text-3xl animate-bounce" /> Transaction History
+      </h3>
+
+      <div className="space-y-4 max-h-64 md:max-h-96 rounded-3xl overflow-y-auto scrollbar-thin scrollbar-thumb-white/20">
+        {transactions.length > 0 ? (
+          transactions.map((transaction, index) => (
+            <div
+              key={index}
+              className={`flex justify-between items-center p-5 rounded-xl shadow-md transition-all duration-500 transform  ${
+                transaction.type === "credit"
+                  ? "bg-green-400/20 border border-green-300/30"
+                  : "bg-red-500/20 border border-red-400/30"
+              }`}
+            >
+              <div className="flex items-center gap-3">
+                {transaction.type === "credit" ? (
+                  <FaArrowDown className="text-green-400 text-2xl animate-pulse" />
+                ) : (
+                  <FaArrowUp className="text-red-400 text-2xl animate-pulse" />
+                )}
+                <div className="flex flex-col">
+                  <span className="text-lg font-semibold text-white">{transaction.type.toUpperCase()}</span>
+                  <span className="text-gray-300">{transaction.source}</span>
+                  <span className="text-sm text-gray-400">{transaction.date.toLocaleString()}</span>
                 </div>
-              ))
-            ) : (
-              <p className="text-gray-400 text-center">No transactions yet.</p>
-            )}
-          </div>
-        </div>
+              </div>
+              <span className="text-lg font-bold text-white">₹{transaction.amount.toFixed(2)}</span>
+            </div>
+          ))
+        ) : (
+          <p className="text-gray-400 text-center">No transactions yet.</p>
+        )}
+      </div>
+    </div>
       </div>
     </div>
   );

@@ -14,6 +14,7 @@ const ProfilePage = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [verificationStatus, setVerificationStatus] = useState("");
   const [isSaving, setIsSaving] = useState(false); // New state for tracking save operation
+  const [showPhoneInput, setShowPhoneInput] = useState(false); // Track whether to show phone input
 
   if (loading) {
     return (
@@ -64,6 +65,20 @@ const ProfilePage = () => {
     }
   };
 
+  const handleAddPhone = () => {
+    // Initialize phone data with empty values
+    setProfileData({
+      ...profileData,
+      phone: {
+        countryCode: "",
+        number: "",
+        fullNumber: "",
+      },
+    });
+    setShowPhoneInput(true); // Show the phone input immediately
+    setIsEditing(true); // Enable editing mode
+  };
+
   return (
     <div className="min-h-screen z-10 bg-black text-white sm:py-16 md:py-20 relative overflow-hidden">
       <BackgroundEffect />
@@ -82,30 +97,52 @@ const ProfilePage = () => {
             isEditing={isEditing}
             setProfileData={setProfileData}
           />
-                <CustomPhoneInput
-            value={{
-              countryCode: profileData.phone?.countryCode || "",
-              number: profileData.phone?.number || "",
-              fullNumber: profileData.phone?.fullNumber || ""
-            }}
-            isEditing={isEditing}
-            onChange={(phoneData: { countryCode: string; number: string; fullNumber: string }) => {
-              setProfileData({
-                ...profileData,
-                phone: {
-                  countryCode: phoneData.countryCode,
-                  number: phoneData.number,
-                  fullNumber: phoneData.fullNumber
-                }
-              });
-            }}
-          />
+
+          {/* Phone Section */}
+          {isEditing ? (
+            // Editing Mode
+            showPhoneInput || profileData.phone?.number ? (
+              <CustomPhoneInput
+                value={{
+                  countryCode: profileData.phone?.countryCode || "",
+                  number: profileData.phone?.number || "",
+                  fullNumber: profileData.phone?.fullNumber || "",
+                }}
+                isEditing={isEditing}
+                onChange={(phoneData: { countryCode: string; number: string; fullNumber: string }) => {
+                  setProfileData({
+                    ...profileData,
+                    phone: {
+                      countryCode: phoneData.countryCode,
+                      number: phoneData.number,
+                      fullNumber: phoneData.fullNumber,
+                    },
+                  });
+                }}
+              />
+            ) : (
+              <div className="flex justify-start">
+                <Button
+                  text="Add Phone Number"
+                  onClick={handleAddPhone}
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                />
+              </div>
+            )
+          ) : (
+        
+            profileData.phone?.number && (
+              <div className="text-gray-400">
+                Phone: {profileData.phone.fullNumber}
+              </div>
+            )
+          )}
+
           <SocialLinksSection
             profileData={profileData}
             isEditing={isEditing}
             setProfileData={setProfileData}
           />
-    
           {isEditing && (
             <div className="flex justify-end mt-4">
               <Button

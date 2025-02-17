@@ -9,7 +9,7 @@ interface CustomPhoneInputProps {
 }
 
 const CustomPhoneInput: React.FC<CustomPhoneInputProps> = ({ value, onChange, isEditing }) => {
-    const dropdownStyles = `
+  const dropdownStyles = `
     .react-tel-input .country-list {
       background-color: black !important;
       color: white !important;
@@ -29,7 +29,7 @@ const CustomPhoneInput: React.FC<CustomPhoneInputProps> = ({ value, onChange, is
     }
   `;
   return (
-<div className="w-full">
+    <div className="w-full">
       <style>{dropdownStyles}</style>
       <label className="block text-sm font-medium text-gray-200 mb-2">
         Phone Number
