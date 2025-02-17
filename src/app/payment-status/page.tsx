@@ -1,15 +1,17 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { toast } from "sonner"; // Assuming you're using Sonner for notifications
 import { FaCheckCircle, FaTimesCircle } from "react-icons/fa"; // Icons
 import BackgroundEffect from "@/components/Background";
+import { Suspense } from "react"; // Import Suspense
 
 const PaymentStatusPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [paymentStatus, setPaymentStatus] = useState<"success" | "failure" | null>(null);
   const [message, setMessage] = useState("");
-  const searchParams = useSearchParams();
+  const searchParams = useSearchParams(); // This now works within a Suspense boundary
   const router = useRouter();
 
   useEffect(() => {
@@ -17,7 +19,6 @@ const PaymentStatusPage = () => {
       try {
         setIsLoading(true);
         const orderId = searchParams.get("order_id");
-
         if (!orderId) {
           throw new Error("Order ID is missing");
         }
@@ -30,13 +31,10 @@ const PaymentStatusPage = () => {
           },
           body: JSON.stringify({ order_id: orderId }),
         });
-
         const data = await response.json();
-
         if (!response.ok) {
           throw new Error(data.error || "Failed to fetch payment status");
         }
-
         if (data.success) {
           setPaymentStatus("success");
           setMessage("Payment was successful! Your wallet has been updated.");
@@ -53,7 +51,6 @@ const PaymentStatusPage = () => {
         setIsLoading(false);
       }
     };
-
     checkPaymentStatus();
   }, [searchParams]);
 
@@ -93,4 +90,13 @@ const PaymentStatusPage = () => {
   );
 };
 
-export default PaymentStatusPage;
+// Wrap the component in a Suspense boundary
+const PaymentStatusPageWithSuspense = () => {
+  return (
+    <Suspense fallback={<div className="flex items-center justify-center h-screen">Loading...</div>}>
+      <PaymentStatusPage />
+    </Suspense>
+  );
+};
+
+export default PaymentStatusPageWithSuspense;
