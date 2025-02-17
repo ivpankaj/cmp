@@ -97,7 +97,8 @@ const WalletPage = () => {
           customerId: `user_${profileData?.name}${Date.now()}`,
           customerName: profileData?.name,
           customerEmail: profileData?.email,
-          customerPhone: "null",
+          customerPhone: Math.floor(1000000000 + Math.random() * 9000000000).toString(),
+
         }),
       });
       if (!response.ok) {
