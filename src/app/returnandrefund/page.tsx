@@ -13,7 +13,7 @@ const ReturnRefundPolicy = () => {
         <div className="text-center mb-12">
           <h1 className="text-5xl font-bold mb-4">Return and Refund Policy</h1>
           <p className="text-gray-400 text-lg">
-            Last Updated: October 20, 2023
+            Last Updated: Jan 20, 2025
           </p>
         </div>
 
@@ -157,18 +157,7 @@ const ReturnRefundPolicy = () => {
             </p>
           </section>
 
-          {/* Section 10: Contact Us */}
-          <section>
-            <h2 className="text-3xl font-bold mb-6">10. Contact Us</h2>
-            <p className="text-gray-300 leading-relaxed">
-              If you have any questions or concerns about this Return and Refund
-              Policy, please contact us at:
-              <br />
-              Email: support@cookmypapers.com
-              <br />
-              Address: 123 Tech Lane, Bangalore, India
-            </p>
-          </section>
+        
         </div>
       </div>
     </div>

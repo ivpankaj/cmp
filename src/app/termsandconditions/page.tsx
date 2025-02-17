@@ -13,7 +13,7 @@ const TermsAndConditions = () => {
         <div className="text-center mb-12">
           <h1 className="text-5xl font-bold mb-4">Terms and Conditions</h1>
           <p className="text-gray-400 text-lg">
-            Last Updated: October 20, 2023
+            Last Updated: Jan 20, 2025
           </p>
         </div>
 
@@ -166,18 +166,7 @@ const TermsAndConditions = () => {
             </p>
           </section>
 
-          {/* Section 12: Contact Us */}
-          <section>
-            <h2 className="text-3xl font-bold mb-6">12. Contact Us</h2>
-            <p className="text-gray-300 leading-relaxed">
-              If you have any questions or concerns about these Terms, please
-              contact us at:
-              <br />
-              Email: support@cookmypapers.com
-              <br />
-              Address: 123 Tech Lane, Bangalore, India
-            </p>
-          </section>
+       
         </div>
       </div>
     </div>

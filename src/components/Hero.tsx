@@ -4,6 +4,7 @@ import BackgroundEffect from "./Background";
 import Button from "@/mini component/Button";
 import BlackButton from "@/mini component/BlackButton";
 import MouseScroll from "@/mini component/MouseScroll";
+import Link from "next/link";
 
 const HeroSection = () => {
   return (
@@ -24,12 +25,13 @@ const HeroSection = () => {
 
             <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto animate-fade-in-up animation-delay-600">
               Transform your digital presence with our cutting-edge solutions
-              and premium design aesthetics.
+              and premium tech tools.
             </p>
 
             <div className="flex justify-center space-x-4 animate-fade-in-up animation-delay-800">
               <Button text="Get Started" />
-              <BlackButton text="Learn More" />
+            <Link href="/tool">
+            <BlackButton text="Explore tools" /></Link>
             </div>
           </div>
         </div>

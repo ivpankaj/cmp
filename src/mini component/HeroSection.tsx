@@ -9,8 +9,8 @@ import BackgroundEffect from "@/components/Background";
 interface HeroSectionProps {
   title: string[];
   subtitle: string;
-  buttonText1: string;
-  buttonText2: string;
+  buttonText1?: string;
+  buttonText2?: string;
 }
 
 const HeroSection: React.FC<HeroSectionProps> = ({ title, subtitle, buttonText1, buttonText2 }) => {

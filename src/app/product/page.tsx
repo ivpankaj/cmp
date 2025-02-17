@@ -4,6 +4,7 @@ import { products } from "@/data/product";
 import HeroSection from "@/mini component/HeroSection";
 import { Glasses, HammerIcon, StampIcon } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 import {
   FaCheckCircle,
@@ -32,26 +33,21 @@ const ProductPage = () => {
       description: "Grow your business with tools that adapt to your needs.",
     },
   ];
-
+  const phoneNumber = "+919911064724"; // Replace with your phone number
+  const message = encodeURIComponent("Hii Team , cookmypapers !! I have a question related to product!"); // Pre-filled message
+  const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
   return (
     <>
       <HeroSection
-        title={["Product"]}
-        subtitle="Transform your digital presence with our cutting-edge solutions and premium design aesthetics."
-        buttonText1="Show Services"
-        buttonText2="Learn More"
+        title={["Products"]}
+        subtitle="Explore Our tech tools and Services which will help you to grow your works."
+        
       />
-      <div className="min-h-screen bg-black text-white py-20 relative overflow-hidden">
+      <div className="min-h-screen bg-black text-white py-20 relative overflow-hidden z-10">
         <BackgroundEffect />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <section className="mb-20 text-center">
-            <p className="text-gray-400 max-w-3xl mx-auto">
-              Discover our innovative suite of products designed to elevate your
-              business. From design tools to analytics dashboards, we have
-              everything you need to succeed.
-            </p>
-          </section>
+       
 
           {/* Section 2: Featured Products */}
           <section className="mb-20">
@@ -98,7 +94,7 @@ const ProductPage = () => {
           {/* Section 3: Why Choose Our Products */}
           <section className="mb-20">
             <h2 className="text-4xl font-bold text-center mb-8">
-              Why Choose Our Products?
+              Why Choose Our Services?
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {benefits.map((benefit, index) => (
@@ -153,37 +149,6 @@ const ProductPage = () => {
             </div>
           </section>
 
-          {/* Section 5: 3D Effect Showcase */}
-          <section className="mb-20">
-            <h2 className="text-4xl font-bold text-center mb-8">
-              Experience the Future
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div>
-                <Image
-                 height={100}
-                 width={100}
-                  src="/images/3d-product.jpg" // Replace with actual image path
-                  alt="3D Product"
-                  className="w-full h-96 object-cover rounded-xl shadow-2xl transform hover:rotate-3 hover:scale-105 transition-all duration-300"
-                />
-              </div>
-              <div className="flex flex-col justify-center">
-                <h3 className="text-3xl font-bold mb-4">
-                  Immerse Yourself in Innovation
-                </h3>
-                <p className="text-gray-400 mb-6">
-                  Our products leverage cutting-edge 3D technologies to provide
-                  immersive experiences. Whether you&lsquo;re designing,
-                  developing, or analyzing, our tools bring your ideas to life.
-                </p>
-                <button className="px-8 py-4 bg-white text-black font-medium rounded-full hover:bg-gray-200 transform hover:scale-105 transition-all duration-300">
-                  Learn More <FaArrowRight className="inline ml-2" />
-                </button>
-              </div>
-            </div>
-          </section>
-
           {/* Section 6: Call to Action */}
           <section className="text-center">
             <h2 className="text-4xl font-bold mb-6">
@@ -193,9 +158,10 @@ const ProductPage = () => {
               Explore our products and discover how they can transform your
               workflow and drive success.
             </p>
-            <button className="px-8 py-4 bg-white text-black font-medium rounded-full hover:bg-gray-200 transform hover:scale-105 transition-all duration-300">
-              Get Started <FaArrowRight className="inline ml-2" />
-            </button>
+          <Link href={whatsappUrl}>
+          <button className="px-8 py-4 bg-white text-black font-medium rounded-full hover:bg-gray-200 transform hover:scale-105 transition-all duration-300">
+              Send Us Your Idea <FaArrowRight className="inline ml-2" />
+            </button></Link>
           </section>
         </div>
       </div>

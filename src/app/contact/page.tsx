@@ -5,13 +5,12 @@ import React from 'react'
 const page = () => {
   return (
     <div>
-            <HeroSection
+      <HeroSection
         title={["Contact"]}
-        subtitle="Transform your digital presence with our cutting-edge solutions and premium design aesthetics."
-        buttonText1="Show Services"
-        buttonText2="Learn More"
+        subtitle="Get in Touch with Us"
+       
       />
-         <ContactPage />
+      <ContactPage />
     </div>
   )
 }

@@ -4,9 +4,9 @@
 export const products = [
     {
       id: 1,
-      name: "Pro Design Suite",
-      description: "A powerful design tool for creating stunning visuals.",
-      price: "$49.99",
+      name: "Website Building",
+      description: "Let us create your website with perfection.",
+      price: "Starting from just ₹ 999/.",
       image: "/images/product-1.jpg", // Replace with actual image path
       features: [
         "AI-Powered Tools",
@@ -16,23 +16,23 @@ export const products = [
     },
     {
       id: 2,
-      name: "DevOps Toolkit",
+      name: "Research Papers (For Students)",
       description: "Streamline your development and deployment processes.",
-      price: "$79.99",
+      price: "₹ 59",
       image: "/images/product-2.jpg", // Replace with actual image path
       features: [
-        "CI/CD Pipelines",
-        "Automated Testing",
-        "Scalable Infrastructure",
+        "Accurate Information",
+        "Made by high quality professors",
+        "Quickest and fastest",
       ],
     },
     {
       id: 3,
-      name: "Analytics Dashboard",
-      description: "Gain insights into your business with advanced analytics.",
-      price: "$59.99",
+      name: "Resume Builder",
+      description: "Build your ATS friendly resume which will help you to lend jobs.",
+      price: "₹ 10/.",
       image: "/images/product-3.jpg",
-      features: ["Real-Time Data", "Custom Reports", "AI Predictions"],
+      features: ["High Quality", "Less chances of rejections", "ATS protected"],
     },
   ];
 

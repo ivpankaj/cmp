@@ -1,5 +1,6 @@
 "use client";
 import BackgroundEffect from "@/components/Background";
+import MainHeading from "@/mini component/Main_Heading";
 import React from "react";
 import { FaArrowRight } from "react-icons/fa";
  // Import the BackgroundEffect component
@@ -7,7 +8,7 @@ import { FaArrowRight } from "react-icons/fa";
 const ToolPage = () => {
   const tools = [
     {
-      category: "Document Tools",
+      category: "Tech Tools",
       items: [
         { id: 1, name: "Convert PDF to Word", description: "Easily convert PDF files into editable Word documents.", icon: "📄" },
         { id: 2, name: "Image to PDF", description: "Combine multiple images into a single PDF file.", icon: "🖼️" },
@@ -54,17 +55,11 @@ const ToolPage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-black text-white py-20 relative overflow-hidden">
+    <div className="min-h-screen bg-black text-white py-20 relative overflow-hidden z-10">
       <BackgroundEffect />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section 1: Hero Section */}
-        <section className="mb-20 text-center">
-          <h1 className="text-5xl font-bold mb-6">Tech Tools</h1>
-          <p className="text-gray-400 max-w-3xl mx-auto">
-            Explore our collection of free tools designed to simplify your workflow. From document management to coding utilities, we&apos;ve got you covered.
-          </p>
-        </section>
+ <MainHeading mainText="Explore tools"/>
 
         {/* Section 2: Tool Categories */}
         {tools.map((category) => (
@@ -95,7 +90,7 @@ const ToolPage = () => {
             We&apos;re constantly adding new tools to help you work smarter. Stay tuned for updates!
           </p>
           <button className="px-8 py-4 bg-white text-black font-medium rounded-full hover:bg-gray-200 transform hover:scale-105 transition-all duration-300">
-            Explore More <FaArrowRight className="inline ml-2" />
+            Stay Tunes for more  <FaArrowRight className="inline ml-2" />
           </button>
         </section>
       </div>

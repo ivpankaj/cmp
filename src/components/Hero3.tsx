@@ -4,22 +4,25 @@ import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer } from "recharts";
 import BackgroundEffect from "./Background";
 import Button from "@/mini component/Button";
 import { chartData, gridData } from "@/data/grid_chart";
+import Link from "next/link";
 
 const DataStatisticsSection = () => {
   const [animatedStats, setAnimatedStats] = useState({
     projects: 0,
-    clients: 0,
+    users: 0,
     satisfaction: 0,
     revenue: 0,
   });
 
   const finalStats = {
-    projects: 250,
-    clients: 120,
+    projects: 25,
+    users: 120,
     satisfaction: 98,
     revenue: 15,
   };
-
+  const phoneNumber = "+919911064724"; // Replace with your phone number
+  const message = encodeURIComponent("Hii Team, cookmypapers !! , I have a question!"); // Pre-filled message
+  const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
   useEffect(() => {
     const animationDuration = 2000;
     const steps = 60;
@@ -39,9 +42,9 @@ const DataStatisticsSection = () => {
             Math.floor((currentStep / steps) * finalStats.projects),
             finalStats.projects
           ),
-          clients: Math.min(
-            Math.floor((currentStep / steps) * finalStats.clients),
-            finalStats.clients
+          users: Math.min(
+            Math.floor((currentStep / steps) * finalStats.users),
+            finalStats.users
           ),
           satisfaction: Math.min(
             Math.floor((currentStep / steps) * finalStats.satisfaction),
@@ -73,7 +76,7 @@ const DataStatisticsSection = () => {
             },
             {
               label: "Happy Clients",
-              value: animatedStats.clients,
+              value: animatedStats.users,
               suffix: "+",
             },
             {
@@ -82,9 +85,9 @@ const DataStatisticsSection = () => {
               suffix: "%",
             },
             {
-              label: "Million Revenue",
+              label: "Resume Made",
               value: animatedStats.revenue,
-              suffix: "M+",
+              suffix: "",
             },
           ].map((stat, index) => (
             <div
@@ -101,7 +104,7 @@ const DataStatisticsSection = () => {
         </div>
         <div className="grid md:grid-cols-2 gap-8 mb-20">
           <div className="p-8 rounded-xl backdrop-blur-sm bg-white/10 border border-white/20">
-            <h3 className="text-2xl font-bold mb-6">Performance Growth</h3>
+            <h3 className="text-2xl font-bold mb-6">Our accuracy level arising (2025)</h3>
             <div className="h-64">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={chartData}>
@@ -115,7 +118,7 @@ const DataStatisticsSection = () => {
 
           {/* Grid Skills */}
           <div className="p-8 rounded-xl backdrop-blur-sm bg-white/10 border border-white/20">
-            <h3 className="text-2xl font-bold mb-6">Expertise Levels</h3>
+            <h3 className="text-2xl font-bold mb-6">Our Accuracy Levels</h3>
             <div className="grid grid-cols-2 gap-4">
               {gridData.map((item, index) => (
                 <div
@@ -133,14 +136,14 @@ const DataStatisticsSection = () => {
         </div>
         <div className="p-8 rounded-xl backdrop-blur-sm bg-white/10 border border-white/20 text-center">
           <h2 className="text-3xl font-bold mb-4">
-            Ready to Transform Your Business?
+            Ready to Transform Your Tech Idea?
           </h2>
           <p className="text-gray-300 mb-8 max-w-2xl mx-auto">
             Our data-driven approach combined with premium design solutions
             helps businesses achieve their digital transformation goals with
             measurable results.
           </p>
-          <Button text="Start your journey" />
+       <Link href={whatsappUrl}>   <Button text="Tell us what you want" /></Link>
         </div>
       </div>
     </div>

@@ -2,6 +2,7 @@
 import BackgroundEffect from "@/components/Background";
 import HeroSection from "@/mini component/HeroSection";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 import { FaCheckCircle, FaArrowRight } from "react-icons/fa";
 
@@ -9,21 +10,21 @@ const AboutUsPage = () => {
   const teamMembers = [
     {
       id: 1,
-      name: "John Doe",
+      name: "Pankaj Verma",
       role: "CEO & Founder",
       image: "/images/team-member-1.jpg", // Replace with actual image path
-      bio: "Visionary leader with over 10 years of experience in tech innovation.",
+      bio: "A tech hungry guy who wants to make universe great with technology",
     },
     {
       id: 2,
-      name: "Jane Smith",
+      name: "Teena Mohite",
       role: "CTO",
       image: "/images/team-member-2.jpg", // Replace with actual image path
-      bio: "Expert in software architecture and cloud solutions.",
+      bio: "Expert in software architecture.",
     },
     {
       id: 3,
-      name: "Alice Johnson",
+      name: "Piku Lata",
       role: "Lead Designer",
       image: "/images/team-member-3.jpg", // Replace with actual image path
       bio: "Passionate about creating user-centric designs.",
@@ -31,11 +32,11 @@ const AboutUsPage = () => {
   ];
 
   const milestones = [
-    { year: 2015, event: "Company Founded" },
-    { year: 2017, event: "First Major Client Partnership" },
-    { year: 2019, event: "Launched AI-Powered Solutions" },
-    { year: 2021, event: "Expanded to Global Markets" },
-    { year: 2023, event: "Reached 100+ Happy Clients" },
+    { year: 2025, event: "Company Founded" },
+    { year: 2025, event: "First Major Client Partnership" },
+    { year: 2025, event: "Launched AI-Powered Solutions" },
+    { year: 2025, event: "Expanded to Global Markets" },
+    { year: 2025, event: "Reached 100+ Happy Clients" },
   ];
 
   const values = [
@@ -45,16 +46,17 @@ const AboutUsPage = () => {
     "Customer Satisfaction",
     "Sustainability",
   ];
-
+  const phoneNumber = "+919911064724"; // Replace with your phone number
+  const message = encodeURIComponent("Hii Team, cookmypapers, !!  I want to know you more!"); // Pre-filled message
+  const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
   return (
     <>
       <HeroSection
-        title={["About.", "Create.", "Innovate."]}
+        title={[ "Our.", "Journey."]}
         subtitle="Transform your digital presence with our cutting-edge solutions and premium design aesthetics."
-        buttonText1="Get Started"
-        buttonText2="Learn More"
+    
       />
-      <div className="min-h-screen bg-black text-white py-20 relative overflow-hidden">
+      <div className="min-h-screen bg-black text-white py-20 relative overflow-hidden z-10">
         <BackgroundEffect />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <section className="mb-20 text-center">
@@ -72,12 +74,12 @@ const AboutUsPage = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div>
                 <p className="text-gray-400">
-                  Founded in 2015, CookMyPapers started as a small team of
+                  Founded in 2025, cookmypapers started as a small team of
                   developers with a vision to revolutionize the tech industry.
-                  Over the years, we have grown into a global company serving
-                  clients across industries. Our journey has been marked by
+                  Over the years, we have grown into a powerful website serving
+                  users across industries. Our journey has been marked by
                   innovation, collaboration, and a relentless focus on
-                  delivering value to our clients.
+                  delivering value to our users.
                 </p>
               </div>
               <div>
@@ -170,17 +172,17 @@ const AboutUsPage = () => {
                   and truly cares about delivering results.&quot;
                 </p>
                 <p className="text-white font-medium mt-4">
-                  - Sarah L., CEO of TechCorp
+                  - Ayush M, Software Developer at Apar Technologies
                 </p>
               </div>
               <div className="p-6 rounded-xl backdrop-blur-sm bg-white/10 border border-white/20 transform hover:scale-105 transition-all duration-300">
                 <p className="text-gray-400 italic">
-                  &quot;Their expertise in AI and cloud technologies helped us
+                  &quot;Their expertise in tech tools and website making helped us
                   scale our operations significantly. Highly recommend their
                   services!&quot;
                 </p>
                 <p className="text-white font-medium mt-4">
-                  - Michael R., CTO of InnovateX
+                  - Sandeep P, Web Developer
                 </p>
               </div>
             </div>
@@ -193,9 +195,10 @@ const AboutUsPage = () => {
               Whether you&quot;re looking for a partner to build your next
               project or want to join our team, we&quot;d love to hear from you!
             </p>
-            <button className="px-8 py-4 bg-white text-black font-medium rounded-full hover:bg-gray-200 transform hover:scale-105 transition-all duration-300">
+         <Link href={whatsappUrl}>
+         <button className="px-8 py-4 bg-white text-black font-medium rounded-full hover:bg-gray-200 transform hover:scale-105 transition-all duration-300">
               Get in Touch <FaArrowRight className="inline ml-2" />
-            </button>
+            </button></Link>
           </section>
         </div>
       </div>

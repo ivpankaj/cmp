@@ -38,7 +38,7 @@ const Footer: React.FC = () => {
         </div>
         {/* Copyright Section */}
         <div className="text-center text-gray-500 mt-12 text-sm sm:text-base">
-          <p>&copy; {new Date().getFullYear()} CookMyPapers. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} cookmypapers. All rights reserved.</p>
         </div>
       </div>
       {/* Toast Container for Notifications */}

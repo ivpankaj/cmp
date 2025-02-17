@@ -32,7 +32,7 @@ const InvitePage = () => {
   const handleWhatsAppInvite = useCallback(() => {
     const inviteLink = encodeURIComponent(getInviteLink());
     const message = encodeURIComponent(
-      "Hey! I've integrated this WhatsApp feature. Check it out: "
+      "Explore this tech website for all your digital works: "
     );
     window.open(`https://wa.me/?text=${message}${inviteLink}`, "_blank");
   }, [getInviteLink]);

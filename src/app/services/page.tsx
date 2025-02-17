@@ -19,10 +19,10 @@ const ServicePage = () => {
         buttonText1="Show Services"
         buttonText2="Learn More"
       />
-      <div className="min-h-screen bg-black text-white py-20 relative overflow-hidden">
+      <div className="min-h-screen bg-black text-white py-20 relative overflow-hidden z-10">
         <BackgroundEffect />
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
           <section className="mb-20">
             <Carousel
               showArrows={true}
@@ -53,7 +53,7 @@ const ServicePage = () => {
             </Carousel>
           </section>
 
-          <section className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-20">
+          <section className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-20 z-10">
             {stats.map((stat, index) => (
               <div
                 key={index}
@@ -65,7 +65,7 @@ const ServicePage = () => {
             ))}
           </section>
 
-          <section className="mb-20">
+          <section className="mb-20 z-10">
             <h2 className="text-4xl font-bold text-center mb-8">Our Work</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {workCards.map((card) => (
@@ -114,7 +114,7 @@ const ServicePage = () => {
 
           <section className="text-center">
             <h2 className="text-4xl font-bold mb-6">
-              Ready to Transform Your Business?
+              Ready to Transform Your Digital Works?
             </h2>
             <p className="text-gray-400 max-w-2xl mx-auto mb-8">
               Our team is ready to help you achieve your goals with innovative

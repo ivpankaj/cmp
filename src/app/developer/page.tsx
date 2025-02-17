@@ -3,6 +3,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { Code, Database, Globe, Smartphone, Server, Cloud, Layout, Shield } from 'lucide-react';
+import MainHeading from '@/mini component/Main_Heading';
+import Link from 'next/link';
 
 const DeveloperShowcase = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -94,10 +96,10 @@ const DeveloperShowcase = () => {
 
   useEffect(() => {
     const finalStats = {
-      projects: 150,
-      experience: 10,
-      clients: 80,
-      solutions: 200
+      projects: 15,
+      experience: 1,
+      clients: 8,
+      solutions: 20
     };
 
     const duration = 1000;
@@ -126,10 +128,13 @@ const DeveloperShowcase = () => {
 
     animate();
   }, []);
-
+  const phoneNumber = "+919911064724"; // Replace with your phone number
+  const message = encodeURIComponent("Hii Team, cookmypapers !! , I want to discuss a project!"); // Pre-filled message
+  const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
   return (
     <div className="min-h-screen bg-black text-white py-20 relative overflow-hidden">
       {/* Animated background elements */}
+      <MainHeading mainText='For' secondaryText='Students and' tertiaryText='Industry Professionals'/>
       <div className="absolute inset-0 opacity-20">
         <div className="absolute w-96 h-96 top-1/4 -left-48 bg-white rounded-full mix-blend-multiply filter blur-xl animate-blob" />
         <div className="absolute w-96 h-96 bottom-1/4 -right-48 bg-gray-200 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-2000" />
@@ -233,9 +238,10 @@ const DeveloperShowcase = () => {
             Let&apos;s collaborate to transform your ideas into powerful, scalable solutions
             that drive your business forward.
           </p>
-          <button className="px-8 py-4 bg-white text-black font-bold rounded-full hover:bg-gray-200 transform hover:scale-105 transition-all duration-200">
+     <Link href={whatsappUrl}>
+     <button className="px-8 py-4 bg-white text-black font-bold rounded-full hover:bg-gray-200 transform hover:scale-105 transition-all duration-200">
             Start a Project
-          </button>
+          </button></Link>
         </div>
       </div>
     </div>

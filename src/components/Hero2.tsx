@@ -5,6 +5,7 @@ import BackgroundEffect from "./Background";
 import Button from "@/mini component/Button";
 import { slides } from "@/data/slides";
 import Image from "next/image";
+import Link from "next/link";
 
 const CarouselSection = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -142,14 +143,14 @@ const CarouselSection = () => {
 
           <div className="relative p-8 rounded-xl backdrop-blur-sm bg-white/10 border border-white/20 transform hover:scale-105 transition-all duration-300">
             <div className="absolute -top-4 -left-4 w-24 h-24 bg-white/5 rounded-full filter blur-xl animate-pulse" />
-            <h2 className="text-4xl font-bold mb-6">Transform Your Vision</h2>
+            <h2 className="text-4xl font-bold mb-6">Transform Your Digital Works</h2>
             <p className="text-gray-300 mb-8">
               Experience the perfect blend of design and functionality. Our
-              premium solutions are crafted to elevate your digital presence and
+              premium tech tools are crafted to elevate your digital works and
               create lasting impressions.
             </p>
             <ul className="space-y-4 text-gray-300">
-              {["Premium Quality", "Modern Design", "Innovative Solutions"].map(
+              {["Premium Quality", "Accurate Tools", "Innovative Solutions"].map(
                 (item, index) => (
                   <li key={index} className="flex items-center space-x-3">
                     <span className="w-2 h-2 bg-white rounded-full" />
@@ -159,7 +160,8 @@ const CarouselSection = () => {
               )}
             </ul>
             <div className="mt-8">
-              <Button text="Learn More" />
+           <Link href="/product">
+           <Button text="See Our products" /></Link>
             </div>
           </div>
         </div>
