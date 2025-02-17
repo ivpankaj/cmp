@@ -94,7 +94,7 @@ const WalletPage = () => {
         body: JSON.stringify({
           orderId: `order_${Date.now()}`,
           orderAmount: parsedAmount,
-          customerId: `user_${profileData?.email}${Date.now()}`,
+          customerId: `user_${profileData?.name}${Date.now()}`,
           customerName: profileData?.name,
           customerEmail: profileData?.email,
           customerPhone: "null",
