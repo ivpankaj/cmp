@@ -3,13 +3,12 @@ import clientPromise from "@/app/lib/mongodb";
 
 export async function POST(request: Request) {
   try {
-    const { order_id, order_status } = await request.json();
+    const { order_id } = await request.json();
 
-    if (!order_id || !order_status) {
+    if (!order_id ) {
       return NextResponse.json({ error: "Missing required parameters" }, { status: 400 });
     }
 
-    // Fetch order details from your database or session
     const mongoClient = await clientPromise;
     const db = mongoClient.db(process.env.MONGODB_DB_NAME);
 
@@ -19,7 +18,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Order not found" }, { status: 404 });
     }
 
-    if (order_status === "SUCCESS") {
+    if (order_id) {
       // Update user's balance
       await db.collection("users").updateOne(
         { email: order.customerEmail },
