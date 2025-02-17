@@ -7,17 +7,19 @@ import BackgroundEffect from "@/components/Background";
 import { carouselItems, stats, workCards } from "@/data/service_data";
 import HeroSection from "@/mini component/HeroSection";
 import Image from "next/image";
+import Link from "next/link";
 
 const ServicePage = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
-
+  const phoneNumber = "+919911064724"; // Replace with your phone number
+  const message = encodeURIComponent("Hii Team, cookmypapers, !!  I have a question about services!"); // Pre-filled message
+  const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
   return (
     <>
       <HeroSection
         title={["Services."]}
         subtitle="Transform your digital presence with our cutting-edge solutions and premium design aesthetics."
-        buttonText1="Show Services"
-        buttonText2="Learn More"
+  
       />
       <div className="min-h-screen bg-black text-white py-20 relative overflow-hidden z-10">
         <BackgroundEffect />
@@ -91,29 +93,23 @@ const ServicePage = () => {
               ))}
             </div>
           </section>
-          <section className="mb-20">
-            <h2 className="text-4xl font-bold text-center mb-8">
-              Why Choose Us?
-            </h2>
-            <div className="space-y-4">
-              <div className="flex items-center space-x-4 text-gray-300">
-                <FaCheckCircle size={20} className="text-green-500" />
-                <span>Experienced and skilled team</span>
-              </div>
-              <div className="flex items-center space-x-4 text-gray-300">
-                <FaCheckCircle size={20} className="text-green-500" />
-                <span>Innovative and cutting-edge solutions</span>
-              </div>
-              <div className="flex items-center space-x-4 text-gray-300">
-                <FaCheckCircle size={20} className="text-green-500" />
-                <span>Customer-centric approach</span>
-              </div>
-              <div className="flex items-center space-x-4 text-gray-300">
-                <FaCheckCircle size={20} className="text-green-500" />
-                <span>Transparent communication</span>
-              </div>
-            </div>
-          </section>
+          <section className="mb-20 text-center">
+  <h2 className="text-4xl font-bold mb-8">Why Choose Us?</h2>
+  <div className="flex flex-col items-center max-w-xl mx-auto gap-4">
+    {[
+      "Experienced and skilled team",
+      "Quality cutting-edge solutions",
+      "Customer-centric approach",
+      "Transparent communication",
+    ].map((text, index) => (
+      <div key={index} className="flex items-center space-x-4 text-gray-300">
+        <FaCheckCircle size={24} className="text-green-500" />
+        <span className="text-lg">{text}</span>
+      </div>
+    ))}
+  </div>
+</section>
+
 
           <section className="text-center">
             <h2 className="text-4xl font-bold mb-6">
@@ -123,9 +119,10 @@ const ServicePage = () => {
               Our team is ready to help you achieve your goals with innovative
               technology solutions.
             </p>
-            <button className="px-8 py-4 bg-white text-black font-medium rounded-full hover:bg-gray-200 transform hover:scale-105 transition-all duration-300">
+      <Link href={whatsappUrl}>
+      <button className="px-8 py-4 bg-white text-black font-medium rounded-full hover:bg-gray-200 transform hover:scale-105 transition-all duration-300">
               Get Started <FaArrowRight className="inline ml-2" />
-            </button>
+            </button></Link>
           </section>
         </div>
       </div>

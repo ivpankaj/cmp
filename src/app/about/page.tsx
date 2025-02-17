@@ -1,35 +1,12 @@
 "use client";
 import BackgroundEffect from "@/components/Background";
 import HeroSection from "@/mini component/HeroSection";
-import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { FaCheckCircle, FaArrowRight } from "react-icons/fa";
 
 const AboutUsPage = () => {
-  const teamMembers = [
-    {
-      id: 1,
-      name: "Pankaj Verma",
-      role: "CEO & Founder",
-      image: "/images/team-member-1.jpg", // Replace with actual image path
-      bio: "A tech hungry guy who wants to make universe great with technology",
-    },
-    {
-      id: 2,
-      name: "Teena Mohite",
-      role: "CTO",
-      image: "/images/team-member-2.jpg", // Replace with actual image path
-      bio: "Expert in software architecture.",
-    },
-    {
-      id: 3,
-      name: "Piku Lata",
-      role: "Lead Designer",
-      image: "/images/team-member-3.jpg", // Replace with actual image path
-      bio: "Passionate about creating user-centric designs.",
-    },
-  ];
+
 
   const milestones = [
     { year: 2025, event: "Company Founded" },
@@ -69,30 +46,19 @@ const AboutUsPage = () => {
           </section>
 
           {/* Section 2: Our Story */}
-          <section className="mb-20">
-            <h2 className="text-4xl font-bold text-center mb-8">Our Story</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div>
-                <p className="text-gray-400">
-                  Founded in 2025, cookmypapers started as a small team of
-                  developers with a vision to revolutionize the tech industry.
-                  Over the years, we have grown into a powerful website serving
-                  users across industries. Our journey has been marked by
-                  innovation, collaboration, and a relentless focus on
-                  delivering value to our users.
-                </p>
-              </div>
-              <div>
-                <Image
-                 height={100}
-                 width={100}
-                  src="/images/about-us-story.jpg" // Replace with actual image path
-                  alt="Our Story"
-                  className="w-full h-96 object-cover rounded-xl"
-                />
-              </div>
-            </div>
-          </section>
+          <section className="mb-20 text-center">
+  <h2 className="text-4xl font-bold mb-8">Our Story</h2>
+  <div className="flex flex-col items-center max-w-3xl mx-auto">
+    <p className="text-gray-400">
+      Founded in 2025, cookmypapers started as a small team of developers with 
+      a vision to revolutionize the tech industry. Over the years, we have grown 
+      into a powerful website serving users across industries. Our journey has 
+      been marked by innovation, collaboration, and a relentless focus on delivering 
+      value to our users.
+    </p>
+  </div>
+</section>
+
 
           {/* Section 3: Milestones */}
           <section className="mb-20">
@@ -112,33 +78,7 @@ const AboutUsPage = () => {
             </div>
           </section>
 
-          {/* Section 4: Meet the Team */}
-          <section className="mb-20">
-            <h2 className="text-4xl font-bold text-center mb-8">
-              Meet the Team
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {teamMembers.map((member) => (
-                <div
-                  key={member.id}
-                  className="relative rounded-xl overflow-hidden bg-white/10 border border-white/20 transform hover:scale-105 transition-all duration-300"
-                >
-                  <Image
-                   height={100}
-                   width={100}
-                    src={member.image}
-                    alt={member.name}
-                    className="w-full h-48 object-cover"
-                  />
-                  <div className="p-6">
-                    <h3 className="text-xl font-bold mb-2">{member.name}</h3>
-                    <p className="text-gray-400 mb-2">{member.role}</p>
-                    <p className="text-gray-500">{member.bio}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
+      
 
           {/* Section 5: Our Values */}
           <section className="mb-20">

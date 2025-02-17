@@ -9,7 +9,7 @@ import React from "react";
 import {
   FaCheckCircle,
   FaArrowRight,
-  FaStar,
+
   FaShoppingCart,
 } from "react-icons/fa";
 
@@ -61,11 +61,13 @@ const ProductPage = () => {
                   className="relative rounded-xl overflow-hidden bg-white/10 border border-white/20 transform hover:scale-105 transition-all duration-300"
                 >
                   <Image
-                   height={100}
-                   width={100}
+                   height={500}
+                   width={500}
                     src={product.image}
                     alt={product.name}
-                    className="w-full h-48 object-cover"
+                    className="w-full object-cover"
+                    quality={100}
+                    priority
                   />
                   <div className="p-6">
                     <h3 className="text-xl font-bold mb-2">{product.name}</h3>
@@ -82,9 +84,10 @@ const ProductPage = () => {
                         </li>
                       ))}
                     </ul>
-                    <button className="mt-4 px-6 py-3 bg-white text-black font-medium rounded-full hover:bg-gray-200 transform hover:scale-105 transition-all duration-300">
-                      Add to Cart <FaShoppingCart className="inline ml-2" />
-                    </button>
+                 <Link href={whatsappUrl}>
+                 <button className="mt-4 px-6 py-3 bg-white text-black font-medium rounded-full hover:bg-gray-200 transform hover:scale-105 transition-all duration-300">
+                      Contact us <FaShoppingCart className="inline ml-2" />
+                    </button></Link>
                   </div>
                 </div>
               ))}
@@ -112,42 +115,6 @@ const ProductPage = () => {
             </div>
           </section>
 
-          {/* Section 4: Customer Reviews */}
-          <section className="mb-20">
-            <h2 className="text-4xl font-bold text-center mb-8">
-              Customer Reviews
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="p-6 rounded-xl backdrop-blur-sm bg-white/10 border border-white/20 transform hover:scale-105 transition-all duration-300">
-                <div className="flex items-center justify-center mb-4">
-                  {[...Array(5)].map((_, index) => (
-                    <FaStar key={index} size={20} className="text-yellow-500" />
-                  ))}
-                </div>
-                <p className="text-gray-400 italic">
-                  &lsquo;The Pro Design Suite has transformed the way we create
-                  visuals. It&apos;s intuitive and packed with features!&lsquo;
-                </p>
-                <p className="text-white font-medium mt-4">
-                  - Emily R., Designer
-                </p>
-              </div>
-              <div className="p-6 rounded-xl backdrop-blur-sm bg-white/10 border border-white/20 transform hover:scale-105 transition-all duration-300">
-                <div className="flex items-center justify-center mb-4">
-                  {[...Array(5)].map((_, index) => (
-                    <FaStar key={index} size={20} className="text-yellow-500" />
-                  ))}
-                </div>
-                <p className="text-gray-400 italic">
-                  &lsquo;The DevOps Toolkit is a game-changer. It streamlined
-                  our workflows and saved us countless hours.&lsquo;
-                </p>
-                <p className="text-white font-medium mt-4">
-                  - David K., Developer
-                </p>
-              </div>
-            </div>
-          </section>
 
           {/* Section 6: Call to Action */}
           <section className="text-center">

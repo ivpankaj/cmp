@@ -23,10 +23,10 @@ export const carouselItems = [
   ];
 
   export const stats = [
-    { label: "Projects Completed", value: "250+" },
+    { label: "Projects Completed", value: "25+" },
     { label: "Happy Clients", value: "120+" },
-    { label: "Years of Experience", value: "8+" },
-    { label: "Team Members", value: "50+" },
+    { label: "Years of Experience", value: "1+" },
+    { label: "Team Members", value: "10+" },
   ];
 
   export const workCards = [

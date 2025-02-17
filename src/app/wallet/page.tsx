@@ -138,8 +138,7 @@ const WalletPage = () => {
       });
       const data = await response.json();
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Failed to apply referral code");
+        throw new Error( "Not a valid code");
       }
 
       setBalance(data.newBalance);
@@ -255,7 +254,11 @@ const WalletPage = () => {
                 }
                 disabled={isProcessing || !referralCode.trim()}
               />
-              {showSuccessPopup && (
+           
+            </div>
+          </div>
+        </div>
+        {showSuccessPopup && (
              <div className="fixed inset-0 flex items-center justify-center z-50">
              <div className="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm"></div>
              <div className="bg-black p-6 rounded-lg shadow-lg z-10 text-center relative">
@@ -272,10 +275,6 @@ const WalletPage = () => {
              </div>
            </div>
               )}
-            </div>
-          </div>
-        </div>
-
         {/* Transaction History */}
         <div className="mt-8 p-6 md:p-8 rounded-3xl backdrop-blur-xl bg-white/10 border border-white/20 shadow-lg shadow-black/30 transform transition-all duration-300">
           <h3 className="text-2xl font-bold mb-6 flex items-center gap-3 text-white">
