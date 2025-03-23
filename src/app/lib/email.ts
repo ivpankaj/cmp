@@ -47,7 +47,7 @@ export async function sendVerificationEmail(
         <p>&copy; 2025 cookmypapers All rights reserved.</p>
         <p>
           If you have any questions, feel free to reach out to us at 
-          <a href="mailto:cookmypapers@gmail.com" style="color: #3498db; text-decoration: none;">cookmypapers@gmail.com</a>.
+          <a href="mailto:mohiteteena@gmail.com" style="color: #3498db; text-decoration: none;">mohiteteena@gmail.com</a>.
         </p>
       </div>
     </div>
