@@ -13,7 +13,7 @@ const ToolPage = () => {
         { id: 1, name: "Convert PDF to Word", description: "Easily convert PDF files into editable Word documents.", icon: "📄", path: "/pdf-to-word" },
         { id: 2, name: "Image to PDF", description: "Combine multiple images into a single PDF file.", icon: "🖼️", path: "/image-to-pdf" },
         { id: 3, name: "Merge PDFs", description: "Merge multiple PDF files into one document.", icon: "📚", path: "/combine-pdf" },
-        { id: 4, name: "Split PDF", description: "Split a PDF file into smaller parts.", icon: "✂️", path: "/tools/split-pdf" },
+        { id: 4, name: "Split PDF", description: "Split a PDF file into smaller parts.", icon: "✂️", path: "/split-pdf" },
       ],
     },
     {
@@ -47,7 +47,7 @@ const ToolPage = () => {
       category: "Miscellaneous Tools",
       items: [
         { id: 17, name: "QR Code Generator", description: "Create QR codes for URLs, text, or contact info.", icon: "📱", path: "/qr-generator" },
-        { id: 18, name: "Password Generator", description: "Generate strong and secure passwords.", icon: "🔑", path: "/tools/password-generator" },
+        { id: 18, name: "Password Generator", description: "Generate strong and secure passwords.", icon: "🔑", path: "/password-generate" },
         { id: 19, name: "Unit Converter", description: "Convert units like length, weight, and temperature.", icon: "⚖️", path: "/tools/unit-converter" },
         { id: 20, name: "Color Picker", description: "Pick colors and get their HEX, RGB, or HSL values.", icon: "🎨", path: "/tools/color-picker" },
       ],
