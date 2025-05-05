@@ -3,7 +3,6 @@ import React from "react";
 
 import Button from "@/mini component/Button";
 import BlackButton from "@/mini component/BlackButton";
-import MouseScroll from "@/mini component/MouseScroll";
 import BackgroundEffect from "@/components/Background";
 
 interface HeroSectionProps {
@@ -44,9 +43,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ title, subtitle, buttonText1,
           </div>
         </div>
       </div>
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-        <MouseScroll />
-      </div>
+  
     </div>
   );
 };

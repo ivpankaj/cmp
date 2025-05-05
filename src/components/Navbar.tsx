@@ -155,7 +155,7 @@ const Navbar: React.FC = () => {
         className={`fixed w-full transition-all duration-500 ease-in-out z-50 ${
           scrolled
             ? "bg-black/90 backdrop-blur-lg shadow-2xl"
-            : "bg-transparent"
+            : "bg-black"
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -195,7 +195,7 @@ const Navbar: React.FC = () => {
                   />
                 </button>
                 {isDropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-56 rounded-xl shadow-2xl bg-white/10 backdrop-blur-lg transform transition-all duration-300 origin-top">
+                  <div className="absolute right-0 mt-2 w-56 rounded-xl shadow-2xl bg-black backdrop-blur-lg transform transition-all duration-300 origin-top">
                     {dropdownItems.map((item) => (
                       <Link
                         key={item.id}

@@ -1,144 +1,127 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import React, { useState, useEffect, useRef } from "react";
-import BackgroundEffect from "./Background";
-import Button from "@/mini component/Button";
 import { slides } from "@/data/slides";
 import Image from "next/image";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
+import Button from "@/mini component/Button";
 
-const CarouselSection = () => {
+const SimpleCarousel = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [isDragging, setIsDragging] = useState(false);
-  const [startPos, setStartPos] = useState(0);
-  const [currentTranslate, setCurrentTranslate] = useState(0);
-  const [prevTranslate, setPrevTranslate] = useState(0);
-  const dragRef = useRef<HTMLDivElement>(null);
-  const animationRef = useRef(null);
+  const slideRef = useRef<HTMLDivElement>(null);
+  const startX = useRef<number>(0);
+  const endX = useRef<number>(0);
 
-  // Auto-play functionality
+  const handlePrev = () => {
+    setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
+  };
+
+  const handleNext = () => {
+    setCurrentSlide((prev) => (prev + 1) % slides.length);
+  };
+
   useEffect(() => {
-    if (!isDragging) {
-      const interval = setInterval(() => {
-        setCurrentSlide((prev) => (prev + 1) % slides.length);
-      }, 5000);
-      return () => clearInterval(interval);
-    }
-  }, [isDragging]);
+    const interval = setInterval(() => {
+      handleNext();
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
 
-  const handleDragStart = (e: any) => {
-    setIsDragging(true);
-    setStartPos(e.type.includes('mouse') ? e.pageX : e.touches[0].clientX);
-    if (animationRef.current !== null) {
-      cancelAnimationFrame(animationRef.current);
-    }
+  const handleTouchStart = (e: React.TouchEvent) => {
+    startX.current = e.touches[0].clientX;
   };
 
-  const handleDragMove = (e: any) => {
-    if (!isDragging) return;
-
-    const currentPosition = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
-    const currentDistance = currentPosition - startPos;
-    const translate = prevTranslate + currentDistance;
-
-    setCurrentTranslate(translate);
-
-    // Apply the translation through transform
-    if (dragRef.current) {
-      dragRef.current.style.transform = `translateX(${translate}px)`;
-    }
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    endX.current = e.changedTouches[0].clientX;
+    handleSwipe();
   };
 
-  const handleDragEnd = () => {
-    setIsDragging(false);
-    const movedBy = currentTranslate - prevTranslate;
+  const handleMouseDown = (e: React.MouseEvent) => {
+    startX.current = e.clientX;
+  };
 
-    // If moved enough negative (left), move to next slide
-    if (movedBy < -100 && currentSlide < slides.length - 1) {
-      setCurrentSlide(currentSlide + 1);
-    }
-    // If moved enough positive (right), move to previous slide
-    else if (movedBy > 100 && currentSlide > 0) {
-      setCurrentSlide(currentSlide - 1);
-    }
+  const handleMouseUp = (e: React.MouseEvent) => {
+    endX.current = e.clientX;
+    handleSwipe();
+  };
 
-    // Reset translations
-    setCurrentTranslate(0);
-    setPrevTranslate(0);
-
-    if (dragRef.current) {
-      dragRef.current.style.transform = 'translateX(0)';
+  const handleSwipe = () => {
+    const distance = endX.current - startX.current;
+    if (distance > 50) {
+      handlePrev();
+    } else if (distance < -50) {
+      handleNext();
     }
   };
 
   return (
-    <div className="min-h-screen bg-black z-10 text-white py-20 relative overflow-hidden">
-      <BackgroundEffect />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <div className="relative h-[600px] perspective-1000">
-            <div
-              ref={dragRef}
-              className="relative w-full h-full cursor-grab active:cursor-grabbing"
-              onMouseDown={handleDragStart}
-              onMouseMove={handleDragMove}
-              onMouseUp={handleDragEnd}
-              onMouseLeave={handleDragEnd}
-              onTouchStart={handleDragStart}
-              onTouchMove={handleDragMove}
-              onTouchEnd={handleDragEnd}
-            >
-              {slides.map((slide, index) => (
-                <div
-                  key={index}
-                  className={`absolute inset-0 transition-all duration-500 ease-out rounded-xl overflow-hidden backdrop-blur-sm bg-white/10 border border-white/20
-                    ${index === currentSlide
-                      ? "opacity-100 transform-none"
-                      : index < currentSlide
-                        ? "opacity-0 -translate-x-full"
-                        : "opacity-0 translate-x-full"
-                    }`}
-                  style={{
-                    transform: `translateZ(${index === currentSlide ? "50px" : "0px"
-                      }) 
-                              rotateY(${index === currentSlide ? "0deg" : "45deg"
-                      })`,
-                    pointerEvents: isDragging ? 'none' : 'auto'
-                  }}
-                >
-                  <Image
-                    src={slide.image}
-                    alt="Optimized Image"
-                    width={500}
-                    height={300}
-                    className="object-cover w-full"
-                    priority // Ensures it loads quickly
-                  />
-
-                  <div className="p-6">
-                    <h3 className="text-2xl font-bold mb-2">{slide.title}</h3>
-                    <p className="text-gray-300">{slide.description}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
-              {slides.map((_, index) => (
-                <button
-                  key={index}
-                  className={`w-3 h-3 rounded-full transition-all duration-300 
-                    ${index === currentSlide
-                      ? "bg-white scale-125"
-                      : "bg-white/50"
-                    }`}
-                  onClick={() => setCurrentSlide(index)}
+    <div className="w-full max-w-7xl mx-auto py-10 relative">
+      {/* Main container with flex layout */}
+      <div className="flex flex-col md:flex-row gap-8 items-center">
+        {/* Left side - Carousel */}
+        <div className="w-full md:w-1/2">
+          <div
+            className="relative h-96 rounded-xl overflow-hidden"
+            ref={slideRef}
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
+            onMouseDown={handleMouseDown}
+            onMouseUp={handleMouseUp}
+          >
+            {slides.map((slide, index) => (
+              <div
+                key={index}
+                className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
+                  index === currentSlide ? "opacity-100" : "opacity-0"
+                }`}
+              >
+                <Image
+                  src={slide.image}
+                  alt={slide.title}
+                  layout="fill"
+                  objectFit="cover"
+                  className="rounded-xl"
+                  priority={index === currentSlide}
                 />
-              ))}
-            </div>
+                <div className="absolute bottom-0 left-0 w-full p-4 bg-black/50 text-white rounded-b-xl">
+                  <h3 className="text-xl font-bold">{slide.title}</h3>
+                  <p>{slide.description}</p>
+                </div>
+              </div>
+            ))}
+
+            {/* Arrow buttons */}
+            <button
+              onClick={handlePrev}
+              className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/30 text-white p-2 rounded-full hover:bg-white/50"
+            >
+              <ChevronLeft size={24} />
+            </button>
+            <button
+              onClick={handleNext}
+              className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/30 text-white p-2 rounded-full hover:bg-white/50"
+            >
+              <ChevronRight size={24} />
+            </button>
           </div>
 
-          <div className="relative p-8 rounded-xl backdrop-blur-sm bg-white/10 border border-white/20 transform hover:scale-105 transition-all duration-300">
+          {/* Dots */}
+          <div className="flex justify-center mt-4 space-x-2">
+            {slides.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentSlide(index)}
+                className={`w-3 h-3 rounded-full ${
+                  index === currentSlide ? "bg-white" : "bg-gray-400"
+                }`}
+              />
+            ))}
+          </div>
+        </div>
+        
+        {/* Right side - Info box */}
+        <div className="w-full md:w-1/2">
+          <div className="relative p-8 rounded-xl backdrop-blur-sm bg-white/10 border border-white/20 transform hover:scale-105 transition-all duration-300 h-full">
             <div className="absolute -top-4 -left-4 w-24 h-24 bg-white/5 rounded-full filter blur-xl animate-pulse" />
             <h2 className="text-4xl font-bold mb-6">Transform Your Digital Works</h2>
             <p className="text-gray-300 mb-8">
@@ -158,7 +141,8 @@ const CarouselSection = () => {
             </ul>
             <div className="mt-8">
               <Link href="/product">
-                <Button text="See Our products" /></Link>
+                <Button text="See Our products" />
+              </Link>
             </div>
           </div>
         </div>
@@ -167,4 +151,4 @@ const CarouselSection = () => {
   );
 };
 
-export default CarouselSection;
+export default SimpleCarousel;

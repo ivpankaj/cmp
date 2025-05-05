@@ -10,8 +10,8 @@ export const menuItems = [
 
  export const dropdownItems = [
     { id: "products", label: "Products", href: "/product", icon: Box },
-    { id: "solutions", label: "Solutions", href: "/tool", icon: Lightbulb },
-    { id: "enterprise", label: "Enterprise", href: "/developer", icon: Building2 },
+    { id: "tools", label: "Tools", href: "/tool", icon: Lightbulb },
+    { id: "developer", label: "Developer", href: "/developer", icon: Building2 },
     { id: "wallet", label: "Wallet", href: "/wallet", icon: Wallet2 },
     { id: "invite", label: "Invite", href: "/invite", icon: IdCardIcon },
 

@@ -3,12 +3,11 @@ import React from "react";
 import BackgroundEffect from "./Background";
 import Button from "@/mini component/Button";
 import BlackButton from "@/mini component/BlackButton";
-import MouseScroll from "@/mini component/MouseScroll";
 import Link from "next/link";
 
 const HeroSection = () => {
   return (
-    <div className="relative min-h-screen  z-10 overflow-hidden bg-black">
+    <header className="relative min-h-screen  z-10 overflow-hidden bg-black">
       <BackgroundEffect />
       <div className="relative min-h-screen flex items-center justify-center px-4">
         <div className="max-w-6xl mx-auto text-center">
@@ -19,7 +18,7 @@ const HeroSection = () => {
                 Create.
               </span>
               <span className="inline-block animate-fade-in-up animation-delay-400">
-                Innovate.
+                Develop.
               </span>
             </h1>
 
@@ -36,10 +35,8 @@ const HeroSection = () => {
           </div>
         </div>
       </div>
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-        <MouseScroll />
-      </div>
-    </div>
+ 
+    </header>
   );
 };
 

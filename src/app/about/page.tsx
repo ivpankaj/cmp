@@ -1,4 +1,4 @@
-"use client";
+
 import BackgroundEffect from "@/components/Background";
 import HeroSection from "@/mini component/HeroSection";
 import Link from "next/link";
@@ -8,13 +8,7 @@ import { FaCheckCircle, FaArrowRight } from "react-icons/fa";
 const AboutUsPage = () => {
 
 
-  const milestones = [
-    { year: 2025, event: "Company Founded" },
-    { year: 2025, event: "First Major Client Partnership" },
-    { year: 2025, event: "Launched AI-Powered Solutions" },
-    { year: 2025, event: "Expanded to Global Markets" },
-    { year: 2025, event: "Reached 100+ Happy Clients" },
-  ];
+
 
   const values = [
     "Innovation",
@@ -60,23 +54,7 @@ const AboutUsPage = () => {
 </section>
 
 
-          {/* Section 3: Milestones */}
-          <section className="mb-20">
-            <h2 className="text-4xl font-bold text-center mb-8">
-              Our Milestones
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
-              {milestones.map((milestone) => (
-                <div
-                  key={milestone.year}
-                  className="p-6 rounded-xl backdrop-blur-sm bg-white/10 border border-white/20 transform hover:scale-105 transition-all duration-300 text-center"
-                >
-                  <h3 className="text-2xl font-bold">{milestone.year}</h3>
-                  <p className="text-gray-400 mt-2">{milestone.event}</p>
-                </div>
-              ))}
-            </div>
-          </section>
+      
 
       
 
