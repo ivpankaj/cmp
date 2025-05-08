@@ -10,10 +10,10 @@ const ContactUs: React.FC = () => {
         <p className="flex items-center space-x-2">
           <FaEnvelope />
           <a
-            href="mailto:mohiteteena@gmail.com"
+            href="mailto:imvpankaj@gmail.com"
             className="text-white hover:underline"
           >
-            Email: mohiteteena@gmail.com
+            Email: imvpankaj@gmail.com
           </a>
         </p>
 
@@ -21,10 +21,10 @@ const ContactUs: React.FC = () => {
         <p className="flex items-center space-x-2">
           <FaPhone />
           <a
-            href="tel:+918320301766"
+            href="tel:+919911064724"
             className="text-white hover:underline"
           >
-            Phone: +91 8320301766
+            Phone: +91 9911064724
           </a>
         </p>
 

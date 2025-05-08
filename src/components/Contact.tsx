@@ -16,12 +16,12 @@ const ContactPage = () => {
   const whatsappMessage = encodeURIComponent(
     "Hi! I'm interested in learning more about your services."
   );
-  const whatsappNumber = "+918320301766"; // Replace with your actual WhatsApp number
+  const whatsappNumber = "+919911064724"; // Replace with your actual WhatsApp number
   const emailSubject = encodeURIComponent("Inquiry about Services");
   const emailBody = encodeURIComponent(
     "Hi, cookmypapers\n\nI'm interested in learning more about your services.\n\nBest regards"
   );
-  const emailAddress = "mohiteteena@gmail.com"; // Replace with your actual email
+  const emailAddress = "imvpankaj@gmail.com"; // Replace with your actual email
 
   return (
     <div className="min-h-screen bg-black text-white py-20 relative overflow-hidden z-10">

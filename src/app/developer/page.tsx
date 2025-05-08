@@ -128,7 +128,7 @@ const DeveloperShowcase = () => {
 
     animate();
   }, []);
-  const phoneNumber = "+918320301766"; // Replace with your phone number
+  const phoneNumber = "+919911064724"; // Replace with your phone number
   const message = encodeURIComponent("Hii Team, cookmypapers !! , I want to discuss a project!"); // Pre-filled message
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
   return (
