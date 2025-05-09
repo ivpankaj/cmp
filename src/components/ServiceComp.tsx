@@ -64,7 +64,7 @@ const ServicePage = () => {
   return (
     <>
       <HeroSection
-        title={["Services.We.Serve"]}
+        title={["Services"]}
         subtitle="Transform your digital presence with our cutting-edge solutions and premium design aesthetics."
       />
       <div className="min-h-screen bg-black text-white py-20 relative overflow-hidden z-10">
